@@ -1,0 +1,24 @@
+{
+  "name": "crawl",
+  "version": "1.0.0",
+  "description": "A travel app for people who love to drink",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Apptonomy/Crawl.git"
+  },
+  "author": "Team Apptonomy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Apptonomy/Crawl/issues"
+  },
+  "homepage": "https://github.com/Apptonomy/Crawl#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.21.1"
+  }
+}

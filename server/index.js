@@ -14,3 +14,7 @@ app.use('/api', apiRouter);
 app.listen(PORT, () => {
   console.log(`Server Listening on Port:${PORT} 🚀`);
 });
+
+module.exports = {
+  PORT,
+};

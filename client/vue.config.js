@@ -1,17 +1,19 @@
-// module.exports = {
-//   devServer: {
-//     public: '13.66.15.121',
-//   }
-// };
+const PORT = require('../server/index')
 
-const path = require("path");
 module.exports = {
-  outputDir: path.resolve(__dirname, "../public"),
   devServer: {
-    proxy: {
-      "/api": {
-        target: "http://localhost:8081",
-      },
-    },
-  },
+    public: `13.66.15.121:${PORT}`,
+  }
 };
+
+// const path = require("path");
+// module.exports = {
+//   outputDir: path.resolve(__dirname, "../public"),
+//   devServer: {
+//     proxy: {
+//       "/api": {
+//         target: "http://localhost:8081",
+//       },
+//     },
+//   },
+// };

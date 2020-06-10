@@ -1,5 +1,6 @@
 const express = require('express');
 // const parse = require('body-parser');
+require('dotenv').config();
 const path = require('path');
 const { apiRouter } = require('./api/index');
 
@@ -14,7 +15,7 @@ app.use('/api', apiRouter);
 app.listen(PORT, () => {
   console.log(`Server Listening on Port:${PORT} 🚀`);
 });
-
+console.log(process.env.WOW);
 module.exports = {
   PORT,
 };

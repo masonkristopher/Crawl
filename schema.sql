@@ -40,7 +40,6 @@ CREATE TABLE `Location` (
   `Lat` INT,
   `Lon` INT
 );
-
 CREATE TABLE `Location_Crawl` (
   `Id` INT,
   `Id_Location` INT,
@@ -52,6 +51,4 @@ ALTER TABLE `User_Crawl` ADD FOREIGN KEY (`Id_Profile`) REFERENCES `User` (`Id`)
 ALTER TABLE `Location_Crawl` ADD FOREIGN KEY (`Id_Location`) REFERENCES `Location` (`Id`);
 ALTER TABLE `User_Crawl` ADD FOREIGN KEY (`Id_Crawl`) REFERENCES `Crawl` (`Id`);
 ALTER TABLE `Location_Crawl` ADD FOREIGN KEY (`Id_Crawl`) REFERENCES `Crawl` (`Id`);
-
-
 ALTER TABLE `Crawl` ADD FOREIGN KEY (`Id_Creator`) REFERENCES `User` (`Id`);

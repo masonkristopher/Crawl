@@ -15,7 +15,7 @@ app.use('/api', apiRouter);
 app.listen(PORT, () => {
   console.log(`Server Listening on Port:${PORT} 🚀`);
 });
-console.log(process.env.WOW);
+
 module.exports = {
   PORT,
 };

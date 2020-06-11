@@ -1,10 +1,13 @@
-// const { PORT } = require('../server/index')
+const { PORT } = require('../server/index')
 
-// module.exports = {
-//   devServer: {
-//     public: '13.66.15.121:3306',
-//   }
-// };
+module.exports = {
+  devServer: {
+      host: '0.0.0.0',
+      port: `${PORT}`,
+      public: `13.66.15.121:${PORT}`,
+  },
+}
+
 
 // const path = require("path");
 // module.exports = {

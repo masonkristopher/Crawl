@@ -4,8 +4,8 @@ const { getCrawl, postCrawl } = require('../db/index');
 const crawlRouter = Router();
 
 crawlRouter.get('/:idCreator', (req, res) => {
-  console.log(req.params.email);
-  getCrawl(req.params.email)
+  console.log(req.params.idCreator);
+  getCrawl(req.params.idCreator)
     .then((data) => {
       res.send(data);
     })

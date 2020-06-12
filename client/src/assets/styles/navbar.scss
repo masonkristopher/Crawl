@@ -1,0 +1,31 @@
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#logo {
+  height: 75px;
+  width: 20%;
+  float: left;
+  padding: 12px;
+
+}
+
+
+.nav-bar {
+  width: 100%;
+  background-color: rgb(94, 49, 49);
+  overflow: auto;
+}
+
+.nav-bar a {
+  float: left;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  list-style: none;
+  font-size: 17px;
+  width: 40%; /* Four equal-width links. If you have two links, use 50%, and 33.33% for three links, etc.. */
+  text-align: center;
+}

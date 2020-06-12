@@ -43,13 +43,13 @@ const postUser = ({
 
 // CRAWL QUERIES
 const getCrawl = (idCreator) => {
-  const mysqlQuery = 'SELECT * FROM User WHERE Email = ?;';
+  const mysqlQuery = 'SELECT * FROM User WHERE Id_Creator = ?;';
   return query(mysqlQuery, [idCreator]);
 };
 const postCrawl = ({
   idCreator, title, crawlDate, idCurrentCrawl, idNextCrawl,
 }) => {
-  const mysqlQuery = 'INSERT INTO User VALUES(null, ?, ?, ?, ?, ?);';
+  const mysqlQuery = 'INSERT INTO Crawl VALUES(null, ?, ?, ?, ?, ?);';
   return query(mysqlQuery, [
     idCreator,
     title,

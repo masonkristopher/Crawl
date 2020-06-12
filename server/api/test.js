@@ -3,7 +3,7 @@ const { test } = require('../db');
 
 const testRouter = Router();
 
-testRouter.get('/test', (req, res) => {
+testRouter.get('/', (req, res) => {
   test()
     .then((data) => {
       res.send(data);

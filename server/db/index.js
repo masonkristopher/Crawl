@@ -23,11 +23,47 @@ connection.connect((err) => {
   }
 });
 
+// TEST QUERY
 const test = () => {
   const mysqlQuery = 'SELECT * FROM User;';
   return query(mysqlQuery);
 };
 
+// USER QUERIES
+const getUser = (email) => {
+  const mysqlQuery = 'SELECT * FROM User WHERE Email = ?;';
+  return query(mysqlQuery, [email]);
+};
+const postUser = ({
+  username, nameFirst, nameLast, phoneNumber, email,
+}) => {
+  const mysqlQuery = 'INSERT INTO User VALUES(null, ?, ?, ?, ?, ?);';
+  return query(mysqlQuery, [username, nameFirst, nameLast, phoneNumber, email]);
+};
+
+// CRAWL QUERIES
+const getCrawl = (idCreator) => {
+  const mysqlQuery = 'SELECT * FROM Crawl WHERE Id_Creator = ?;';
+  return query(mysqlQuery, [idCreator]);
+};
+const postCrawl = ({
+  idCreator, title, crawlDate, crawlTime,
+}) => {
+  const mysqlQuery = 'INSERT INTO Crawl VALUES(null, ?, ?, ?, ?);';
+  return query(mysqlQuery, [
+    idCreator,
+    title,
+    crawlDate,
+    crawlTime,
+  ]);
+};
+
 module.exports = {
   test,
+  // USERS
+  getUser,
+  postUser,
+  // CRAWLS
+  getCrawl,
+  postCrawl,
 };

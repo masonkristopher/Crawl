@@ -23,11 +23,26 @@ connection.connect((err) => {
   }
 });
 
+// TEST QUERY
 const test = () => {
   const mysqlQuery = 'SELECT * FROM User;';
   return query(mysqlQuery);
 };
 
+// USER QUERIES
+const getUser = (email) => {
+  const mysqlQuery = 'SELECT * FROM User WHERE Email = ?;';
+  return query(mysqlQuery, [email]);
+};
+const postUser = ({
+  username, nameFirst, nameLast, phoneNumber, email,
+}) => {
+  const mysqlQuery = 'INSERT INTO User VALUES(null, ?, ?, ?, ?, ?);';
+  return query(mysqlQuery, [username, nameFirst, nameLast, phoneNumber, email]);
+};
+
 module.exports = {
   test,
+  getUser,
+  postUser,
 };

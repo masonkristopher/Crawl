@@ -41,8 +41,30 @@ const postUser = ({
   return query(mysqlQuery, [username, nameFirst, nameLast, phoneNumber, email]);
 };
 
+// CRAWL QUERIES
+const getCrawl = (idCreator) => {
+  const mysqlQuery = 'SELECT * FROM User WHERE Email = ?;';
+  return query(mysqlQuery, [idCreator]);
+};
+const postCrawl = ({
+  idCreator, title, crawlDate, idCurrentCrawl, idNextCrawl,
+}) => {
+  const mysqlQuery = 'INSERT INTO User VALUES(null, ?, ?, ?, ?, ?);';
+  return query(mysqlQuery, [
+    idCreator,
+    title,
+    crawlDate,
+    idCurrentCrawl,
+    idNextCrawl,
+  ]);
+};
+
 module.exports = {
   test,
+  // USERS
   getUser,
   postUser,
+  // CRAWLS
+  getCrawl,
+  postCrawl,
 };

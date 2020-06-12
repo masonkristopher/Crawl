@@ -20,9 +20,8 @@ CREATE TABLE `Crawl` (
   `Id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `Id_Creator` INT,
   `Title` VARCHAR(80),
-  `Crawl_Date` datetime,
-  `Id_Current_Crawl` INT,
-  `Id_Next_Crawl` INT
+  `Crawl_Date` DATE,
+  `Crawl_Time` TIME
 );
 
 CREATE TABLE `User_Crawl` (

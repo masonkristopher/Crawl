@@ -24,6 +24,9 @@
         @click="center=m.position"
       ></gmap-marker>
     </gmap-map>
+  <ul>
+    <li v-for="bar in places" :key="bar.name"> {{ bar.name }}</li>  
+  </ul>
   </div>
 </template>
 
@@ -34,10 +37,11 @@ export default {
     return {
       // default to Montreal to keep it simple
       // change this to whatever makes sense
-      center: { lat: 45.508, lng: -73.587 },
+      center: { lat: 29.9630486, lng: -90.0438412 },
       markers: [],
       places: [],
-      currentPlace: null
+      currentPlace: null,
+      items: [{message: 0}]
     };
   },
 
@@ -58,6 +62,7 @@ export default {
         };
         this.markers.push({ position: marker });
         this.places.push(this.currentPlace);
+        //this.items[0].message++;
         this.center = marker;
         this.currentPlace = null;
       }

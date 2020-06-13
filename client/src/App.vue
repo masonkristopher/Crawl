@@ -4,7 +4,7 @@
       <NavBar/>
     </div>
     <div>
-      <HelloWorld msg="poop lol"/>
+      <CreateCrawl :crawlDate.sync="crawlDate" />
     </div>
     <div>
       <google-map />
@@ -13,16 +13,21 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import NavBar from './components/NavBar.vue'
 import GoogleMap from './components/GoogleMap'
+import CreateCrawl from './components/CreateCrawl'
 
 export default {
   name: 'App',
   components: {
     NavBar,
-    HelloWorld,
-    GoogleMap
+    GoogleMap,
+    CreateCrawl,
+  },
+  data () {
+    return {
+      crawlDate: null,
+    }
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div>
-      <NavBar/>
+      <NavBar />
     </div>
     <div>
       <!-- syncing App's crawlDate and title with CreateCrawl's crawlDate and title -->
@@ -17,9 +17,10 @@
 import NavBar from './components/NavBar.vue'
 import GoogleMap from './components/GoogleMap'
 import CreateCrawl from './components/CreateCrawl'
+import HelloWorld from "./components/HelloWorld.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     NavBar,
     GoogleMap,
@@ -31,9 +32,9 @@ export default {
       title: null,
     }
   }
-}
+};
 </script>
 
 <style>
- @import './assets/styles/app.css';
+@import "./assets/styles/app.css";
 </style>

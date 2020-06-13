@@ -13,7 +13,8 @@ CREATE TABLE `User` (
   `Name_First` VARCHAR(80),
   `Name_Last` VARCHAR(80),
   `Phone_Number` VARCHAR(12),
-  `Email` VARCHAR(50)
+  `Email` VARCHAR(50),
+  `Image_Url` VARCHAR(160)
 );
 
 CREATE TABLE `Crawl` (

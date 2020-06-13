@@ -17,14 +17,14 @@ import NavBar from './components/NavBar.vue'
 import GoogleMap from './components/GoogleMap'
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     NavBar,
     GoogleMap
   }
-}
+};
 </script>
 
 <style>
- @import './assets/styles/app.css';
+@import "./assets/styles/app.css";
 </style>

@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <div>
-      <NavBar />
+      <img id="logo" alt="CRAWL logo" src="./assets/images/logo.png">
     </div>
     <div>
-      <HelloWorld msg="poop lol" />
+      <NavBar/>
     </div>
     <div>
       <google-map />
@@ -13,15 +13,13 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-import NavBar from "./components/NavBar.vue";
-import GoogleMap from "./components/GoogleMap";
+import NavBar from './components/NavBar.vue'
+import GoogleMap from './components/GoogleMap'
 
 export default {
   name: "App",
   components: {
     NavBar,
-    HelloWorld,
     GoogleMap
   }
 };

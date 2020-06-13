@@ -6,7 +6,7 @@
     <vs-sidebar parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="active">
 
       <div class="header-sidebar" slot="header">
-        <vs-avatar  size="70px" src="https://randomuser.me/api/portraits/men/85.jpg"/>
+        <vs-avatar  size="70px" src="https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512"/>
 
         <h4>
           My Name

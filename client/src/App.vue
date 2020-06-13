@@ -4,7 +4,8 @@
       <NavBar/>
     </div>
     <div>
-      <CreateCrawl :crawlDate.sync="crawlDate" />
+      <!-- syncing App's crawlDate and title with CreateCrawl's crawlDate and title -->
+      <CreateCrawl :crawlDate.sync="crawlDate" :title.sync="title" />
     </div>
     <div>
       <google-map />
@@ -27,6 +28,7 @@ export default {
   data () {
     return {
       crawlDate: null,
+      title: null,
     }
   }
 }

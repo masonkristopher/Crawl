@@ -1,6 +1,5 @@
 <template>
 <div class='nav-bar'>
-        <img id="logo" alt="CRAWL logo" src="../assets/logo.png">
         <a class="nav-link" href="default.asp">Home</a>
         <a class="nav-link" href="default.asp">Profile</a>
   </div>

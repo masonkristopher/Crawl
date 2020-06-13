@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <div>
+      <img id="logo" alt="CRAWL logo" src="./assets/logo.png">
+    </div>
+    <div>
       <NavBar/>
     </div>
     <div>

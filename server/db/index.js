@@ -35,7 +35,7 @@ const getUser = (email) => {
   return query(mysqlQuery, [email]);
 };
 const postUser = ({
-  username, nameFirst, nameLast, phoneNumber, email, imageUrl
+  username, nameFirst, nameLast, phoneNumber, email, imageUrl,
 }) => {
   const mysqlQuery = 'INSERT INTO User VALUES(null, ?, ?, ?, ?, ?, ?);';
   return query(mysqlQuery, [username, nameFirst, nameLast, phoneNumber, email, imageUrl]);

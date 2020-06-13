@@ -16,7 +16,7 @@ export default {
         SideBar,
   },
   props: {
-    msg: String
+    
   }
 }
 </script>

@@ -23,7 +23,8 @@ crawlRouter.post('/add', (req, res) => {
       res.send('Crawl added to DB');
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err, 'Crawl not added to DB');
+      res.end();
     });
 });
 

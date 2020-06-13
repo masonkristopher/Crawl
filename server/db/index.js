@@ -58,6 +58,29 @@ const postCrawl = ({
   ]);
 };
 
+// LOCATION QUERIES
+const getLocation = ({
+  lat, lon,
+}) => {
+  const mysqlQuery = 'SELECT * FROM Location WHERE Lat = ? & Lon = ?;';
+  return query(mysqlQuery, [lat, lon]);
+};
+
+const postLocation = ({
+  name, street, city, state, zip, lat, lon,
+}) => {
+  const mysqlQuery = 'INSERT INTO Location VALUES(null, ?, ?, ?, ?, ?, ?, ?);';
+  return query(mysqlQuery, [
+    name,
+    street,
+    city,
+    state,
+    zip,
+    lat,
+    lon,
+  ]);
+};
+
 module.exports = {
   test,
   // USERS
@@ -66,4 +89,7 @@ module.exports = {
   // CRAWLS
   getCrawl,
   postCrawl,
+  // LOCATIONS
+  getLocation,
+  postLocation,
 };

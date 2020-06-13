@@ -1,8 +1,8 @@
 <template>
 <div class='nav-bar'>
-        <SideBar />
+        <SideBar id="sidebar-button" />
         <a class="nav-link" href="default.asp">Home</a>
-        <a class="nav-link" href="default.asp">Profile</a>
+        <a class="nav-link" href="default.asp">Create</a>
   </div>
 
 </template>

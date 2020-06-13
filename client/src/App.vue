@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <div>
-      <NavBar/>
+      <NavBar />
     </div>
     <div>
-      <HelloWorld msg="poop lol"/>
+      <HelloWorld msg="poop lol" />
     </div>
     <div>
       <google-map />
@@ -13,20 +13,20 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import NavBar from './components/NavBar.vue'
-import GoogleMap from './components/GoogleMap'
+import HelloWorld from "./components/HelloWorld.vue";
+import NavBar from "./components/NavBar.vue";
+import GoogleMap from "./components/GoogleMap";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     NavBar,
     HelloWorld,
     GoogleMap
   }
-}
+};
 </script>
 
 <style>
- @import './assets/styles/app.css';
+@import "./assets/styles/app.css";
 </style>

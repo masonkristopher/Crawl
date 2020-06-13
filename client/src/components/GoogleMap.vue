@@ -21,9 +21,13 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        @click="center=m.position"
+        @click="sayHello()"
       ></gmap-marker>
+
     </gmap-map>
+  <ul>
+    <li v-for="bar in places" :key="bar.name"> {{ bar.name }}</li>  
+  </ul>
   </div>
 </template>
 
@@ -32,12 +36,11 @@ export default {
   name: "GoogleMap",
   data() {
     return {
-      // default to Montreal to keep it simple
-      // change this to whatever makes sense
-      center: { lat: 45.508, lng: -73.587 },
+      // defaulted to New Orleans
+      center: { lat: 29.9630486, lng: -90.0438412 },
       markers: [],
       places: [],
-      currentPlace: null
+      currentPlace: null,
     };
   },
 
@@ -54,10 +57,12 @@ export default {
       if (this.currentPlace) {
         const marker = {
           lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng()
+          lng: this.currentPlace.geometry.location.lng(),
+          name: this.currentPlace.name
         };
         this.markers.push({ position: marker });
         this.places.push(this.currentPlace);
+        //this.items[0].message++;
         this.center = marker;
         this.currentPlace = null;
       }
@@ -69,7 +74,10 @@ export default {
           lng: position.coords.longitude
         };
       });
-    }
+    },
+    sayHello: function() {
+      console.log('hello');
+    },
   }
 };
 </script>

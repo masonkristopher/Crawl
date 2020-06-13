@@ -6,16 +6,8 @@ require('dotenv').config({ path: '../.env' });
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "http://www.example.com/auth/google/callback"
+  callbackURL: 'http://127.0.0.1:8081/auth/google/callback',
 },
-  function (accessToken, refreshToken, profile, done) {
-    User.findOrCreate({
-      googleId: profile.id
-    }, function (err, user) {
-      return done(err, user);
-    });
-  }
-));
-
-
-
+(accessToken, refreshToken, profile, done) => {
+  User.findOrCreate({ googleId: profile.id }, (err, user) => done(err, user));
+}));

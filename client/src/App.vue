@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div>
-      <img id="logo" alt="CRAWL logo" src="./assets/logo.png">
+      <img id="logo" alt="CRAWL logo" src="./assets/images/logo.png">
     </div>
     <div>
       <NavBar/>

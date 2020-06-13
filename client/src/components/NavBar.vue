@@ -1,5 +1,6 @@
 <template>
 <div class='nav-bar'>
+        <SideBar />
         <a class="nav-link" href="default.asp">Home</a>
         <a class="nav-link" href="default.asp">Profile</a>
   </div>
@@ -7,8 +8,13 @@
 </template>
 
 <script>
+import SideBar from './SideBar.vue'
+
 export default {
   name: 'NavBar',
+  components: {
+        SideBar,
+  },
   props: {
     msg: String
   }

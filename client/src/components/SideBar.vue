@@ -9,33 +9,37 @@
         <vs-avatar  size="70px" src="https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512"/>
 
         <h4>
-          My Name
-          <vs-button color="primary" icon="more_horiz" type="flat"></vs-button>
+          Jerry McDonald
+           <vs-sidebar-group title="...">
+          <vs-sidebar-item index="1">
+            555-555-5555
+          </vs-sidebar-item>
+          <vs-sidebar-item index="1.2">
+            jerryMcDonald@gmail.com
+          </vs-sidebar-item>
+        </vs-sidebar-group>
         </h4>
 
       </div>
-      <vs-sidebar-group title="Aplication">
-        <vs-sidebar-item index="1" icon="question_answer">
-          Dashboard
+      <vs-sidebar-group title="My Crawls">
+        <vs-sidebar-item index="1">
+          Christmas Crawl 2k21
         </vs-sidebar-item>
-        <vs-sidebar-group title="Store">
-          <vs-sidebar-item index="2.1" icon="store">
-            Store
+        <vs-sidebar-group title="Crawls I'm A Part Of">
+          <vs-sidebar-item index="2.1">
+            Naseer's 21st Birthday Bash
           </vs-sidebar-item>
-          <vs-sidebar-item index="2.2" icon="nature_people">
-            Nature
-          </vs-sidebar-item>
-          <vs-sidebar-item index="2.3" icon="style">
-            Style
+          <vs-sidebar-item index="2.2">
+            Mac's SuperBowl Crawl
           </vs-sidebar-item>
         </vs-sidebar-group>
-        <vs-sidebar-item index="2" icon="gavel">
+        <vs-sidebar-item index="2">
           History
         </vs-sidebar-item>
-        <vs-sidebar-item index="3" icon="https">
+        <vs-sidebar-item index="3">
           security
         </vs-sidebar-item>
-        <vs-sidebar-item index="4" icon="help">
+        <vs-sidebar-item index="4">
           Help
         </vs-sidebar-item>
       </vs-sidebar-group>
@@ -63,10 +67,17 @@
 </template>
 
 <script>
+
 export default {
   data:()=>({
     active:false,
-  })
+    User: {},
+  }),
+  methods: {
+    findCurrentUsersCrawls () {
+      
+    }
+  }
 }
 </script>
 

@@ -13,7 +13,7 @@ CREATE TABLE `User` (
   `Name_First` VARCHAR(80),
   `Name_Last` VARCHAR(80),
   `Phone_Number` VARCHAR(12),
-  `Email` VARCHAR(50),
+  `Email` VARCHAR(50) NOT NULL UNIQUE,
   `Image_Url` VARCHAR(160)
 );
 

@@ -4,10 +4,10 @@
       <img id="logo" alt="CRAWL logo" src="./assets/images/logo.png">
     </div>
     <div>
-      <!-- syncing App's crawlDate and title with CreateCrawl's crawlDate and title -->
-      <CreateCrawl :crawlDate.sync="crawlDate" :title.sync="title" />
       <NavBar/>
     </div>
+      <!-- syncing App's crawlDate and title with CreateCrawl's crawlDate and title -->
+      <CreateCrawl :crawlDate.sync="crawlDate" :title.sync="title" />
     <div>
       <google-map />
     </div>
@@ -31,7 +31,6 @@ export default {
       crawlDate: null,
       title: null,
     }
-    GoogleMap
   }
 };
 </script>

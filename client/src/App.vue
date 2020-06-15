@@ -9,7 +9,7 @@
       <NavBar/>
     </div>
     <div>
-      <google-map />
+      <google-map :places.sync="places" :markers.sync="markers"/>
     </div>
   </div>
 </template>
@@ -30,8 +30,9 @@ export default {
     return {
       crawlDate: null,
       title: null,
+      places: [],
+      markers: [],
     }
-    GoogleMap
   }
 };
 </script>

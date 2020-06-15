@@ -35,7 +35,7 @@
         </vs-sidebar-group>
 
 
-        <vs-sidebar-group title="Crawls I've Joined">
+        <vs-sidebar-group title="Crawls I've Joined" icon="down">
           <vs-sidebar-item index="2.1">
             Naseer's 21st Birthday Bash
           </vs-sidebar-item>
@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
   data:()=>({
@@ -76,7 +77,11 @@ export default {
   }),
   methods: {
     findCurrentUsersCrawls () {
-      
+      axios.get(`http://localhost:8081/api/user/${}`)
+        .then((currentUser) => {
+          this.User = currentUser
+          console.log('Current User Found:', currentUser)
+        })
     }
   }
 }

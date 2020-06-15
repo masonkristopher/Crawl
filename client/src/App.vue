@@ -9,7 +9,7 @@
       <NavBar/>
     </div>
     <div>
-      <google-map />
+      <google-map :places.sync="places" :markers.sync="markers"/>
     </div>
   </div>
 </template>
@@ -34,6 +34,8 @@ export default {
       crawlDate: null,
       title: null,
       user: '',
+      places: [],
+      markers: [],
     }
   },
   created () {

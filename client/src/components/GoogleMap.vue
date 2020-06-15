@@ -6,7 +6,7 @@
         <gmap-autocomplete
           @place_changed="setPlace">
         </gmap-autocomplete>
-        <button @click="addMarker">Add</button>
+        <button @click="addMarker" >Add</button>
       </label>
       <br/>
 
@@ -65,6 +65,8 @@ export default {
         //this.items[0].message++;
         this.center = marker;
         this.currentPlace = null;
+        this.$emit('update:places', this.places);
+        this.$emit('update:markers', this.markers)
       }
     },
     geolocate: function() {

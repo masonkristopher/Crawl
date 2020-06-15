@@ -9,15 +9,15 @@
         <vs-avatar  size="70px" src="https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512"/>
 
         <h4>
-          Jerry McDonald
+          {{User.name}}
           <vs-button color="primary" type="flat">...</vs-button>
 
            <vs-sidebar-group title="User">
           <vs-sidebar-item index="1">
-            555-555-5555
+            {{User.phoneNumber}}
           </vs-sidebar-item>
           <vs-sidebar-item index="1.2">
-            jerryMcDonald@gmail.com
+            {{User.email}}
           </vs-sidebar-item>
         </vs-sidebar-group>
         </h4>
@@ -29,19 +29,20 @@
       </vs-divider>
 
       <vs-sidebar-group title="My Crawls">
-          <vs-sidebar-item index="1">
-            Christmas Crawl 2k21
+
+          <vs-sidebar-item v-for="crawl in CreatedCrawls" :key="crawl.name">
+            {{ crawl.name }}
           </vs-sidebar-item>
-        </vs-sidebar-group>
+
+      </vs-sidebar-group>
 
 
-        <vs-sidebar-group title="Crawls I've Joined" icon="down">
-          <vs-sidebar-item index="2.1">
-            Naseer's 21st Birthday Bash
-          </vs-sidebar-item>
-          <vs-sidebar-item index="2.2">
-            Mac's SuperBowl Crawl
-          </vs-sidebar-item>
+      <vs-sidebar-group title="Crawls I've Joined" icon="down">
+
+        <vs-sidebar-item v-for="crawl in JoinedCrawls" :key="crawl.name">
+            {{ crawl.name }}
+        </vs-sidebar-item>
+
       </vs-sidebar-group>
 
 
@@ -68,22 +69,17 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
   data:()=>({
     active:false,
-    User: {},
-  }),
-  methods: {
-    findCurrentUsersCrawls () {
-      axios.get(`http://localhost:8081/api/user/${}`)
-        .then((currentUser) => {
-          this.User = currentUser
-          console.log('Current User Found:', currentUser)
-        })
-    }
-  }
+    User: {name: "Jerry McDonald",
+           phoneNumber: "555-555-5555",
+           email: "jerryMcDonald@gmail.com",
+           },
+    CreatedCrawls: [{name: "Christmas Crawl 2k21"},],
+    JoinedCrawls: [{name: "Naseer's 21st Birthday Bash"}, {name: "Mac's SuperBowl Crawl"}],
+  })
 }
 </script>
 

@@ -28,7 +28,7 @@ export default {
       const { crawlDate, title } = this.$parent
       const date = crawlDate.split("T")[0];
       const time = crawlDate.split("T")[1];
-      axios.post('http://localhost:8081/api/crawl/add', {
+      axios.post(`${process.env.VUE_APP_MY_IP}/api/crawl/add`, {
         title: title,
         crawlDate: date,
         crawlTime: time,

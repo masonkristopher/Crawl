@@ -34,12 +34,14 @@ CREATE TABLE `User_Crawl` (
 CREATE TABLE `Location` (
   `Id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(80),
+  `Number_Street`  VARCHAR (12),
   `Street` VARCHAR(80),
   `City` VARCHAR(80),
   `State` VARCHAR(80),
   `Zip` INT,
   `Lat`  DECIMAL(10, 8),
-  `Lon` DECIMAL(10,8)
+  `Lon` DECIMAL(10,8),
+  `Formatted` VARCHAR (120) UNIQUE
 );
 
 

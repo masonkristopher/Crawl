@@ -66,18 +66,20 @@ const getLocation = ({
   return query(mysqlQuery, [lat, lon]);
 };
 
-const postLocation = ({
-  name, street, city, state, zip, lat, lon,
+const postLocations = ({
+  name, streetNumber, street, city, state, zip, lat, lon, formatted,
 }) => {
-  const mysqlQuery = 'INSERT INTO Location VALUES(null, ?, ?, ?, ?, ?, ?, ?);';
+  const mysqlQuery = 'INSERT IGNORE INTO Location VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
   return query(mysqlQuery, [
     name,
+    streetNumber,
     street,
     city,
     state,
     zip,
     lat,
     lon,
+    formatted,
   ]);
 };
 
@@ -91,5 +93,5 @@ module.exports = {
   postCrawl,
   // LOCATIONS
   getLocation,
-  postLocation,
+  postLocations,
 };

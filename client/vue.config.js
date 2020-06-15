@@ -8,7 +8,8 @@ module.exports = {
       public: `13.85.81.104:${PORT}`,
       proxy: {
         "/api": {
-          target: `http://0.0.0.0:${PORT}`,
+          target: `https://localhost:${PORT}`,
+          secure: false,
         },
       },
   },

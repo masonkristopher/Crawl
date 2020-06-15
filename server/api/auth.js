@@ -13,6 +13,17 @@ authRouter.use(cookieSession({
   keys: ['key1', 'key2'],
 }));
 
+// make it possible to check if the user is logged in
+const isLoggedIn = (req, res, next) => {
+  if (req.user) {
+    console.log('user is logged in');
+    next();
+  } else {
+    console.log('user not logged in');
+    res.redirect('/api/auth/google');
+  }
+};
+
 
 // use the two helper funcitons initialize and session
 // http://www.passportjs.org/docs/configure
@@ -21,10 +32,22 @@ authRouter.use(passport.session());
 
 
 // a possible route to for the user to go to I used before just directing them to the homepage
-authRouter.get('/google/good', (req, res) => {
-  res.send(`Welcome ${req}`);
+authRouter.get('/google/good', isLoggedIn, (req, res) => {
+  res.send(`Welcome ${req.user.displayName}`);
 });
 
+// this may be the main log in route from the main.js
+authRouter.get('/google/login', (req, res) => {
+  if (req.user) {
+    const data = {
+      redirect: '/',
+      user: req.user.displayName,
+    };
+    return res.send(data);
+  }
+  const data = { redirect: '/login' };
+  return res.send(data);
+});
 
 // this route will grab the profile and the email from google
 authRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));

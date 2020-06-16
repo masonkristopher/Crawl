@@ -65,6 +65,17 @@
 
     </vs-sidebar>
 
+    <vs-popup
+      style="color:rgb(255,255,275)"
+      background-color="rgba(47,165,198,.6)"
+
+      title="YOU HAVE BEEN LOGGED OUT" :active.sync="popupActivo" button-close-hidden="true">
+      
+      <p>Sign In With Your Account
+         To Start Creating Crawls
+      </p>
+      <button @click="login">Sign In</button>
+    </vs-popup>
   </div>
 
 </template>

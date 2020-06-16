@@ -14,16 +14,12 @@
 
 <script>
 import NavBar from './components/NavBar.vue'
-import GoogleMap from './components/GoogleMap'
-import CreateCrawl from './components/Create/CreateCrawl'
 import axios from 'axios'
 
 export default {
   name: "App",
   components: {
     NavBar,
-    GoogleMap,
-    CreateCrawl,
   },
   data () {
     return {
@@ -37,7 +33,7 @@ export default {
   created () {
     // create an axios get reques to grab the user information and check if they are logged in
     axios.get('/api/auth/google/login')
-      .then(function (response) {
+      .then((response) => {
         if (response.data.redirect === '/') {
           alert(`welcome ${response.data.user}`)
           this.user = response.data.user;

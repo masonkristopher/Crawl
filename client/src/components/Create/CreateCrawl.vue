@@ -1,15 +1,18 @@
 <template>
   <div id="create-component">
     <ul id="crawl-forms">
-      <li><input type="text" name="title" v-model="title" @input="$emit('update:title', title)"></li>
-      <li><input type="datetime-local" name="datetime" v-model="crawlDate" @input="$emit('update:crawlDate', crawlDate)"></li>
+      <li>Title: <br><input type="text" name="title" v-model="title" @input="$emit('update:title', title)"></li>
+      <br>
+      <br>
+      <li>Time & Date: <br><input type="datetime-local" name="datetime" v-model="crawlDate" @input="$emit('update:crawlDate', crawlDate)"></li>
+      <br>
       <button v-on:click.stop="saveCrawl(); saveLocations();">
         Save crawl
       </button>
     </ul>
 
     <div>
-      <google-map :places.sync="places" :markers.sync="markers"/>
+      <google-map id="create-map" :places.sync="places" :markers.sync="markers"/>
     </div>
   </div>
 

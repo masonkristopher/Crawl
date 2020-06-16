@@ -6,20 +6,23 @@
     <vs-sidebar parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="active">
 
       <div class="header-sidebar" slot="header">
-        <vs-avatar  size="70px" src="https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512"/>
-
+        <vs-avatar v-if="User !== null" size="70px" :src="User.image"/>
+        <vs-avatar v-else-if="User === null" size="70px" src="https://cdn2.iconfinder.com/data/icons/people-groups/512/Man_Woman_Avatar-512.png"/>
         <h4>
-          {{User.name}}
+          <div v-if="User !== null">
+            {{User.name}}
+          </div>
           <vs-button color="primary" type="flat">...</vs-button>
 
-           <vs-sidebar-group title="User">
-          <vs-sidebar-item index="1">
-            {{User.phoneNumber}}
-          </vs-sidebar-item>
-          <vs-sidebar-item index="1.2">
-            {{User.email}}
-          </vs-sidebar-item>
-        </vs-sidebar-group>
+          <vs-sidebar-group title="User" v-if="User !== null">
+            <vs-sidebar-item index="1">
+              {{User.phoneNumber}}
+            </vs-sidebar-item>
+
+            <vs-sidebar-item index="1.2">
+              {{User.email}}
+            </vs-sidebar-item>
+          </vs-sidebar-group>
         </h4>
 
       </div>
@@ -28,7 +31,7 @@
         Crawls
       </vs-divider>
 
-      <vs-sidebar-group title="My Crawls">
+      <vs-sidebar-group title="My Crawls" v-if="CreatedCrawls !== null">
 
           <vs-sidebar-item v-for="(crawl, index) in CreatedCrawls" :key="crawl.name" :index="`${index + 1}.${index}`">
             {{index + 1}}. {{crawl.name}}
@@ -37,7 +40,7 @@
       </vs-sidebar-group>
 
 
-      <vs-sidebar-group title="Crawls I've Joined" icon="down">
+      <vs-sidebar-group title="Crawls I've Joined" icon="down" v-if="JoinedCrawls !== null">
 
         <vs-sidebar-item v-for="(crawl, index) in JoinedCrawls" :key="crawl.name" :index="`${index + 2}.${index}`">
             {{index + 1}}. {{crawl.name}}
@@ -68,14 +71,17 @@
     <vs-popup
       style="color:rgb(255,255,275)"
       background-color="rgba(47,165,198,.6)"
-
       title="YOU HAVE BEEN LOGGED OUT" :active.sync="popupActivo" button-close-hidden="true">
-      
-      <p>Sign In With Your Account
-         To Start Creating Crawls
-      </p>
+    
+      <span style="color:black; font-size:18px; padding:10px;">
+        Sign In With Your Account
+        To Start Creating Crawls
+      </span>
+
       <button @click="login">Sign In</button>
+
     </vs-popup>
+
   </div>
 
 </template>
@@ -87,7 +93,8 @@ export default {
   data:()=>({
     active:false,
     popupActivo:false,
-    User: {name: "Jerry McDonald",
+    User: {image: "https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512",
+           name: "Jerry McDonald",
            phoneNumber: "555-555-5555",
            email: "jerryMcDonald@gmail.com",
            },
@@ -100,6 +107,9 @@ export default {
         .then(() => {
           console.log("Successful logout")
           this.popupActivo = true;
+          this.User = null;
+          this.CreatedCrawls = null;
+          this.JoinedCrawls = null;
           console.log(this.popupActivo);
         })
         .catch((err) => {
@@ -107,7 +117,7 @@ export default {
         })
     },
     login() {
-      
+      console.log('Log In Page')
     }
   }
 }

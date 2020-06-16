@@ -10,8 +10,8 @@ crawlRouter.get('/:idCreator', (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      console.log(err);
-      res.send();
+      console.log('Error retrieving crawls from DB:', err);
+      res.send(err);
     });
 });
 
@@ -22,8 +22,8 @@ crawlRouter.post('/add', (req, res) => {
       res.send(data, 'Crawl added to DB');
     })
     .catch((err) => {
-      console.log(err, 'Crawl not added to DB');
-      res.end('oh nooooo');
+      console.log('Error adding crawl to DB:', err);
+      res.send('oh nooooo');
     });
 });
 

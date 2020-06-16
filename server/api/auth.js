@@ -42,6 +42,7 @@ authRouter.get('/google/login', (req, res) => {
     const data = {
       redirect: '/',
       user: req.user.displayName,
+      email: req.user.emails[0].value,
     };
     return res.send(data);
   }

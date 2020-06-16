@@ -1,6 +1,6 @@
 <template>
   <div class='nav-bar'>
-    <SideBar id="sidebar-button" />
+    <SideBar id="sidebar-button" v-bind:user="user"/>
     <router-link class="nav-link" to="/home">Home</router-link>
     <router-link class="nav-link" to="/create">Create</router-link>
   </div>
@@ -14,9 +14,7 @@ export default {
   components: {
         SideBar,
   },
-  props: {
-    
-  }
+  props: ['user'],
 }
 </script>
 

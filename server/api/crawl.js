@@ -17,14 +17,13 @@ crawlRouter.get('/:idCreator', (req, res) => {
 
 crawlRouter.post('/add', (req, res) => {
   const crawl = req.body;
-  console.log(crawl);
   postCrawl(crawl)
-    .then(() => {
-      res.send('Crawl added to DB');
+    .then((data) => {
+      res.send(data, 'Crawl added to DB');
     })
     .catch((err) => {
       console.log('Error adding crawl to DB:', err);
-      res.end('oh nooooo');
+      res.send('oh nooooo');
     });
 });
 

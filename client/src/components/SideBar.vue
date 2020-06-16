@@ -110,7 +110,6 @@ export default {
           this.User = null;
           this.CreatedCrawls = null;
           this.JoinedCrawls = null;
-          console.log(this.popupActivo);
         })
         .catch((err) => {
         console.log('Error logging client out:', err);

@@ -3,19 +3,16 @@
     <div>
       <img id="logo" alt="CRAWL logo" src="./assets/images/logo.png">
     </div>
+    
     <div>
       <NavBar/>
     </div>
-      <!-- syncing App's crawlDate and title with CreateCrawl's crawlDate and title -->
-      <CreateCrawl :crawlDate.sync="crawlDate" :title.sync="title" />
-    <div>
-      <google-map :places.sync="places" :markers.sync="markers"/>
-    </div>
+
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-// import GoogleLogin from "./components/GoogleLogin";
 import NavBar from './components/NavBar.vue'
 import GoogleMap from './components/GoogleMap'
 import CreateCrawl from './components/CreateCrawl'
@@ -24,7 +21,6 @@ import axios from 'axios'
 export default {
   name: "App",
   components: {
-    // GoogleLogin,
     NavBar,
     GoogleMap,
     CreateCrawl,

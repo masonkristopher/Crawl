@@ -1,26 +1,39 @@
 <template>
-  <div >
+  <div id="create-component">
     <ul id="crawl-forms">
-      <li><input type="text" name="title" v-model="title" @input="$emit('update:title', title)"></li>
-      <li><input type="datetime-local" name="datetime" v-model="crawlDate" @input="$emit('update:crawlDate', crawlDate)"></li>
+      <li>Title: <br><input type="text" name="title" v-model="title" @input="$emit('update:title', title)"></li>
+      <br>
+      <br>
+      <li>Time & Date: <br><input type="datetime-local" name="datetime" v-model="crawlDate" @input="$emit('update:crawlDate', crawlDate)"></li>
+      <br>
       <button v-on:click.stop="saveCrawl(); saveLocations();">
         Save crawl
       </button>
     </ul>
-  </div>
 
+    <div>
+      <google-map id="create-map" :places.sync="places" :markers.sync="markers"/>
+    </div>
+  </div>
 
 </template>
 
 <script>
 import axios from 'axios';
+import GoogleMap from '../GoogleMap'
 
 export default {
   name: 'CreateCrawl',
-    data () {
+  components: {
+    GoogleMap,
+  },
+  data () {
     return {
       crawlDate: null,
       title: null,
+      user: '',
+      places: [],
+      markers: [],
     }
   },
   methods: {
@@ -28,8 +41,7 @@ export default {
       const { crawlDate, title } = this.$parent;
       const date = crawlDate.split("T")[0];
       const time = crawlDate.split("T")[1];
-      axios.post('http://localhost:8081/api/crawl/add', {
-        idCreator: 1,
+      axios.post(`${process.env.VUE_APP_MY_IP}/api/crawl/add`, {
         title: title,
         crawlDate: date,
         crawlTime: time,
@@ -67,5 +79,5 @@ export default {
 </script>
 
 <style>
-@import '../assets/styles/createcrawl.scss';
+@import '../../assets/styles/createcrawl.scss';
 </style>

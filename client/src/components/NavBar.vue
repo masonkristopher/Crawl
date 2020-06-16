@@ -1,10 +1,9 @@
 <template>
-<div class='nav-bar'>
-        <SideBar id="sidebar-button" />
-        <a class="nav-link" href="default.asp">Home</a>
-        <a class="nav-link" href="default.asp">Create</a>
+  <div class='nav-bar'>
+    <SideBar id="sidebar-button" v-bind:user="user"/>
+    <router-link class="nav-link" to="/home">Home</router-link>
+    <router-link class="nav-link" to="/create">Create</router-link>
   </div>
-
 </template>
 
 <script>
@@ -15,9 +14,7 @@ export default {
   components: {
         SideBar,
   },
-  props: {
-    
-  }
+  props: ['user'],
 }
 </script>
 

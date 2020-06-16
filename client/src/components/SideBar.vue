@@ -30,8 +30,8 @@
 
       <vs-sidebar-group title="My Crawls">
 
-          <vs-sidebar-item v-for="crawl in CreatedCrawls" :key="crawl.name">
-            {{ crawl.name }}
+          <vs-sidebar-item v-for="(crawl, index) in CreatedCrawls" :key="crawl.name" :index="`${index + 1}.${index}`">
+            {{index + 1}}. {{crawl.name}}
           </vs-sidebar-item>
 
       </vs-sidebar-group>
@@ -39,8 +39,8 @@
 
       <vs-sidebar-group title="Crawls I've Joined" icon="down">
 
-        <vs-sidebar-item v-for="crawl in JoinedCrawls" :key="crawl.name">
-            {{ crawl.name }}
+        <vs-sidebar-item v-for="(crawl, index) in JoinedCrawls" :key="crawl.name" :index="`${index + 2}.${index}`">
+            {{index + 1}}. {{crawl.name}}
         </vs-sidebar-item>
 
       </vs-sidebar-group>

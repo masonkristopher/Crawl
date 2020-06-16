@@ -2,11 +2,10 @@
   <div id="app">
     <div>
       <img id="logo" alt="CRAWL logo" src="./assets/images/logo.png">
-      <h1>hello {{this.user}} your email is {{this.email}}</h1>
     </div>
 
     <div>
-      <NavBar/>
+      <NavBar v-bind:user="user"/>
     </div>
 
     <router-view></router-view>
@@ -26,8 +25,7 @@ export default {
     return {
       crawlDate: null,
       title: null,
-      user: '',
-      email: '',
+      user: {},
       places: [],
       markers: [],
     }
@@ -37,9 +35,12 @@ export default {
     axios.get('/api/auth/google/login')
       .then(response => {
         if (response.data.redirect === '/') {
-          alert(`welcome! ${response.data.user} your email is ${response.data.email}`)
-          this.user = response.data.user;
-          this.email = response.data.email;
+          const { userId, user, email, image } = response.data
+          this.user = {id: userId,
+                       name: user,
+                       email: email,
+                       image
+                      }
         } else if (response.data.redirect === '/login') {
           window.location.href = 'api/auth/google';
         }

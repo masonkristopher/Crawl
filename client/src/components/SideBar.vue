@@ -6,21 +6,21 @@
     <vs-sidebar parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="active">
 
       <div class="header-sidebar" slot="header">
-        <vs-avatar v-if="User !== null" size="70px" :src="User.image"/>
-        <vs-avatar v-else-if="User === null" size="70px" src="https://cdn2.iconfinder.com/data/icons/people-groups/512/Man_Woman_Avatar-512.png"/>
+        <vs-avatar v-if="this.user !== null" size="70px" :src="this.user.image"/>
+        <vs-avatar v-else-if="this.user === null" size="70px" src="https://cdn2.iconfinder.com/data/icons/people-groups/512/Man_Woman_Avatar-512.png"/>
         <h4>
-          <div v-if="User !== null">
-            {{User.name}}
+          <div v-if="this.user !== null">
+            {{this.user.name}}
           </div>
           <vs-button color="primary" type="flat">...</vs-button>
 
-          <vs-sidebar-group title="User" v-if="User !== null">
+          <vs-sidebar-group title="User" v-if="this.user !== null">
             <vs-sidebar-item index="1">
               {{User.phoneNumber}}
             </vs-sidebar-item>
 
             <vs-sidebar-item index="1.2">
-              {{User.email}}
+              {{this.user.email}}
             </vs-sidebar-item>
           </vs-sidebar-group>
         </h4>
@@ -83,7 +83,7 @@
         </p>
         <br>
         <br>
-        <router-link class="nav-link login" to="/login">Log In</router-link>
+        <button class="login" @click="login">Log In</button>
       </div>
     </vs-popup>
 
@@ -95,6 +95,7 @@
 import axios from 'axios'
 
 export default {
+  props: ['user'],
   data:()=>({
     active:false,
     popupActivo:false,
@@ -112,7 +113,7 @@ export default {
         .then(() => {
           console.log("Successful logout")
           this.popupActivo = true;
-          this.User = null;
+          this.user = null;
           this.CreatedCrawls = null;
           this.JoinedCrawls = null;
         })
@@ -121,6 +122,7 @@ export default {
         })
     },
     login() {
+      axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google`)
       console.log('Log In Page')
     }
   }

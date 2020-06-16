@@ -39,15 +39,13 @@ export default {
   methods: {
     saveCrawl: function () {
       const { crawlDate, title } = this;
-      console.log(this, 'this');
-      console.log(this.$parent);
       const date = crawlDate.split("T")[0];
       const time = crawlDate.split("T")[1];
       axios.post(`${process.env.VUE_APP_MY_IP}/api/crawl/add`, {
         // idCreator: this.$parent.user.id,
-        title: title || 'badTitle',
-        crawlDate: date || 'badDate',
-        crawlTime: time || 'badTime',
+        title: title,
+        crawlDate: date,
+        crawlTime: time,
       })
       .catch((err) => {
         console.log(err, 'save crawl in createCrawl');
@@ -55,21 +53,24 @@ export default {
     },
 
     saveLocations: function () {
-      const { places, markers } = this.$parent;
+      const { places, markers } = this;
       let locations = [];
       for (let x = 0; x < markers.length; x++) {
+        const { address_components, formatted_address } = places[x];
+        const { position } = markers[x];
         locations.push({
-          name: markers[x].position.name || null,
-          streetNumber: places[x].address_components[0].long_name || null,
-          street: places[x].address_components[1].short_name || null,
-          city: places[x].address_components[3].short_name || null,
-          state: places[x].address_components[5].short_name || null,
-          zip: places[x].address_components[7].short_name || null,
-          lat: markers[x].position.lat || null,
-          lon: markers[x].position.lng || null,
-          formatted: places[x].formatted_address || null,
+          name: position.name,
+          streetNumber: address_components[0].long_name,
+          street: address_components[1].short_name,
+          city: address_components[3].short_name,
+          state: address_components[5].short_name,
+          zip: address_components[7].short_name,
+          lat: position.lat,
+          lon: position.lng,
+          formatted: formatted_address,
         })
       }
+      console.log(locations);
       locations.forEach((location) => {
         axios.post(`${process.env.VUE_APP_MY_IP}/api/location/add`, location)
           .then((data) => {

@@ -38,11 +38,13 @@ export default {
   },
   methods: {
     saveCrawl: function () {
-      const { crawlDate, title } = this.$parent;
+      const { crawlDate, title } = this;
+      console.log(this, 'this');
+      console.log(this.$parent);
       const date = crawlDate.split("T")[0];
       const time = crawlDate.split("T")[1];
       axios.post(`${process.env.VUE_APP_MY_IP}/api/crawl/add`, {
-        idCreator: this.$parent.user.id,
+        // idCreator: this.$parent.user.id,
         title: title || 'badTitle',
         crawlDate: date || 'badDate',
         crawlTime: time || 'badTime',

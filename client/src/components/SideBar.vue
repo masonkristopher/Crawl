@@ -59,27 +59,46 @@
 
 
       <div class="footer-sidebar" slot="footer">
-        <vs-button color="danger" type="flat">log out</vs-button>
+        <button color="danger" type="flat" @click="logout">log out</button>
         <vs-button color="primary" type="border">settings</vs-button>
       </div>
 
     </vs-sidebar>
+
   </div>
 
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
   data:()=>({
     active:false,
+    popupActivo:false,
     User: {name: "Jerry McDonald",
            phoneNumber: "555-555-5555",
            email: "jerryMcDonald@gmail.com",
            },
     CreatedCrawls: [{name: "Christmas Crawl 2k21"},],
     JoinedCrawls: [{name: "Naseer's 21st Birthday Bash"}, {name: "Mac's SuperBowl Crawl"}],
-  })
+  }),
+  methods: {
+    logout() {
+      axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google/logout`)
+        .then(() => {
+          console.log("Successful logout")
+          this.popupActivo = true;
+          console.log(this.popupActivo);
+        })
+        .catch((err) => {
+        console.log('Error logging client out:', err);
+        })
+    },
+    login() {
+      
+    }
+  }
 }
 </script>
 

@@ -3,7 +3,7 @@
     <div>
       <img id="logo" alt="CRAWL logo" src="./assets/images/logo.png">
     </div>
-    
+
     <div>
       <NavBar/>
     </div>
@@ -15,7 +15,7 @@
 <script>
 import NavBar from './components/NavBar.vue'
 import GoogleMap from './components/GoogleMap'
-import CreateCrawl from './components/CreateCrawl'
+import CreateCrawl from './components/Create/CreateCrawl'
 import axios from 'axios'
 
 export default {

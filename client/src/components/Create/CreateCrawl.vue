@@ -17,7 +17,7 @@
 
 <script>
 import axios from 'axios';
-import GoogleMap from './components/GoogleMap'
+import GoogleMap from '../GoogleMap'
 
 export default {
   name: 'CreateCrawl',
@@ -76,5 +76,5 @@ export default {
 </script>
 
 <style>
-@import '../assets/styles/createcrawl.scss';
+@import '../../assets/styles/createcrawl.scss';
 </style>

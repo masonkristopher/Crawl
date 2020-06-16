@@ -6,7 +6,7 @@
         <gmap-autocomplete
           @place_changed="setPlace">
         </gmap-autocomplete>
-        <button @click="addMarker" >Add</button>
+        <button @click="findBar()" >Add</button>
       </label>
       <br/>
 
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: "GoogleMap",
   data() {
@@ -52,6 +53,22 @@ export default {
     // receives a place object via the autocomplete component
     setPlace(place) {
       this.currentPlace = place;
+    },
+    findBar() {
+      // takes in the name of the city
+      // get request a latlong api
+
+      axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
+        params: {
+          location: '29.9630486,-90.0438412',
+          radius: '1500',
+          type: 'bar',
+          keyword: 'bars',
+          key: 'AIzaSyD028aZa3qI77oP8kUQKV2kHk4uBiW0mOs'
+        }
+      }).then(response => response.data.results)
+        .then(bars =>  bars.forEach(bar => console.log(bar)))
+        .catch(error => console.log(error))
     },
     addMarker() {
       if (this.currentPlace) {

@@ -2,7 +2,7 @@
 
   <div id="parentx">
 
-    <vs-button @click="active=!active" line-position="bottom" line-origin="right" color="dark" type="line"><b>View Profile</b></vs-button>
+    <vs-button id="view-profile" @click="active=!active" line-position="bottom" line-origin="right" color="#FFFAFA" type="line"><b>View Profile</b></vs-button>
     <vs-sidebar parent="body" default-index="1"  color="primary" class="sidebarx" spacer v-model="active">
 
       <div class="header-sidebar" slot="header">
@@ -69,17 +69,22 @@
     </vs-sidebar>
 
     <vs-popup
+      id="popup-title"
       style="color:rgb(255,255,275)"
       background-color="rgba(47,165,198,.6)"
-      title="YOU HAVE BEEN LOGGED OUT" :active.sync="popupActivo" button-close-hidden="true">
-    
-      <span style="color:black; font-size:18px; padding:10px;">
-        Sign In With Your Account
-        To Start Creating Crawls
-      </span>
-
-      <button @click="login">Sign In</button>
-
+      title="YOU ARE LOGGED OUT" :active.sync="popupActivo" button-close-hidden="true">
+      <div id="text"> 
+        <p style="color:black; font-size:24px; padding:6px; text-align:center;">
+          Log In With Your Account<br> 
+          or<br>
+          Sign Up
+          <br><br>
+          To Start Crawling
+        </p>
+        <br>
+        <br>
+        <router-link class="nav-link login" to="/login">Log In</router-link>
+      </div>
     </vs-popup>
 
   </div>
@@ -123,4 +128,33 @@ export default {
 </script>
 
 <style>
+  #view-profile {
+    bottom: 0;
+  }
+  #text {
+    align-content: center;
+  }
+
+  #popup-title {
+    -webkit-text-stroke: .2px black;
+  }
+
+  .login {
+    float:right;
+    bottom: 4px;
+  }
+
+  .login:link, .login:visited {
+    background-color: #f6372a;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .login:hover, .login:active {
+    background-color: rgb(255, 27, 27);
+    font-size: 18px;
+  }
 </style>

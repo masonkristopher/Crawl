@@ -75,13 +75,11 @@ export default {
     },
     addMarker(bar) {
       if (bar) {
-        console.log(bar);
         const marker = {
           lat: bar.geometry.location.lat,
           lng: bar.geometry.location.lng,
           name: bar.name
         };
-        console.log(marker, 'marker')
         this.markers.push({ position: marker });
         this.places.push(bar);
         //this.items[0].message++;

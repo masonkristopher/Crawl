@@ -21,7 +21,7 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        @click="sayHello(m)"
+        @click="addBarToCrawl(m)"
       ></gmap-marker>
 
     </gmap-map>
@@ -99,7 +99,7 @@ export default {
         };
       });
     },
-    sayHello: function(m) {
+    addBarToCrawl: function(m) {
       console.log(m);
       
     },

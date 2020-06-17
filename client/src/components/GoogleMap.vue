@@ -6,7 +6,7 @@
         <gmap-autocomplete
           @place_changed="setPlace">
         </gmap-autocomplete>
-        <button @click="addMarker" >Add</button>
+        <button @click="findBar" >Add</button>
       </label>
       <br/>
 
@@ -21,7 +21,7 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        @click="sayHello()"
+        @click="addBarToCrawl(m)"
       ></gmap-marker>
 
     </gmap-map>
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: "GoogleMap",
   data() {
@@ -53,15 +54,36 @@ export default {
     setPlace(place) {
       this.currentPlace = place;
     },
-    addMarker() {
-      if (this.currentPlace) {
+    findBar() {
+      // takes in the name of the city
+      // get request a latlong api
+
+      axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
+        // comment for pr
+        params: {
+          location: '29.9713935,-90.1001093',
+          radius: '4000',
+          type: 'bar',
+          keyword: 'bars',
+          key: 'AIzaSyD028aZa3qI77oP8kUQKV2kHk4uBiW0mOs'
+        }
+      }).then(response => response.data.results)
+        .then(bars =>  bars.forEach(bar => {
+          this.addMarker(bar)
+        }))
+        .catch(error => console.log(error))
+    },
+    addMarker(bar) {
+      if (bar) {
+        console.log(bar);
         const marker = {
-          lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng(),
-          name: this.currentPlace.name
+          lat: bar.geometry.location.lat,
+          lng: bar.geometry.location.lng,
+          name: bar.name
         };
+        console.log(marker, 'marker')
         this.markers.push({ position: marker });
-        this.places.push(this.currentPlace);
+        this.places.push(bar);
         //this.items[0].message++;
         this.center = marker;
         this.currentPlace = null;
@@ -77,8 +99,9 @@ export default {
         };
       });
     },
-    sayHello: function() {
-      console.log('hello');
+    addBarToCrawl: function(m) {
+      console.log(m);
+      
     },
   }
 };

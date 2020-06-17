@@ -10,21 +10,21 @@ crawlRouter.get('/:idCreator', (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      console.log(err);
+      console.log('Error retrieving crawls from DB:', err);
       res.send(err);
     });
 });
 
 crawlRouter.post('/add', (req, res) => {
   const crawl = req.body;
-  console.log(crawl);
   postCrawl(crawl)
-    .then(() => {
-      res.send('Crawl added to DB');
+    .then((data) => {
+      console.log('Crawl added to DB');
+      res.send(data);
     })
     .catch((err) => {
-      console.log(err, 'Crawl not added to DB');
-      res.end('oh nooooo');
+      console.log('Error adding crawl to DB:', err);
+      res.end();
     });
 });
 

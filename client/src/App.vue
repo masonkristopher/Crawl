@@ -35,8 +35,8 @@ export default {
     axios.get('/api/auth/google/login')
       .then(response => {
         if (response.data.redirect === '/') {
-          const { userId, user, email, image } = response.data
-          this.user = {id: userId,
+          const { user, email, image } = response.data
+          this.user = {
                        name: user,
                        email: email,
                        image

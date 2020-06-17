@@ -58,24 +58,17 @@ export default {
       // takes in the name of the city
       // get request a latlong api
 
-      axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
-        // comment for pr
-        params: {
-          location: '29.9713935,-90.1001093',
-          radius: '4000',
-          type: 'bar',
-          keyword: 'bars',
-          key: 'AIzaSyD028aZa3qI77oP8kUQKV2kHk4uBiW0mOs'
-        }
-      }).then(response => response.data.results)
-        .then(bars =>  bars.forEach(bar => {
+      axios.get(`${process.env.VUE_APP_MY_IP}/api/map`)
+      // .then(response => response.data.results)
+        .then(bars =>  {
+          bars.data.forEach(bar => {
           this.addMarker(bar)
-        }))
+        })
+        })
         .catch(error => console.log(error))
     },
     addMarker(bar) {
       if (bar) {
-        console.log(bar);
         const marker = {
           lat: bar.geometry.location.lat,
           lng: bar.geometry.location.lng,

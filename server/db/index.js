@@ -63,7 +63,10 @@ const getLocation = (
   lat, lon,
 ) => {
   const mysqlQuery = 'SELECT * FROM Location WHERE Lat = ? && Lon = ?;';
-  return query(mysqlQuery, [lat, lon]);
+  return query(mysqlQuery, [
+    lat,
+    lon,
+  ]);
 };
 
 const postLocations = ({
@@ -83,6 +86,16 @@ const postLocations = ({
   ]);
 };
 
+// JOIN QUERIES
+const locationCrawl = (idLocation, idCrawl) => {
+  const mysqlQuery = 'INSERT IGNORE INTO Location_Crawl VALUES(null, ?, ?, ?);';
+  return query(mysqlQuery, [
+    idLocation,
+    idCrawl,
+    null,
+  ]);
+};
+
 module.exports = {
   test,
   // USERS
@@ -94,4 +107,6 @@ module.exports = {
   // LOCATIONS
   getLocation,
   postLocations,
+  // JOIN
+  locationCrawl,
 };

@@ -1,6 +1,7 @@
 <template>
   <div id="create-component">
     <ul id="crawl-forms">
+      <!-- make App listen to changes in title by using emit and v-model -->
       <li>Title: <br><input type="text" name="title" v-model="title" @input="$emit('update:title', title)"></li>
       <br>
       <br>
@@ -37,57 +38,48 @@ export default {
     }
   },
   methods: {
+    //saves crawl to the database
     saveCrawl: function () {
       const { crawlDate, title } = this;
       const date = crawlDate.split("T")[0];
       const time = crawlDate.split("T")[1];
       let crawlId = null;
-      console.log('test');
+      let count = 1;
       axios.post(`${process.env.VUE_APP_MY_IP}/api/crawl/add`, {
-        // idCreator: this.$parent.user.id,
+        // idCreator: this.$parent.user.id, ??
         title: title,
         crawlDate: date,
         crawlTime: time,
       })
         .then((response) => {
+          // save locations to database, and store the crawlId that was just created
           crawlId = response.data.insertId;
-          console.log(response, 'insert id');
           return this.saveLocations();
-          //iterate through places
-          // insert location id with crawl id
-          // data.insertId
         })
         .then(() => {
+          // get locations from the database
           const { markers } = this;
-          const locations = Promise.all(markers.map((marker) => {
-            return axios.get(`/api/location/${marker.position.lat}+${marker.position.lng}`)
-          }))
-          return locations;
-        })
-        .then((response) => {
-          // response.data
-          console.log('array1', response);
-          console.log(crawlId);
+          markers.map((marker) => {
+            axios.get(`${process.env.VUE_APP_MY_IP}/api/location/${marker.position.lat}+${marker.position.lng}`)
+              .then((data) => {
+                // add locationId + crawlId + order to location_crawl table
+                data.data.forEach((response) => { 
+                axios.post(`${process.env.VUE_APP_MY_IP}/api/join/lc/${response.Id}+${crawlId}+${count}`)
+                count++;
+                })
+              })
+          })
         })
         .catch((err) => {
-          console.log(err, 'save crawl in createCrawl');
+          console.log(err, 'unable to save crawl');
         })
-        
-// const asyncMap = (tasks, callback) => {
-//   //convert our tasks to an array of promises
-//   let promisifiedTasks = tasks.map((task) => {
-//     return new Promise(task);
-//   });
-  
-//   //promise.all will return a single promise that fulfills only when each promise passed to it has fulfilled
-//   return Promise.all(promisifiedTasks)
-//     .then((values) => {callback(values);});
-// };
+
     },
 
     saveLocations: function () {
       const { places, markers } = this;
       let locations = [];
+      // b/c lat is in markers and address is in places, join the two together into a locations array
       for (let x = 0; x < markers.length; x++) {
         const { address_components, formatted_address } = places[x];
         const { position } = markers[x];
@@ -103,6 +95,7 @@ export default {
           formatted: formatted_address,
         })
       }
+      // add locations to database
       locations.forEach((location) => {
         axios.post(`${process.env.VUE_APP_MY_IP}/api/location/add`, location)
           .catch((err) => {

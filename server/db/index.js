@@ -87,12 +87,12 @@ const postLocations = ({
 };
 
 // JOIN QUERIES
-const locationCrawl = (idLocation, idCrawl) => {
+const locationCrawl = (idLocation, idCrawl, order) => {
   const mysqlQuery = 'INSERT IGNORE INTO Location_Crawl VALUES(null, ?, ?, ?);';
   return query(mysqlQuery, [
     idLocation,
     idCrawl,
-    null,
+    order,
   ]);
 };
 

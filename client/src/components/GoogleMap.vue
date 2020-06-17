@@ -59,6 +59,7 @@ export default {
       // get request a latlong api
 
       axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
+        // comment for pr
         params: {
           location: '29.9713935,-90.1001093',
           radius: '4000',

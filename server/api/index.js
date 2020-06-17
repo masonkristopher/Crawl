@@ -5,6 +5,7 @@ const { crawlRouter } = require('./crawl');
 const { authRouter } = require('./auth');
 const { locationRouter } = require('./location');
 const { joinRouter } = require('./join');
+const { mapRouter } = require('./map');
 
 
 const apiRouter = Router();
@@ -15,6 +16,7 @@ apiRouter.use('/crawl', crawlRouter);
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/location', locationRouter);
 apiRouter.use('/join', joinRouter);
+apiRouter.use('/map', mapRouter);
 
 
 module.exports.apiRouter = apiRouter;

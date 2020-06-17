@@ -32,7 +32,7 @@ const router = new VueRouter({
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyD028aZa3qI77oP8kUQKV2kHk4uBiW0mOs",
+    key: process.env.VUE_APP_GOOGLE_MAP_KEY,
     libraries: "places", // necessary for places input
   },
 });

@@ -26,7 +26,7 @@ CREATE TABLE `Crawl` (
 );
 
 CREATE TABLE `User_Crawl` (
-  `Id` INT,
+  `Id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `Id_Profile` INT,
   `Id_Crawl` INT
 );
@@ -46,7 +46,7 @@ CREATE TABLE `Location` (
 
 
 CREATE TABLE `Location_Crawl` (
-  `Id` INT,
+  `Id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `Id_Location` INT,
   `Id_Crawl` INT,
   `Order_Postition` INT

@@ -6,7 +6,7 @@
         <gmap-autocomplete
           @place_changed="setPlace">
         </gmap-autocomplete>
-        <button @click="findBar()" >Add</button>
+        <button @click="findBar" >Add</button>
       </label>
       <br/>
 
@@ -21,7 +21,7 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        @click="sayHello()"
+        @click="sayHello(m)"
       ></gmap-marker>
 
     </gmap-map>
@@ -60,25 +60,29 @@ export default {
 
       axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
         params: {
-          location: '29.9630486,-90.0438412',
-          radius: '1500',
+          location: '33.9519347,-83.357567',
+          radius: '4000',
           type: 'bar',
           keyword: 'bars',
           key: 'AIzaSyD028aZa3qI77oP8kUQKV2kHk4uBiW0mOs'
         }
       }).then(response => response.data.results)
-        .then(bars =>  bars.forEach(bar => console.log(bar)))
+        .then(bars =>  bars.forEach(bar => {
+          this.addMarker(bar)
+        }))
         .catch(error => console.log(error))
     },
-    addMarker() {
-      if (this.currentPlace) {
+    addMarker(bar) {
+      if (bar) {
+        console.log(bar);
         const marker = {
-          lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng(),
-          name: this.currentPlace.name
+          lat: bar.geometry.location.lat,
+          lng: bar.geometry.location.lng,
+          name: bar.name
         };
+        console.log(marker, 'marker')
         this.markers.push({ position: marker });
-        this.places.push(this.currentPlace);
+        this.places.push(bar);
         //this.items[0].message++;
         this.center = marker;
         this.currentPlace = null;
@@ -94,8 +98,9 @@ export default {
         };
       });
     },
-    sayHello: function() {
-      console.log('hello');
+    sayHello: function(m) {
+      console.log(m);
+      
     },
   }
 };

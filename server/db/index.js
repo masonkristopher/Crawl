@@ -59,10 +59,10 @@ const postCrawl = ({
 };
 
 // LOCATION QUERIES
-const getLocation = ({
+const getLocation = (
   lat, lon,
-}) => {
-  const mysqlQuery = 'SELECT * FROM Location WHERE Lat = ? & Lon = ?;';
+) => {
+  const mysqlQuery = 'SELECT * FROM Location WHERE Lat = ? && Lon = ?;';
   return query(mysqlQuery, [lat, lon]);
 };
 

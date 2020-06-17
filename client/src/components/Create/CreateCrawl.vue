@@ -6,7 +6,7 @@
       <br>
       <li>Time & Date: <br><input type="datetime-local" name="datetime" v-model="crawlDate" @input="$emit('update:crawlDate', crawlDate)"></li>
       <br>
-      <button v-on:click.stop="saveCrawl(); saveLocations();">
+      <button v-on:click.stop="saveCrawl">
         Save crawl
       </button>
     </ul>
@@ -41,15 +41,48 @@ export default {
       const { crawlDate, title } = this;
       const date = crawlDate.split("T")[0];
       const time = crawlDate.split("T")[1];
+      let crawlId = null;
+      console.log('test');
       axios.post(`${process.env.VUE_APP_MY_IP}/api/crawl/add`, {
         // idCreator: this.$parent.user.id,
         title: title,
         crawlDate: date,
         crawlTime: time,
       })
-      .catch((err) => {
-        console.log(err, 'save crawl in createCrawl');
-      })
+        .then((response) => {
+          crawlId = response.data.insertId;
+          console.log(response, 'insert id');
+          return this.saveLocations();
+          //iterate through places
+          // insert location id with crawl id
+          // data.insertId
+        })
+        .then(() => {
+          const { markers } = this;
+          const locations = Promise.all(markers.map((marker) => {
+            return axios.get(`/api/location/${marker.position.lat}+${marker.position.lng}`)
+          }))
+          return locations;
+        })
+        .then((response) => {
+          // response.data
+          console.log('array1', response);
+          console.log(crawlId);
+        })
+        .catch((err) => {
+          console.log(err, 'save crawl in createCrawl');
+        })
+        
+// const asyncMap = (tasks, callback) => {
+//   //convert our tasks to an array of promises
+//   let promisifiedTasks = tasks.map((task) => {
+//     return new Promise(task);
+//   });
+  
+//   //promise.all will return a single promise that fulfills only when each promise passed to it has fulfilled
+//   return Promise.all(promisifiedTasks)
+//     .then((values) => {callback(values);});
+// };
     },
 
     saveLocations: function () {
@@ -70,12 +103,8 @@ export default {
           formatted: formatted_address,
         })
       }
-      console.log(locations);
       locations.forEach((location) => {
         axios.post(`${process.env.VUE_APP_MY_IP}/api/location/add`, location)
-          .then((data) => {
-            console.log(data, 'from post location');
-          })
           .catch((err) => {
             console.log(err, 'error in savelocation in createcrawl')
           })

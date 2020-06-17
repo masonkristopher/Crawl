@@ -4,7 +4,6 @@ const { getUser, postUser } = require('../db/index');
 const userRouter = Router();
 
 userRouter.get('/:email', (req, res) => {
-  console.log(req.params.email);
   getUser(req.params.email)
     .then((data) => {
       res.send(data);

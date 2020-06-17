@@ -38,10 +38,11 @@ export default {
   },
   methods: {
     saveCrawl: function () {
-      const { crawlDate, title } = this.$parent;
+      const { crawlDate, title } = this;
       const date = crawlDate.split("T")[0];
       const time = crawlDate.split("T")[1];
       axios.post(`${process.env.VUE_APP_MY_IP}/api/crawl/add`, {
+        // idCreator: this.$parent.user.id,
         title: title,
         crawlDate: date,
         crawlTime: time,
@@ -52,23 +53,29 @@ export default {
     },
 
     saveLocations: function () {
-      const { places, markers } = this.$parent;
+      const { places, markers } = this;
       let locations = [];
       for (let x = 0; x < markers.length; x++) {
+        const { address_components, formatted_address } = places[x];
+        const { position } = markers[x];
         locations.push({
-          name: markers[x].position.name,
-          streetNumber: places[x].address_components[0].long_name,
-          street: places[x].address_components[1].short_name,
-          city: places[x].address_components[3].short_name,
-          state: places[x].address_components[5].short_name,
-          zip: places[x].address_components[7].short_name,
-          lat: markers[x].position.lat,
-          lon: markers[x].position.lng,
-          formatted: places[x].formatted_address,
+          name: position.name,
+          streetNumber: address_components[0].long_name,
+          street: address_components[1].short_name,
+          city: address_components[3].short_name,
+          state: address_components[5].short_name,
+          zip: address_components[7].short_name,
+          lat: position.lat,
+          lon: position.lng,
+          formatted: formatted_address,
         })
       }
+      console.log(locations);
       locations.forEach((location) => {
-        axios.post('http://localhost:8081/api/location/add', location)
+        axios.post(`${process.env.VUE_APP_MY_IP}/api/location/add`, location)
+          .then((data) => {
+            console.log(data, 'from post location');
+          })
           .catch((err) => {
             console.log(err, 'error in savelocation in createcrawl')
           })

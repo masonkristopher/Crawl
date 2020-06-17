@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors');
+
 // const parse = require('body-parser');
 require('dotenv').config();
 const path = require('path');
@@ -9,6 +11,10 @@ const app = express();
 const PORT = process.env.PORT || 8081;
 
 const CLIENT_PATH = path.join(__dirname, '../client/dist');
+const corsOptions = {
+  origin: [process.env.VUE_APP_MY_IP, process.env.VUE_APP_MY_DNS],
+};
+app.use(cors(corsOptions));
 app.use(express.static(CLIENT_PATH));
 app.use(express.json());
 app.use('/api', apiRouter);

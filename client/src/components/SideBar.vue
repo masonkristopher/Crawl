@@ -33,8 +33,8 @@
 
       <vs-sidebar-group title="My Crawls" v-if="CreatedCrawls !== null">
 
-          <vs-sidebar-item v-for="(crawl, index) in CreatedCrawls" :key="crawl.name" :index="`${index + 1}.${index}`">
-            {{index + 1}}. {{crawl.name}}
+          <vs-sidebar-item v-for="(crawl, index) in CreatedCrawls" :key="crawl.Title" :index="`${index + 1}.${index}`">
+            {{index + 1}}. {{crawl.Title}}
           </vs-sidebar-item>
 
       </vs-sidebar-group>
@@ -62,7 +62,7 @@
 
 
       <div class="footer-sidebar" slot="footer">
-        <button color="danger" type="flat" @click="logout">log out</button>
+        <button class="log-button logout" color="danger" type="flat" @click="logout">log out</button>
         <vs-button color="primary" type="border">settings</vs-button>
       </div>
 
@@ -83,7 +83,7 @@
         </p>
         <br>
         <br>
-        <button class="login" @click="login">Log In</button>
+        <button class="log-button login" @click="login">Log In</button>
       </div>
     </vs-popup>
 
@@ -99,14 +99,30 @@ export default {
   data:()=>({
     active:false,
     popupActivo:false,
-    User: {image: "https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512",
-           name: "Jerry McDonald",
-           phoneNumber: "555-555-5555",
-           email: "jerryMcDonald@gmail.com",
-           },
+    User:{image: "https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512",
+          name: "Jerry McDonald",
+          phoneNumber: "555-555-5555",
+          email: "jerryMcDonald@gmail.com",
+         }, 
     CreatedCrawls: [{name: "Christmas Crawl 2k21"},],
     JoinedCrawls: [{name: "Naseer's 21st Birthday Bash"}, {name: "Mac's SuperBowl Crawl"}],
   }),
+  updated() {
+      axios.get(`${process.env.VUE_APP_MY_IP}/api/user/${this.user.email}`)
+        .then((dbUser) => {
+          console.log('User from Database:', dbUser)
+          axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/${dbUser.data[0].Id}`)
+            .then((createdCrawlsRes) => {
+              this.CreatedCrawls = createdCrawlsRes.data
+            })
+            .catch((err) => {
+              console.log('Error getting user\'s Created Crawls', err);
+            })
+        })
+        .catch((err) => {
+          console.log('Error getting user\'s db', err)
+        })
+  },
   methods: {
     logout() {
       axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google/logout`)
@@ -133,6 +149,21 @@ export default {
   #view-profile {
     bottom: 0;
   }
+
+  .logout:link, .logout:visited {
+    background-color: #f6372a;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .logout:hover, .logout:active {
+    background-color: rgb(255, 27, 27);
+    font-size: 18px;
+  }
+  
   #text {
     align-content: center;
   }
@@ -147,7 +178,7 @@ export default {
   }
 
   .login:link, .login:visited {
-    background-color: #f6372a;
+    background-color: #23f52d;
     color: white;
     padding: 14px 25px;
     text-align: center;
@@ -156,7 +187,7 @@ export default {
   }
 
   .login:hover, .login:active {
-    background-color: rgb(255, 27, 27);
+    background-color: rgb(9, 255, 0);
     font-size: 18px;
   }
 </style>

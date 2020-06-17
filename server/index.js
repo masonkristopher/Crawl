@@ -14,7 +14,6 @@ const CLIENT_PATH = path.join(__dirname, '../client/dist');
 const corsOptions = {
   origin: [process.env.VUE_APP_MY_IP, process.env.VUE_APP_MY_DNS],
 };
-app.use(cors(corsOptions));
 app.use(express.static(CLIENT_PATH));
 app.use(express.json());
 app.use('/api', apiRouter);

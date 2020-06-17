@@ -60,7 +60,7 @@ export default {
 
       axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
         params: {
-          location: '29.9630486,-90.0438412',
+          location: '29.9713935,-90.1001093',
           radius: '4000',
           type: 'bar',
           keyword: 'bars',

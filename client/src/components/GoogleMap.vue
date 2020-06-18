@@ -4,11 +4,15 @@
     <div>
       <h2>Search for bars</h2>
       <label>
-        <input value="" type="text" v-model="currentPlace" @input="$emit('update:currentPlace', currentPlace)" placeholder="Enter a ZIP code">
+        <input 
+          type="text" 
+          v-on:keyup.enter="findBar" 
+          v-model="currentPlace" 
+          @input="$emit('update:currentPlace', currentPlace)" 
+          placeholder="Enter a ZIP code or city"
+          @focus="() => {this.currentPlace = ''}"
+        >
         <button @click="findBar">Search</button>
-        <!-- <gmap-autocomplete
-          @place_changed="setPlace">
-        </gmap-autocomplete> -->
       </label>
       <br/>
 
@@ -18,7 +22,7 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        @click="addBarToCrawl(m)"
+        @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
 
       <gmap-info-window
@@ -30,9 +34,10 @@
         <div v-html="infoContent"></div>
       </gmap-info-window>
     </gmap-map>
-    <ul>
-      <li v-for="bar in places" :key="bar.name">{{ bar.name }}</li>
-    </ul>
+      <ul v-if="selected.length > 0">
+        <h3>Bars in your crawl so far:</h3>
+        <li v-for="(bar, index) in selected" :key="bar.name">{{ bar.name }} at {{ bar.address }} <button @click="removeBarFromCrawl(index)">Remove</button></li>
+      </ul>
   </div>
 </template>
 
@@ -87,7 +92,6 @@ export default {
     },
     
     getInfoWindowContent: function(marker) {
-
       return `<div class="card">
                 <div class="card-image">
                   <figure class="image is-4by3">
@@ -99,7 +103,7 @@ export default {
                    <div class="media-content">
                     <h3 class="barName">${marker.position.name}</h3>
                     <p class="address">${marker.position.address}</p>
-                    <button>Add</button>
+                    <button onClick="${this.addBarToCrawl(marker)}">Add</button>
                   </div>
                 </div>
                 </div>
@@ -113,14 +117,14 @@ export default {
     findBar() {
       // takes in the name of the city
       // get request a latlong api
- 
       axios.get(`${process.env.VUE_APP_MY_IP}/api/map/${this.currentPlace}`)
         .then(bars =>  {
           // empty the markers and places and update before each search
           this.markers = [];
           this.places = [];
-          this.$emit('update:places', this.places);
-          this.$emit('update:markers', this.markers)
+          // don't need to emit becuase parent doesn't need this data
+          // this.$emit('update:places', this.places);
+          // this.$emit('update:markers', this.markers)
           bars.data.forEach(bar => {
             this.addMarker(bar);
           });
@@ -134,13 +138,13 @@ export default {
           lng: bar.geometry.location.lng,
           name: bar.name,
           address: bar.vicinity,
-          photo: bar.photos[0],
+          //some bars don't have photos
+          // photo: bar.photos[0],
           
         };
         this.markers.push({ position: marker });
         this.places.push(bar);
         this.center = marker;
-        // this.currentPlace = null;
         this.$emit('update:places', this.places);
         this.$emit('update:markers', this.markers)
       }
@@ -154,9 +158,14 @@ export default {
       });
     },
     addBarToCrawl: function(m) {
-      //adding for PR
+      //// to do: update this so it doesn't duplicate pins?
       this.selected.push(m.position);
-    }
+      this.$emit('update:selected', this.selected)
+    },
+    removeBarFromCrawl: function(index) {
+      this.selected.splice(index, 1);
+      this.$emit('update:selected', this.selected)
+    },
   }
 };
 </script>

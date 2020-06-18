@@ -13,7 +13,7 @@
     </ul>
 
     <div>
-      <google-map id="create-map" :places.sync="places" :markers.sync="markers"/>
+      <google-map id="create-map" :selected.sync="selected"/>
     </div>
   </div>
 
@@ -32,9 +32,7 @@ export default {
     return {
       crawlDate: null,
       title: null,
-      user: '',
-      places: [],
-      markers: [],
+      selected: [],
     }
   },
   methods: {
@@ -46,21 +44,24 @@ export default {
       let crawlId = null;
       let order = 1;
       axios.post(`${process.env.VUE_APP_MY_IP}/api/crawl/add`, {
-        // idCreator: this.$parent.user.id, ??
+        // idCreator: this.$parent.user.id,
+        idCreator: 1,
         title: title,
         crawlDate: date,
         crawlTime: time,
       })
         .then((response) => {
-          // save locations to database, and store the crawlId that was just created
           crawlId = response.data.insertId;
+          // ********************* this.$parent.user.id instead of 1 *****************
+          this.saveUserCrawl(1, crawlId);
+          // save locations to database, and store the crawlId that was just created
           return this.saveLocations();
         })
         .then(() => {
           // get locations from the database
-          const { markers } = this;
-          markers.map((marker) => {
-            axios.get(`${process.env.VUE_APP_MY_IP}/api/location/${marker.position.lat}+${marker.position.lng}`)
+          const { selected } = this;
+          selected.map((location) => {
+            axios.get(`${process.env.VUE_APP_MY_IP}/api/location/${location.lat}+${location.lng}`)
               .then((data) => {
                 // add locationId + crawlId + order to location_crawl table
                 data.data.forEach((response) => { 
@@ -77,32 +78,22 @@ export default {
     },
 
     saveLocations: function () {
-      const { places, markers } = this;
-      let locations = [];
-      // b/c lat is in markers and address is in places, join the two together into a locations array
-      for (let x = 0; x < markers.length; x++) {
-        const { address_components, formatted_address } = places[x];
-        const { position } = markers[x];
-        locations.push({
-          name: position.name,
-          streetNumber: address_components[0].long_name,
-          street: address_components[1].short_name,
-          city: address_components[3].short_name,
-          state: address_components[5].short_name,
-          zip: address_components[7].short_name,
-          lat: position.lat,
-          lon: position.lng,
-          formatted: formatted_address,
-        })
-      }
+      const { selected } = this;
       // add locations to database
-      locations.forEach((location) => {
+      selected.forEach((location) => {
         axios.post(`${process.env.VUE_APP_MY_IP}/api/location/add`, location)
           .catch((err) => {
             console.log(err, 'error in savelocation in createcrawl')
           })
       });
-    }
+    },
+
+    saveUserCrawl: function(userId, crawlId) {
+      axios.post(`${process.env.VUE_APP_MY_IP}/api/join/uc/${userId}+${crawlId}`)
+        .catch((err) => {
+          console.log(err);
+        })
+    },
   }
 }
 </script>

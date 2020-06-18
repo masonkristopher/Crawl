@@ -44,7 +44,7 @@ export default {
       const date = crawlDate.split("T")[0];
       const time = crawlDate.split("T")[1];
       let crawlId = null;
-      let count = 1;
+      let order = 1;
       axios.post(`${process.env.VUE_APP_MY_IP}/api/crawl/add`, {
         // idCreator: this.$parent.user.id, ??
         title: title,
@@ -64,8 +64,8 @@ export default {
               .then((data) => {
                 // add locationId + crawlId + order to location_crawl table
                 data.data.forEach((response) => { 
-                axios.post(`${process.env.VUE_APP_MY_IP}/api/join/lc/${response.Id}+${crawlId}+${count}`)
-                count++;
+                axios.post(`${process.env.VUE_APP_MY_IP}/api/join/lc/${response.Id}+${crawlId}+${order}`)
+                order++;
                 })
               })
           })

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <br />
     <div>
       <h2>Search for bars</h2>
       <label>
@@ -12,12 +13,7 @@
       <br/>
 
     </div>
-    <br>
-    <gmap-map
-      :center="center"
-      :zoom="12"
-      style="width:100%;  height: 400px;"
-    >
+    <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
       <gmap-marker
         :key="index"
         v-for="(m, index) in markers"
@@ -25,15 +21,23 @@
         @click="addBarToCrawl(m)"
       ></gmap-marker>
 
+      <gmap-info-window
+        :options="infoOptions"
+        :position="infoWindowPos"
+        :opened="infoWinOpen"
+        @closeclick="infoWinOpen=false"
+      >
+        <div v-html="infoContent"></div>
+      </gmap-info-window>
     </gmap-map>
-  <ul>
-    <li v-for="bar in places" :key="bar.name"> {{ bar.name }}</li>  
-  </ul>
+    <ul>
+      <li v-for="bar in places" :key="bar.name">{{ bar.name }}</li>
+    </ul>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "GoogleMap",
   data() {
@@ -41,8 +45,22 @@ export default {
       // defaulted to New Orleans
       center: { lat: 29.9630486, lng: -90.0438412 },
       markers: [],
+      selected: [],
       places: [],
       currentPlace: null,
+      infoContent: "",
+      infoWindowPos: {
+        lat: 0,
+        lng: 0
+      },
+      infoWinOpen: false,
+      currentMidx: null,
+      infoOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      }
     };
   },
 
@@ -51,6 +69,43 @@ export default {
   },
 
   methods: {
+   // call this on line 21 with the below syntax
+    // toggleInfoWindow(m,index)
+    toggleInfoWindow: function(marker, idx) {
+      this.infoWindowPos = marker.position;
+      this.infoContent = this.getInfoWindowContent(marker);
+
+      //check if its the same marker that was selected if yes toggle
+      if (this.currentMidx == idx) {
+        this.infoWinOpen = !this.infoWinOpen;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = idx;
+      }
+    },
+    
+    getInfoWindowContent: function(marker) {
+
+      return `<div class="card">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src=${marker.position.photo}>
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <div class="media">
+                   <div class="media-content">
+                    <h3 class="barName">${marker.position.name}</h3>
+                    <p class="address">${marker.position.address}</p>
+                    <button>Add</button>
+                  </div>
+                </div>
+                </div>
+              </div>`;
+    },
+
     // receives a place object via the autocomplete component
     setPlace(place) {
       this.currentPlace = place;
@@ -67,17 +122,20 @@ export default {
           this.$emit('update:places', this.places);
           this.$emit('update:markers', this.markers)
           bars.data.forEach(bar => {
-          this.addMarker(bar)
+            this.addMarker(bar);
+          });
         })
-        })
-        .catch(error => console.log(error))
+        .catch(error => console.log(error));
     },
     addMarker(bar) {
       if (bar) {
         const marker = {
           lat: bar.geometry.location.lat,
           lng: bar.geometry.location.lng,
-          name: bar.name
+          name: bar.name,
+          address: bar.vicinity,
+          photo: bar.photos[0],
+          
         };
         this.markers.push({ position: marker });
         this.places.push(bar);
@@ -96,9 +154,9 @@ export default {
       });
     },
     addBarToCrawl: function(m) {
-      console.log(m);
-      
-    },
+      //adding for PR
+      this.selected.push(m.position);
+    }
   }
 };
 </script>

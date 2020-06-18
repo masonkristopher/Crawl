@@ -3,11 +3,15 @@
     <div>
       <h2>Search for bars</h2>
       <label>
-        <input value="" type="text" v-model="currentPlace" @input="$emit('update:currentPlace', currentPlace)" placeholder="Enter a ZIP code">
+        <input 
+          type="text" 
+          v-on:keyup.enter="findBar" 
+          v-model="currentPlace" 
+          @input="$emit('update:currentPlace', currentPlace)" 
+          placeholder="Enter a ZIP code or city"
+          @focus="() => {this.currentPlace = ''}"
+        >
         <button @click="findBar">Search</button>
-        <!-- <gmap-autocomplete
-          @place_changed="setPlace">
-        </gmap-autocomplete> -->
       </label>
       <br/>
 
@@ -58,7 +62,6 @@ export default {
     findBar() {
       // takes in the name of the city
       // get request a latlong api
- 
       axios.get(`${process.env.VUE_APP_MY_IP}/api/map/${this.currentPlace}`)
         .then(bars =>  {
           // empty the markers and places and update before each search
@@ -68,9 +71,10 @@ export default {
           this.$emit('update:markers', this.markers)
           bars.data.forEach(bar => {
           this.addMarker(bar)
-        })
+          })
         })
         .catch(error => console.log(error))
+
     },
     addMarker(bar) {
       if (bar) {
@@ -82,7 +86,6 @@ export default {
         this.markers.push({ position: marker });
         this.places.push(bar);
         this.center = marker;
-        // this.currentPlace = null;
         this.$emit('update:places', this.places);
         this.$emit('update:markers', this.markers)
       }

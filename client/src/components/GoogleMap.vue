@@ -86,29 +86,23 @@ export default {
     },
     
     getInfoWindowContent: function(marker) {
-      const hi = () => {
-        console.log('hi');
-      }
+
       return `<div class="card">
-  <div class="card-image">
-    <figure class="image is-4by3">
-      <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-    </figure>
-  </div>
-  <div class="card-content">
-    <div class="media">
-      <div class="media-content">
-        <p class="title is-4">${marker.position.name}</p>
-        <button onClick="${hi}">Add</button>
-      </div>
-    </div>
-    <div class="content">
-      ${marker.description}
-      <br>
-      <time datetime="2016-1-1">${marker.date_build}</time>
-    </div>
-  </div>
-</div>`;
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src=${marker.position.photo}>
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <div class="media">
+                   <div class="media-content">
+                    <h3 class="barName">${marker.position.name}</h3>
+                    <p class="address">${marker.position.address}</p>
+                    <button>Add</button>
+                  </div>
+                </div>
+                </div>
+              </div>`;
     },
 
     // receives a place object via the autocomplete component
@@ -137,7 +131,10 @@ export default {
         const marker = {
           lat: bar.geometry.location.lat,
           lng: bar.geometry.location.lng,
-          name: bar.name
+          name: bar.name,
+          address: bar.vicinity,
+          photo: bar.photos[0],
+          
         };
         this.markers.push({ position: marker });
         this.places.push(bar);

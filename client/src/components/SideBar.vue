@@ -110,8 +110,10 @@ export default {
   updated() {
       axios.get(`${process.env.VUE_APP_MY_IP}/api/user/${this.user.email}`)
         .then((dbUser) => {
-          console.log('User from Database:', dbUser)
-          axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/${dbUser.data[0].Id}`)
+          const { Id } = dbUser.data[0]
+          this.user.userId = Id
+          this.$emit('update:user', this.user)
+          axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/${Id}`)
             .then((createdCrawlsRes) => {
               this.CreatedCrawls = createdCrawlsRes.data
             })

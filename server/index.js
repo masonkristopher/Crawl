@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 // const parse = require('body-parser');
-require('dotenv').config();
+// require('dotenv').config();
 const path = require('path');
 const { apiRouter } = require('./api/index');
 

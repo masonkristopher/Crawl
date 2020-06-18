@@ -1,10 +1,12 @@
 const mysql = require('mysql');
 const util = require('util');
+// allowing access to our environmental variables, in a .env file in root directory
+require('dotenv').config({ path: '../.env' });
 
-const DB_HOST = 'localhost';
-const DB_USER = 'root';
-const DB_PASS = '';
-const DB_NAME = 'crawl';
+const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_USER = process.env.DB_USER || 'root';
+const DB_PASS = process.env.DB_PASS || '';
+const DB_NAME = process.env.DB_NAME || 'crawl';
 
 const connection = mysql.createConnection({
   host: DB_HOST,

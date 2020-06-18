@@ -18,7 +18,7 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        @click="toggleInfoWindow(m, index)"
+        @click="addBarToCrawl(m)"
       ></gmap-marker>
 
       <gmap-info-window
@@ -69,7 +69,8 @@ export default {
   },
 
   methods: {
-    //infoWindow trials
+   // call this on line 21 with the below syntax
+    // toggleInfoWindow(m,index)
     toggleInfoWindow: function(marker, idx) {
       this.infoWindowPos = marker.position;
       this.infoContent = this.getInfoWindowContent(marker);
@@ -154,7 +155,7 @@ export default {
     },
     addBarToCrawl: function(m) {
       //adding for PR
-      console.log(m);
+      this.selected.push(m.position);
     }
   }
 };

@@ -22,7 +22,7 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        @click="addBarToCrawl(m); toggleInfoWindow(m,index)"
+        @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
 
       <gmap-info-window
@@ -34,12 +34,10 @@
         <div v-html="infoContent"></div>
       </gmap-info-window>
     </gmap-map>
-    <ul>
-        <ul v-if="selected.length > 0">
+      <ul v-if="selected.length > 0">
         <h3>Bars in your crawl so far:</h3>
-        <li v-for="bar in selected" :key="bar.name">{{ bar.name }} at {{ bar.address }}</li>
+        <li v-for="(bar, index) in selected" :key="bar.name">{{ bar.name }} at {{ bar.address }} <button @click="removeBarFromCrawl(index)">Remove</button></li>
       </ul>
-    </ul>
   </div>
 </template>
 
@@ -94,7 +92,6 @@ export default {
     },
     
     getInfoWindowContent: function(marker) {
-
       return `<div class="card">
                 <div class="card-image">
                   <figure class="image is-4by3">
@@ -106,7 +103,7 @@ export default {
                    <div class="media-content">
                     <h3 class="barName">${marker.position.name}</h3>
                     <p class="address">${marker.position.address}</p>
-                    <button>Add</button>
+                    <button onClick="${this.addBarToCrawl(marker)}">Add</button>
                   </div>
                 </div>
                 </div>
@@ -159,8 +156,12 @@ export default {
       });
     },
     addBarToCrawl: function(m) {
+      console.log(m);
       this.selected.push(m.position);
-    }
+    },
+    removeBarFromCrawl: function(index) {
+      this.selected.splice(index, 1)
+    },
   }
 };
 </script>

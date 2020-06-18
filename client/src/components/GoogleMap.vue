@@ -153,6 +153,7 @@ export default {
       });
     },
     addBarToCrawl: function(m) {
+      //adding for PR
       console.log(m);
     }
   }

@@ -1,38 +1,35 @@
 <template>
   <div>
+    <br />
     <div>
-      <h2>Search and add a pin</h2>
-      <label>
-        <gmap-autocomplete
-          @place_changed="setPlace">
-        </gmap-autocomplete>
-        <button @click="findBar" >Add</button>
-      </label>
-      <br/>
-
+      <input />
+      <button @click="findBar">Find Bars</button>
     </div>
-    <br>
-    <gmap-map
-      :center="center"
-      :zoom="12"
-      style="width:100%;  height: 400px;"
-    >
+    <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
       <gmap-marker
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        @click="addBarToCrawl(m)"
+        @click="toggleInfoWindow(m, index)"
       ></gmap-marker>
 
+      <gmap-info-window
+        :options="infoOptions"
+        :position="infoWindowPos"
+        :opened="infoWinOpen"
+        @closeclick="infoWinOpen=false"
+      >
+        <div v-html="infoContent"></div>
+      </gmap-info-window>
     </gmap-map>
-  <ul>
-    <li v-for="bar in places" :key="bar.name"> {{ bar.name }}</li>  
-  </ul>
+    <ul>
+      <li v-for="bar in places" :key="bar.name">{{ bar.name }}</li>
+    </ul>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "GoogleMap",
   data() {
@@ -40,8 +37,22 @@ export default {
       // defaulted to New Orleans
       center: { lat: 29.9630486, lng: -90.0438412 },
       markers: [],
+      selected: [],
       places: [],
       currentPlace: null,
+      infoContent: "",
+      infoWindowPos: {
+        lat: 0,
+        lng: 0
+      },
+      infoWinOpen: false,
+      currentMidx: null,
+      infoOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      }
     };
   },
 
@@ -50,6 +61,48 @@ export default {
   },
 
   methods: {
+    //infoWindow trials
+    toggleInfoWindow: function(marker, idx) {
+      this.infoWindowPos = marker.position;
+      this.infoContent = this.getInfoWindowContent(marker);
+
+      //check if its the same marker that was selected if yes toggle
+      if (this.currentMidx == idx) {
+        this.infoWinOpen = !this.infoWinOpen;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = idx;
+      }
+    },
+    
+    getInfoWindowContent: function(marker) {
+      const hi = () => {
+        console.log('hi');
+      }
+      return `<div class="card">
+  <div class="card-image">
+    <figure class="image is-4by3">
+      <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+    </figure>
+  </div>
+  <div class="card-content">
+    <div class="media">
+      <div class="media-content">
+        <p class="title is-4">${marker.position.name}</p>
+        <button onClick="${hi}">Add</button>
+      </div>
+    </div>
+    <div class="content">
+      ${marker.description}
+      <br>
+      <time datetime="2016-1-1">${marker.date_build}</time>
+    </div>
+  </div>
+</div>`;
+    },
+
     // receives a place object via the autocomplete component
     setPlace(place) {
       this.currentPlace = place;
@@ -58,14 +111,15 @@ export default {
       // takes in the name of the city
       // get request a latlong api
 
-      axios.get(`${process.env.VUE_APP_MY_IP}/api/map`)
-      // .then(response => response.data.results)
-        .then(bars =>  {
+      axios
+        .get(`${process.env.VUE_APP_MY_IP}/api/map`)
+        // .then(response => response.data.results)
+        .then(bars => {
           bars.data.forEach(bar => {
-          this.addMarker(bar)
+            this.addMarker(bar);
+          });
         })
-        })
-        .catch(error => console.log(error))
+        .catch(error => console.log(error));
     },
     addMarker(bar) {
       if (bar) {
@@ -79,8 +133,8 @@ export default {
         //this.items[0].message++;
         this.center = marker;
         this.currentPlace = null;
-        this.$emit('update:places', this.places);
-        this.$emit('update:markers', this.markers)
+        this.$emit("update:places", this.places);
+        this.$emit("update:markers", this.markers);
       }
     },
     geolocate: function() {
@@ -93,8 +147,7 @@ export default {
     },
     addBarToCrawl: function(m) {
       console.log(m);
-      
-    },
+    }
   }
 };
 </script>

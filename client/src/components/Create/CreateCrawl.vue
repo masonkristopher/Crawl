@@ -32,7 +32,6 @@ export default {
     return {
       crawlDate: null,
       title: null,
-      user: '',
       selected: [],
     }
   },
@@ -45,14 +44,17 @@ export default {
       let crawlId = null;
       let order = 1;
       axios.post(`${process.env.VUE_APP_MY_IP}/api/crawl/add`, {
-        // idCreator: this.$parent.user.id, ??
+        // idCreator: this.$parent.user.id,
+        idCreator: 1,
         title: title,
         crawlDate: date,
         crawlTime: time,
       })
         .then((response) => {
-          // save locations to database, and store the crawlId that was just created
           crawlId = response.data.insertId;
+          // ********************* this.$parent.user.id instead of 1 *****************
+          this.saveUserCrawl(1, crawlId);
+          // save locations to database, and store the crawlId that was just created
           return this.saveLocations();
         })
         .then(() => {
@@ -84,7 +86,14 @@ export default {
             console.log(err, 'error in savelocation in createcrawl')
           })
       });
-    }
+    },
+
+    saveUserCrawl: function(userId, crawlId) {
+      axios.post(`${process.env.VUE_APP_MY_IP}/api/join/uc/${userId}+${crawlId}`)
+        .catch((err) => {
+          console.log(err);
+        })
+    },
   }
 }
 </script>

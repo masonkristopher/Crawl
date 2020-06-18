@@ -93,10 +93,10 @@ const locationCrawl = (idLocation, idCrawl, order) => {
   ]);
 };
 
-const userCrawl = (idProfile, idCrawl) => {
-  const mysqlQuery = 'INSERT IGNORE INTO User_Crawl VALUES(null, ?, ?);';
+const userCrawl = (idUser, idCrawl) => {
+  const mysqlQuery = 'INSERT INTO User_Crawl VALUES(null, ?, ?);';
   return query(mysqlQuery, [
-    idProfile,
+    idUser,
     idCrawl,
   ]);
 };
@@ -114,4 +114,5 @@ module.exports = {
   postLocations,
   // JOIN
   locationCrawl,
+  userCrawl,
 };

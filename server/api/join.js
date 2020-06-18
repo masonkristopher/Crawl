@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { locationCrawl } = require('../db/index');
+const { locationCrawl, userCrawl } = require('../db/index');
 
 const joinRouter = Router();
 
@@ -21,6 +21,20 @@ joinRouter.post('/lc/:locCrawl', (req, res) => {
 });
 
 // insert into user_crawl schema
+joinRouter.post('/uc/:userCrawl', (req, res) => {
+  const ids = req.params.userCrawl.split('+');
+  const idUser = ids[0];
+  const idCrawl = ids[1];
+  userCrawl(idUser, idCrawl)
+    .then((data) => {
+      console.log('userCrawl added');
+      res.send(data);
+    })
+    .catch((err) => {
+      console.log('userCrawl not added', err);
+      res.status(500).end();
+    });
+});
 
 module.exports = {
   joinRouter,

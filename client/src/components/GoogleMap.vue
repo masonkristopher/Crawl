@@ -158,7 +158,7 @@ export default {
       });
     },
     addBarToCrawl: function(m) {
-      console.log(m);
+      //// to do: update this so it doesn't duplicate pins?
       this.selected.push(m.position);
       this.$emit('update:selected', this.selected)
     },

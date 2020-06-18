@@ -77,26 +77,9 @@ export default {
     },
 
     saveLocations: function () {
-      const { places, markers } = this;
-      let locations = [];
-      // b/c lat is in markers and address is in places, join the two together into a locations array
-      for (let x = 0; x < markers.length; x++) {
-        const { address_components, formatted_address } = places[x];
-        const { position } = markers[x];
-        locations.push({
-          name: position.name,
-          streetNumber: address_components[0].long_name,
-          street: address_components[1].short_name,
-          city: address_components[3].short_name,
-          state: address_components[5].short_name,
-          zip: address_components[7].short_name,
-          lat: position.lat,
-          lon: position.lng,
-          formatted: formatted_address,
-        })
-      }
+      const { selected } = this;
       // add locations to database
-      locations.forEach((location) => {
+      selected.forEach((location) => {
         axios.post(`${process.env.VUE_APP_MY_IP}/api/location/add`, location)
           .catch((err) => {
             console.log(err, 'error in savelocation in createcrawl')

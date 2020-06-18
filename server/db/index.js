@@ -70,21 +70,19 @@ const getLocation = (
     lon,
   ]);
 };
-
+// address:"3340 Canal St, New Orleans"
+// lat:29.9696163
+// lng:-90.0939346
+// name:"The Holy Ground Irish Pub
 const postLocations = ({
-  name, streetNumber, street, city, state, zip, lat, lon, formatted,
+  address, lat, lng, name,
 }) => {
-  const mysqlQuery = 'INSERT IGNORE INTO Location VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
+  const mysqlQuery = 'INSERT IGNORE INTO Location VALUES(null, ?, ?, ?, ?);';
   return query(mysqlQuery, [
-    name,
-    streetNumber,
-    street,
-    city,
-    state,
-    zip,
+    address,
     lat,
-    lon,
-    formatted,
+    lng,
+    name,
   ]);
 };
 

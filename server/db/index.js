@@ -70,10 +70,7 @@ const getLocation = (
     lng,
   ]);
 };
-// address:"3340 Canal St, New Orleans"
-// lat:29.9696163
-// lng:-90.0939346
-// name:"The Holy Ground Irish Pub
+
 const postLocations = ({
   address, lat, lng, name,
 }) => {
@@ -93,6 +90,14 @@ const locationCrawl = (idLocation, idCrawl, order) => {
     idLocation,
     idCrawl,
     order,
+  ]);
+};
+
+const userCrawl = (idProfile, idCrawl) => {
+  const mysqlQuery = 'INSERT IGNORE INTO User_Crawl VALUES(null, ?, ?);';
+  return query(mysqlQuery, [
+    idProfile,
+    idCrawl,
   ]);
 };
 

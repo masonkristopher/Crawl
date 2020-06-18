@@ -2,8 +2,16 @@
   <div>
     <br />
     <div>
-      <input />
-      <button @click="findBar">Find Bars</button>
+      <h2>Search for bars</h2>
+      <label>
+        <input value="" type="text" v-model="currentPlace" @input="$emit('update:currentPlace', currentPlace)" placeholder="Enter a ZIP code">
+        <button @click="findBar">Search</button>
+        <!-- <gmap-autocomplete
+          @place_changed="setPlace">
+        </gmap-autocomplete> -->
+      </label>
+      <br/>
+
     </div>
     <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
       <gmap-marker
@@ -110,11 +118,14 @@ export default {
     findBar() {
       // takes in the name of the city
       // get request a latlong api
-
-      axios
-        .get(`${process.env.VUE_APP_MY_IP}/api/map`)
-        // .then(response => response.data.results)
-        .then(bars => {
+ 
+      axios.get(`${process.env.VUE_APP_MY_IP}/api/map/${this.currentPlace}`)
+        .then(bars =>  {
+          // empty the markers and places and update before each search
+          this.markers = [];
+          this.places = [];
+          this.$emit('update:places', this.places);
+          this.$emit('update:markers', this.markers)
           bars.data.forEach(bar => {
             this.addMarker(bar);
           });
@@ -130,11 +141,10 @@ export default {
         };
         this.markers.push({ position: marker });
         this.places.push(bar);
-        //this.items[0].message++;
         this.center = marker;
-        this.currentPlace = null;
-        this.$emit("update:places", this.places);
-        this.$emit("update:markers", this.markers);
+        // this.currentPlace = null;
+        this.$emit('update:places', this.places);
+        this.$emit('update:markers', this.markers)
       }
     },
     geolocate: function() {

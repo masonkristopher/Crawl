@@ -27,7 +27,7 @@ CREATE TABLE `Crawl` (
 
 CREATE TABLE `User_Crawl` (
   `Id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `Id_Profile` INT,
+  `Id_User` INT,
   `Id_Crawl` INT
 );
 
@@ -52,8 +52,8 @@ CREATE TABLE `Location_Crawl` (
   `Order_Postition` INT
 );
 
-ALTER TABLE `User_Crawl` ADD FOREIGN KEY (`Id_Profile`) REFERENCES `User` (`Id`);
-ALTER TABLE `Location_Crawl` ADD FOREIGN KEY (`Id_Location`) REFERENCES `Location` (`Id`);
+ALTER TABLE `User_Crawl` ADD FOREIGN KEY (`Id_User`) REFERENCES `User` (`Id`);
 ALTER TABLE `User_Crawl` ADD FOREIGN KEY (`Id_Crawl`) REFERENCES `Crawl` (`Id`);
+ALTER TABLE `Location_Crawl` ADD FOREIGN KEY (`Id_Location`) REFERENCES `Location` (`Id`);
 ALTER TABLE `Location_Crawl` ADD FOREIGN KEY (`Id_Crawl`) REFERENCES `Crawl` (`Id`);
 ALTER TABLE `Crawl` ADD FOREIGN KEY (`Id_Creator`) REFERENCES `User` (`Id`);

@@ -51,41 +51,41 @@ export default {
         crawlTime: time,
       })
         .then((response) => {
+          // save locations to database, and store the crawlId that was just created
           crawlId = response.data.insertId;
           // ********************* this.$parent.user.id instead of 1 *****************
           this.saveUserCrawl(1, crawlId);
-          // save locations to database, and store the crawlId that was just created
           return this.saveLocations();
         })
         .then(() => {
           // get locations from the database
           const { selected } = this;
-          selected.map((location) => {
-            axios.get(`${process.env.VUE_APP_MY_IP}/api/location/${location.lat}+${location.lng}`)
-              .then((data) => {
-                // add locationId + crawlId + order to location_crawl table
-                data.data.forEach((response) => { 
-                axios.post(`${process.env.VUE_APP_MY_IP}/api/join/lc/${response.Id}+${crawlId}+${order}`)
-                order++;
-                })
-              })
+          const promises = selected.map((location) => 
+            axios.get(`${process.env.VUE_APP_MY_IP}/api/location/${location.name}`)
+          )
+          console.log(promises, 'promises');
+          //promise.all ensures each promise resolves before moving on
+          return Promise.all(promises)
+        })
+        .then((data) => {
+          // add locationId + crawlId + order to location_crawl table
+          data.forEach((response) => {
+            axios.post(`${process.env.VUE_APP_MY_IP}/api/join/lc/${response.data[0].Id}+${crawlId}+${order}`)
+            order++;
           })
         })
         .catch((err) => {
           console.log(err, 'unable to save crawl');
         })
-
     },
 
     saveLocations: function () {
       const { selected } = this;
       // add locations to database
-      selected.forEach((location) => {
-        axios.post(`${process.env.VUE_APP_MY_IP}/api/location/add`, location)
-          .catch((err) => {
-            console.log(err, 'error in savelocation in createcrawl')
-          })
+      const promises = selected.map((location) => {
+        return axios.post(`${process.env.VUE_APP_MY_IP}/api/location/add`, location)
       });
+      return Promise.all(promises);
     },
 
     saveUserCrawl: function(userId, crawlId) {

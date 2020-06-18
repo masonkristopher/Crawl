@@ -3,11 +3,12 @@ const { getLocation, postLocations } = require('../db/index');
 
 const locationRouter = Router();
 
-locationRouter.get('/:latLng', (req, res) => {
-  const latLng = req.params.latLng.split('+');
-  const lat = latLng[0];
-  const lng = latLng[1];
-  getLocation(lat, lng)
+locationRouter.get('/:name', (req, res) => {
+  const name = req.params.name;
+  // const latLng = req.params.latLng.split('+');
+  // const lat = latLng[0];
+  // const lng = latLng[1];
+  getLocation(name)
     .then((data) => {
       console.log('location retrieved');
       res.send(data);

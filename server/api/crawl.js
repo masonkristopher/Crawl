@@ -19,11 +19,12 @@ crawlRouter.post('/add', (req, res) => {
   const crawl = req.body;
   postCrawl(crawl)
     .then((data) => {
-      res.send(data, 'Crawl added to DB');
+      console.log('Crawl added to DB');
+      res.send(data);
     })
     .catch((err) => {
       console.log('Error adding crawl to DB:', err);
-      res.send('oh nooooo');
+      res.end();
     });
 });
 

@@ -62,12 +62,12 @@ const postCrawl = ({
 
 // LOCATION QUERIES
 const getLocation = (
-  lat, lon,
+  lat, lng,
 ) => {
-  const mysqlQuery = 'SELECT * FROM Location WHERE Lat = ? && Lon = ?;';
+  const mysqlQuery = 'SELECT * FROM Location WHERE Lat = ? && Lng = ?;';
   return query(mysqlQuery, [
     lat,
-    lon,
+    lng,
   ]);
 };
 // address:"3340 Canal St, New Orleans"

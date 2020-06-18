@@ -13,7 +13,7 @@
     </ul>
 
     <div>
-      <google-map id="create-map" :places.sync="places" :markers.sync="markers"/>
+      <google-map id="create-map" :selected.sync="selected"/>
     </div>
   </div>
 
@@ -33,8 +33,7 @@ export default {
       crawlDate: null,
       title: null,
       user: '',
-      places: [],
-      markers: [],
+      selected: [],
     }
   },
   methods: {
@@ -58,9 +57,9 @@ export default {
         })
         .then(() => {
           // get locations from the database
-          const { markers } = this;
-          markers.map((marker) => {
-            axios.get(`${process.env.VUE_APP_MY_IP}/api/location/${marker.position.lat}+${marker.position.lng}`)
+          const { selected } = this;
+          selected.map((location) => {
+            axios.get(`${process.env.VUE_APP_MY_IP}/api/location/${location.lat}+${location.lng}`)
               .then((data) => {
                 // add locationId + crawlId + order to location_crawl table
                 data.data.forEach((response) => { 

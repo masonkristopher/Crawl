@@ -122,8 +122,9 @@ export default {
           // empty the markers and places and update before each search
           this.markers = [];
           this.places = [];
-          this.$emit('update:places', this.places);
-          this.$emit('update:markers', this.markers)
+          // don't need to emit becuase parent doesn't need this data
+          // this.$emit('update:places', this.places);
+          // this.$emit('update:markers', this.markers)
           bars.data.forEach(bar => {
             this.addMarker(bar);
           });
@@ -137,6 +138,7 @@ export default {
           lng: bar.geometry.location.lng,
           name: bar.name,
           address: bar.vicinity,
+          //some bars don't have photos
           // photo: bar.photos[0],
           
         };
@@ -158,9 +160,11 @@ export default {
     addBarToCrawl: function(m) {
       console.log(m);
       this.selected.push(m.position);
+      this.$emit('update:selected', this.selected)
     },
     removeBarFromCrawl: function(index) {
-      this.selected.splice(index, 1)
+      this.selected.splice(index, 1);
+      this.$emit('update:selected', this.selected)
     },
   }
 };

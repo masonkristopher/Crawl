@@ -22,7 +22,7 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        @click="addBarToCrawl(m)"
+        @click="addBarToCrawl(m); toggleInfoWindow(m,index)"
       ></gmap-marker>
 
       <gmap-info-window
@@ -35,7 +35,10 @@
       </gmap-info-window>
     </gmap-map>
     <ul>
-      <li v-for="bar in places" :key="bar.name">{{ bar.name }}</li>
+        <ul v-if="selected.length > 0">
+        <h3>Bars in your crawl so far:</h3>
+        <li v-for="bar in selected" :key="bar.name">{{ bar.name }} at {{ bar.address }}</li>
+      </ul>
     </ul>
   </div>
 </template>
@@ -137,7 +140,7 @@ export default {
           lng: bar.geometry.location.lng,
           name: bar.name,
           address: bar.vicinity,
-          photo: bar.photos[0],
+          // photo: bar.photos[0],
           
         };
         this.markers.push({ position: marker });
@@ -156,7 +159,6 @@ export default {
       });
     },
     addBarToCrawl: function(m) {
-      //adding for PR
       this.selected.push(m.position);
     }
   }

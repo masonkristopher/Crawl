@@ -26,34 +26,34 @@ CREATE TABLE `Crawl` (
 );
 
 CREATE TABLE `User_Crawl` (
-  `Id` INT,
-  `Id_Profile` INT,
+  `Id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `Id_User` INT,
   `Id_Crawl` INT
 );
 
 CREATE TABLE `Location` (
   `Id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `Name` VARCHAR(80),
-  `Number_Street`  VARCHAR (12),
-  `Street` VARCHAR(80),
-  `City` VARCHAR(80),
-  `State` VARCHAR(80),
-  `Zip` INT,
+  `Address` VARCHAR (120) UNIQUE,
   `Lat`  DECIMAL(10, 8),
-  `Lon` DECIMAL(10,8),
-  `Formatted` VARCHAR (120) UNIQUE
+  `Lng` DECIMAL(10,8),
+  `Name` VARCHAR(80)
+  -- `Number_Street`  VARCHAR (12),
+  -- `Street` VARCHAR(80),
+  -- `City` VARCHAR(80),
+  -- `State` VARCHAR(80),
+  -- `Zip` INT,
 );
 
 
 CREATE TABLE `Location_Crawl` (
-  `Id` INT,
+  `Id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `Id_Location` INT,
   `Id_Crawl` INT,
   `Order_Postition` INT
 );
 
-ALTER TABLE `User_Crawl` ADD FOREIGN KEY (`Id_Profile`) REFERENCES `User` (`Id`);
-ALTER TABLE `Location_Crawl` ADD FOREIGN KEY (`Id_Location`) REFERENCES `Location` (`Id`);
+ALTER TABLE `User_Crawl` ADD FOREIGN KEY (`Id_User`) REFERENCES `User` (`Id`);
 ALTER TABLE `User_Crawl` ADD FOREIGN KEY (`Id_Crawl`) REFERENCES `Crawl` (`Id`);
+ALTER TABLE `Location_Crawl` ADD FOREIGN KEY (`Id_Location`) REFERENCES `Location` (`Id`);
 ALTER TABLE `Location_Crawl` ADD FOREIGN KEY (`Id_Crawl`) REFERENCES `Crawl` (`Id`);
 ALTER TABLE `Crawl` ADD FOREIGN KEY (`Id_Creator`) REFERENCES `User` (`Id`);

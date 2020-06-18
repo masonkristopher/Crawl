@@ -1,37 +1,48 @@
 <template>
   <div>
+    <br />
     <div>
-      <h2>Search and add a pin</h2>
+      <h2>Search for bars</h2>
       <label>
-        <gmap-autocomplete
-          @place_changed="setPlace">
-        </gmap-autocomplete>
-        <button @click="addMarker" >Add</button>
+        <input 
+          type="text" 
+          v-on:keyup.enter="findBar" 
+          v-model="currentPlace" 
+          @input="$emit('update:currentPlace', currentPlace)" 
+          placeholder="Enter a ZIP code or city"
+          @focus="() => {this.currentPlace = ''}"
+        >
+        <button @click="findBar">Search</button>
       </label>
       <br/>
 
     </div>
-    <br>
-    <gmap-map
-      :center="center"
-      :zoom="12"
-      style="width:100%;  height: 400px;"
-    >
+    <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
       <gmap-marker
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        @click="sayHello()"
+        @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
 
+      <gmap-info-window
+        :options="infoOptions"
+        :position="infoWindowPos"
+        :opened="infoWinOpen"
+        @closeclick="infoWinOpen=false"
+      >
+        <div v-html="infoContent"></div>
+      </gmap-info-window>
     </gmap-map>
-  <ul>
-    <li v-for="bar in places" :key="bar.name"> {{ bar.name }}</li>  
-  </ul>
+      <ul v-if="selected.length > 0">
+        <h3>Bars in your crawl so far:</h3>
+        <li v-for="(bar, index) in selected" :key="bar.name">{{ bar.name }} at {{ bar.address }} <button @click="removeBarFromCrawl(index)">Remove</button></li>
+      </ul>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "GoogleMap",
   data() {
@@ -39,8 +50,22 @@ export default {
       // defaulted to New Orleans
       center: { lat: 29.9630486, lng: -90.0438412 },
       markers: [],
+      selected: [],
       places: [],
       currentPlace: null,
+      infoContent: "",
+      infoWindowPos: {
+        lat: 0,
+        lng: 0
+      },
+      infoWinOpen: false,
+      currentMidx: null,
+      infoOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      }
     };
   },
 
@@ -49,22 +74,77 @@ export default {
   },
 
   methods: {
+   // call this on line 21 with the below syntax
+    // toggleInfoWindow(m,index)
+    toggleInfoWindow: function(marker, idx) {
+      this.infoWindowPos = marker.position;
+      this.infoContent = this.getInfoWindowContent(marker);
+
+      //check if its the same marker that was selected if yes toggle
+      if (this.currentMidx == idx) {
+        this.infoWinOpen = !this.infoWinOpen;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = idx;
+      }
+    },
+    
+    getInfoWindowContent: function(marker) {
+      return `<div class="card">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src=${marker.position.photo}>
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <div class="media">
+                   <div class="media-content">
+                    <h3 class="barName">${marker.position.name}</h3>
+                    <p class="address">${marker.position.address}</p>
+                    <button onClick="${this.addBarToCrawl(marker)}">Add</button>
+                  </div>
+                </div>
+                </div>
+              </div>`;
+    },
+
     // receives a place object via the autocomplete component
     setPlace(place) {
       this.currentPlace = place;
     },
-    addMarker() {
-      if (this.currentPlace) {
+    findBar() {
+      // takes in the name of the city
+      // get request a latlong api
+      axios.get(`${process.env.VUE_APP_MY_IP}/api/map/${this.currentPlace}`)
+        .then(bars =>  {
+          // empty the markers and places and update before each search
+          this.markers = [];
+          this.places = [];
+          // don't need to emit becuase parent doesn't need this data
+          // this.$emit('update:places', this.places);
+          // this.$emit('update:markers', this.markers)
+          bars.data.forEach(bar => {
+            this.addMarker(bar);
+          });
+        })
+        .catch(error => console.log(error));
+    },
+    addMarker(bar) {
+      if (bar) {
         const marker = {
-          lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng(),
-          name: this.currentPlace.name
+          lat: bar.geometry.location.lat,
+          lng: bar.geometry.location.lng,
+          name: bar.name,
+          address: bar.vicinity,
+          //some bars don't have photos
+          // photo: bar.photos[0],
+          
         };
         this.markers.push({ position: marker });
-        this.places.push(this.currentPlace);
-        //this.items[0].message++;
+        this.places.push(bar);
         this.center = marker;
-        this.currentPlace = null;
         this.$emit('update:places', this.places);
         this.$emit('update:markers', this.markers)
       }
@@ -77,8 +157,14 @@ export default {
         };
       });
     },
-    sayHello: function() {
-      console.log('hello');
+    addBarToCrawl: function(m) {
+      //// to do: update this so it doesn't duplicate pins?
+      this.selected.push(m.position);
+      this.$emit('update:selected', this.selected)
+    },
+    removeBarFromCrawl: function(index) {
+      this.selected.splice(index, 1);
+      this.$emit('update:selected', this.selected)
     },
   }
 };

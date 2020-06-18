@@ -1,10 +1,12 @@
 const mysql = require('mysql');
 const util = require('util');
+// allowing access to our environmental variables, in a .env file in root directory
+require('dotenv').config({ path: '../.env' });
 
-const DB_HOST = 'localhost';
-const DB_USER = 'root';
-const DB_PASS = '';
-const DB_NAME = 'crawl';
+const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_USER = process.env.DB_USER || 'root';
+const DB_PASS = process.env.DB_PASS || '';
+const DB_NAME = process.env.DB_NAME || 'crawl';
 
 const connection = mysql.createConnection({
   host: DB_HOST,
@@ -59,27 +61,43 @@ const postCrawl = ({
 };
 
 // LOCATION QUERIES
-const getLocation = ({
-  lat, lon,
-}) => {
-  const mysqlQuery = 'SELECT * FROM Location WHERE Lat = ? & Lon = ?;';
-  return query(mysqlQuery, [lat, lon]);
+const getLocation = (
+  lat, lng,
+) => {
+  const mysqlQuery = 'SELECT * FROM Location WHERE Lat = ? && Lng = ?;';
+  return query(mysqlQuery, [
+    lat,
+    lng,
+  ]);
 };
 
 const postLocations = ({
-  name, streetNumber, street, city, state, zip, lat, lon, formatted,
+  address, lat, lng, name,
 }) => {
-  const mysqlQuery = 'INSERT IGNORE INTO Location VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
+  const mysqlQuery = 'INSERT IGNORE INTO Location VALUES(null, ?, ?, ?, ?);';
   return query(mysqlQuery, [
-    name,
-    streetNumber,
-    street,
-    city,
-    state,
-    zip,
+    address,
     lat,
-    lon,
-    formatted,
+    lng,
+    name,
+  ]);
+};
+
+// JOIN QUERIES
+const locationCrawl = (idLocation, idCrawl, order) => {
+  const mysqlQuery = 'INSERT IGNORE INTO Location_Crawl VALUES(null, ?, ?, ?);';
+  return query(mysqlQuery, [
+    idLocation,
+    idCrawl,
+    order,
+  ]);
+};
+
+const userCrawl = (idUser, idCrawl) => {
+  const mysqlQuery = 'INSERT INTO User_Crawl VALUES(null, ?, ?);';
+  return query(mysqlQuery, [
+    idUser,
+    idCrawl,
   ]);
 };
 
@@ -94,4 +112,7 @@ module.exports = {
   // LOCATIONS
   getLocation,
   postLocations,
+  // JOIN
+  locationCrawl,
+  userCrawl,
 };

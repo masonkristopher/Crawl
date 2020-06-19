@@ -1,14 +1,12 @@
 <template>
   <div id="app">
-    <div>
+    <div id="logo-area">
+      <NavBar v-bind:user="user"/>
       <img id="logo" alt="CRAWL logo" src="./assets/images/logo.png">
     </div>
-
     <div>
-      <NavBar v-bind:user="user"/>
+      <router-view></router-view>
     </div>
-
-    <router-view></router-view>
   </div>
 </template>
 
@@ -53,6 +51,6 @@ export default {
 };
 </script>
 
-<style>
-@import "./assets/styles/app.css";
+<style scoped>
+  @import "./assets/styles/app.scss";
 </style>

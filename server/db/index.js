@@ -91,7 +91,7 @@ const locationCrawl = (idLocation, idCrawl, order) => {
 };
 
 const userCrawl = (idUser, idCrawl) => {
-  const mysqlQuery = 'INSERT INTO User_Crawl VALUES(null, ?, ?);';
+  const mysqlQuery = 'INSERT IGNORE INTO User_Crawl VALUES(null, ?, ?);';
   return query(mysqlQuery, [
     idUser,
     idCrawl,

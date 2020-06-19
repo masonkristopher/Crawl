@@ -34,7 +34,7 @@
         <div v-html="infoContent"></div>
       </gmap-info-window>
     </gmap-map>
-      <ul v-if="selected.length > 0">
+      <ul id="bar-list" v-if="selected.length > 0">
         <h3>Bars in your crawl so far:</h3>
         <li v-for="(bar, index) in selected" :key="bar.name">{{ bar.name }} at {{ bar.address }} <button @click="removeBarFromCrawl(index)">Remove</button></li>
       </ul>

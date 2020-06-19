@@ -129,34 +129,6 @@ export default {
 }
 </script>
 
-<style>
-  #view-profile {
-    bottom: 0;
-  }
-  #text {
-    align-content: center;
-  }
-
-  #popup-title {
-    -webkit-text-stroke: .2px black;
-  }
-
-  .login {
-    float:right;
-    bottom: 4px;
-  }
-
-  .login:link, .login:visited {
-    background-color: #f6372a;
-    color: white;
-    padding: 14px 25px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .login:hover, .login:active {
-    background-color: rgb(255, 27, 27);
-    font-size: 18px;
-  }
+<style scoped>
+  @import '../assets/styles/sidebar.scss'
 </style>

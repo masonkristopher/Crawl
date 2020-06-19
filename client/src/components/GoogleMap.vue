@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="google-map">
     <br />
     <div>
       <h2>Search for bars</h2>
@@ -172,3 +172,7 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="scss">
+@import '../assets/styles/googlemap.scss'
+</style>

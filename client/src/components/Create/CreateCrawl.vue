@@ -1,6 +1,7 @@
 <template>
   <div id="create-crawl">
     <br/>
+    <h2>{{userLocation}}</h2>
       <ul id="crawl-forms">
         <!-- make App listen to changes in title by using emit and v-model -->
         <li>Name your crawl: <br><input type="text" name="title" v-model="title" @input="$emit('update:title', title)"></li>
@@ -16,7 +17,7 @@
           <h3 >{{url}}/viewCrawlEndPoint{{crawlId}}</h3>
         </div>
       </ul>
-      <google-map id="create-map" :selected.sync="selected"/>
+      <google-map id="create-map" :selected.sync="selected" :userLocation.sync="userLocation"/>
 
     
     
@@ -40,6 +41,7 @@ export default {
       selected: [],
       crawlId: null,
       url: process.env.VUE_APP_MY_IP,
+      userLocation: {},
     }
   },
   methods: {

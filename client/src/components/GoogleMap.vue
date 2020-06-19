@@ -22,8 +22,14 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
+        icon="http://maps.google.com/mapfiles/kml/shapes/bars.png"
         @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
+    <gmap-marker
+    :position="userLocation"
+       
+    icon="http://maps.google.com/mapfiles/kml/shapes/man.png"
+    ></gmap-marker> 
 
       <gmap-info-window
         :options="infoOptions"
@@ -52,6 +58,7 @@ export default {
       markers: [],
       selected: [],
       places: [],
+      userLocation: {},
       currentPlace: null,
       infoContent: "",
       infoWindowPos: {
@@ -137,9 +144,9 @@ export default {
         this.markers.push({ position: marker });
         this.places.push(bar);
         this.center = marker;
-        // emit to update parent's places and markers
+        // emit to update createCrawl's places and markers
         this.$emit('update:places', this.places);
-        this.$emit('update:markers', this.markers)
+        this.$emit('update:markers', this.markers);
       }
     },
 
@@ -149,6 +156,10 @@ export default {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
+        this.userLocation.lat = position.coords.latitude;
+        this.userLocation.lng = position.coords.longitude;
+        // give the user's location to createCrawl.  it may not need it though, consider removing
+        this.$emit('update:userLocation', this.userLocation);
       });
     },
 

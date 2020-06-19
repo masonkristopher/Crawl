@@ -30,8 +30,10 @@
         :position="infoWindowPos"
         :opened="infoWinOpen"
         @closeclick="infoWinOpen=false"
+       
       >
         <div v-html="infoContent"></div>
+        <button  @click="addBarToCrawl"> Add to Your Crawl </button>
       </gmap-info-window>
     </gmap-map>
       <ul v-if="selected.length > 0">
@@ -52,6 +54,7 @@ export default {
       markers: [],
       selected: [],
       places: [],
+      current: [],
       currentPlace: null,
       infoContent: "",
       infoWindowPos: {
@@ -77,6 +80,7 @@ export default {
    // call this on line 21 with the below syntax
     // toggleInfoWindow(m,index)
     toggleInfoWindow: function(marker, idx) {
+      this.current.push(marker);
       this.infoWindowPos = marker.position;
       this.infoContent = this.getInfoWindowContent(marker);
 
@@ -93,17 +97,11 @@ export default {
     
     getInfoWindowContent: function(marker) {
       return `<div class="card">
-                <div class="card-image">
-                  <figure class="image is-4by3">
-                    <img src=${marker.position.photo}>
-                  </figure>
-                </div>
                 <div class="card-content">
                   <div class="media">
                    <div class="media-content">
                     <h3 class="barName">${marker.position.name}</h3>
                     <p class="address">${marker.position.address}</p>
-                    <button onClick="${this.addBarToCrawl(marker)}">Add</button>
                   </div>
                 </div>
                 </div>
@@ -157,15 +155,16 @@ export default {
         };
       });
     },
-    addBarToCrawl: function(m) {
+    addBarToCrawl: function() {
       //// to do: update this so it doesn't duplicate pins?
-      this.selected.push(m.position);
+      this.selected.push(this.infoWindowPos);
       this.$emit('update:selected', this.selected)
     },
     removeBarFromCrawl: function(index) {
       this.selected.splice(index, 1);
       this.$emit('update:selected', this.selected)
     },
+    
   }
 };
 </script>

@@ -98,6 +98,11 @@ const userCrawl = (idUser, idCrawl) => {
   ]);
 };
 
+const getLocsInCrawl = (crawlId) => {
+  const mysqlQuery = 'SELECT * FROM Location_Crawl INNER JOIN Location ON Location.Id = Location_Crawl.Id_Location && Location_Crawl.Id_Crawl = ?;';
+  return query(mysqlQuery, [crawlId]);
+};
+
 module.exports = {
   test,
   // USERS
@@ -112,4 +117,5 @@ module.exports = {
   // JOIN
   locationCrawl,
   userCrawl,
+  getLocsInCrawl,
 };

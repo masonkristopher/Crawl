@@ -12,7 +12,7 @@
           placeholder="Enter a ZIP code or city"
           @focus="() => {this.currentPlace = ''}"
         >
-        <button @click="findBar">Search</button>
+        <button @click="findBar"> Search </button>
       </label>
       <br/>
 
@@ -33,7 +33,7 @@
        
       >
         <div v-html="infoContent"></div>
-        <button  @click="addBarToCrawl"> Add to Your Crawl </button>
+        <button  @click="addBarToCrawl">  Add to Your Crawl  </button>
       </gmap-info-window>
     </gmap-map>
       <ul v-if="selected.length > 0">

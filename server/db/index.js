@@ -36,6 +36,7 @@ const getUser = (email) => {
   const mysqlQuery = 'SELECT * FROM User WHERE Email = ?;';
   return query(mysqlQuery, [email]);
 };
+
 const postUser = ({
   username, nameFirst, nameLast, phoneNumber, email, imageUrl,
 }) => {
@@ -48,6 +49,15 @@ const getCrawl = (idCreator) => {
   const mysqlQuery = 'SELECT * FROM Crawl WHERE Id_Creator = ?;';
   return query(mysqlQuery, [idCreator]);
 };
+
+// not sure if we need this, but here. can take out later
+const getUsersCrawls = (userId) => {
+  const mysqlQuery = 'SELECT * FROM User_Crawl INNER JOIN Crawl ON Crawl.Id = User_Crawl.Id_Crawl && User_Crawl.Id_User = ?;';
+  return query(mysqlQuery, [
+    userId,
+  ]);
+};
+
 const postCrawl = ({
   idCreator, title, crawlDate, crawlTime,
 }) => {
@@ -65,6 +75,14 @@ const getLocation = (name) => {
   const mysqlQuery = 'SELECT * FROM Location WHERE Name = ?;';
   return query(mysqlQuery, [
     name,
+  ]);
+};
+
+
+const getLocsInCrawl = (crawlId) => {
+  const mysqlQuery = 'SELECT * FROM Location_Crawl INNER JOIN Location ON Location.Id = Location_Crawl.Id_Location && Location_Crawl.Id_Crawl = ?;';
+  return query(mysqlQuery, [
+    crawlId,
   ]);
 };
 
@@ -105,10 +123,12 @@ module.exports = {
   postUser,
   // CRAWLS
   getCrawl,
+  getUsersCrawls,
   postCrawl,
   // LOCATIONS
   getLocation,
   postLocations,
+  getLocsInCrawl,
   // JOIN
   locationCrawl,
   userCrawl,

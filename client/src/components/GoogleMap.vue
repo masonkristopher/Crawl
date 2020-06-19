@@ -54,7 +54,6 @@ export default {
       markers: [],
       selected: [],
       places: [],
-      current: [],
       currentPlace: null,
       infoContent: "",
       infoWindowPos: {
@@ -78,7 +77,6 @@ export default {
 
   methods: {
     toggleInfoWindow: function(marker, idx) {
-      this.current.push(marker);
       this.infoWindowPos = marker.position;
       this.infoContent = this.getInfoWindowContent(marker);
 
@@ -150,14 +148,14 @@ export default {
       });
     },
 
-    addBarToCrawl: function(m) {
+    addBarToCrawl: function() {
       // pushes the location into state, unless it's already in there
       let names = [];
       this.selected.forEach((location) => {
         names.push(location.name)
       })
-      if (!names.includes(m.position.name)) {
-        this.selected.push(m.position);
+      if (!names.includes(this.infoWindowPos.name)) {
+        this.selected.push(this.infoWindowPos);
         this.$emit('update:selected', this.selected);
       }
     },

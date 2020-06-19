@@ -33,19 +33,24 @@ export default {
     axios.get('/api/auth/google/login')
       .then(response => {
         if (response.data.redirect === '/') {
-          const { userId, user, email, image } = response.data
-          this.user = {id: userId,
-                       name: user,
-                       email: email,
-                       image
-                      }
+          const { user, email, image } = response.data
+          axios.get(`${process.env.VUE_APP_MY_IP}/api/user/${email}`)
+            .then((response) => {
+
+              this.user = {id: response.data[0].Id,
+                           name: user,
+                           email,
+                           image
+                          }
+            })
         } else if (response.data.redirect === '/login') {
           window.location.href = 'api/auth/google';
         }
+        /// save user location to database
       })
       .catch(function (error) {
         alert(error);
-        // window.location = "/login"
+        window.location = "/login"
       })
   },
 };

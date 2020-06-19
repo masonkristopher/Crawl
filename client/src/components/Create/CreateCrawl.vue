@@ -53,7 +53,7 @@ export default {
       let order = 1;
       axios.post(`${process.env.VUE_APP_MY_IP}/api/crawl/add`, {
         // idCreator: this.$parent.user.id,
-        idCreator: 1,
+        idCreator: this.$parent.user.id,
         title: title,
         crawlDate: date,
         crawlTime: time,
@@ -62,7 +62,7 @@ export default {
           // save locations to database, and store the crawlId that was just created
           this.crawlId = response.data.insertId;
           // ********************* this.$parent.user.id instead of 1 *****************
-          this.saveUserCrawl(1, this.crawlId);
+          this.saveUserCrawl(this.$parent.user.id, this.crawlId);
           return this.saveLocations();
         })
         .then(() => {
@@ -71,7 +71,6 @@ export default {
           const promises = selected.map((location) => 
             axios.get(`${process.env.VUE_APP_MY_IP}/api/location/${location.name}`)
           )
-          console.log(promises, 'promises');
           //promise.all ensures each promise resolves before moving on
           return Promise.all(promises)
         })

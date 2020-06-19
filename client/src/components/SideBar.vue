@@ -34,7 +34,7 @@
       <vs-sidebar-group title="My Crawls" v-if="CreatedCrawls !== null">
 
           <vs-sidebar-item v-for="(crawl, index) in CreatedCrawls" :key="crawl.Title" :index="`${index + 1}.${index}`">
-            {{index + 1}}. {{crawl.Title}}
+            {{index + 1}}. {{crawl.Title}} <button id="delete-crawl" style="float:right; color:red;" @click="remove">--</button>
           </vs-sidebar-item>
 
       </vs-sidebar-group>
@@ -115,6 +115,7 @@ export default {
           this.$emit('update:user', this.user)
           axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/${Id}`)
             .then((createdCrawlsRes) => {
+              console.log(createdCrawlsRes.data)
               this.CreatedCrawls = createdCrawlsRes.data
             })
             .catch((err) => {
@@ -142,6 +143,10 @@ export default {
     login() {
       axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google`)
       console.log('Log In Page')
+    },
+    remove() {
+      console.log('removed crawl');
+      // axios.get()
     }
   }
 }

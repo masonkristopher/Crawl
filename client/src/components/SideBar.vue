@@ -42,7 +42,7 @@
 
       <vs-sidebar-group title="Crawls I've Joined" icon="down" v-if="JoinedCrawls !== null">
 
-        <vs-sidebar-item v-for="(crawl, index) in JoinedCrawls" :key="crawl.name" :index="`${index + 2}.${index}`">
+        <vs-sidebar-item v-on:click="viewCrawl" v-for="(crawl, index) in JoinedCrawls" :key="crawl.name" :index="`${index + 2}.${index}`">
             {{index + 1}}. {{crawl.name}}
         </vs-sidebar-item>
 
@@ -97,6 +97,8 @@ import axios from 'axios'
 export default {
   props: ['user'],
   data:()=>({
+    crawlName: 'Nass21',
+    crawlId: 2,
     active:false,
     popupActivo:false,
     User: {image: "https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512",
@@ -124,6 +126,10 @@ export default {
     login() {
       axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google`)
       console.log('Log In Page')
+    },
+    viewCrawl() {
+      console.log('hello');
+      this.$router.push(`/crawl/joined/${this.crawlName}/${this.crawlId}`);
     }
   }
 }

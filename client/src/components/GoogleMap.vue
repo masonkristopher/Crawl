@@ -77,8 +77,6 @@ export default {
   },
 
   methods: {
-   // call this on line 21 with the below syntax
-    // toggleInfoWindow(m,index)
     toggleInfoWindow: function(marker, idx) {
       this.current.push(marker);
       this.infoWindowPos = marker.position;
@@ -108,27 +106,21 @@ export default {
               </div>`;
     },
 
-    // receives a place object via the autocomplete component
-    setPlace(place) {
-      this.currentPlace = place;
-    },
     findBar() {
-      // takes in the name of the city
-      // get request a latlong api
+      // takes in the name of the city or zip code
+
       axios.get(`${process.env.VUE_APP_MY_IP}/api/map/${this.currentPlace}`)
         .then(bars =>  {
           // empty the markers and places and update before each search
           this.markers = [];
           this.places = [];
-          // don't need to emit becuase parent doesn't need this data
-          // this.$emit('update:places', this.places);
-          // this.$emit('update:markers', this.markers)
           bars.data.forEach(bar => {
             this.addMarker(bar);
           });
         })
         .catch(error => console.log(error));
     },
+
     addMarker(bar) {
       if (bar) {
         const marker = {
@@ -143,10 +135,12 @@ export default {
         this.markers.push({ position: marker });
         this.places.push(bar);
         this.center = marker;
+        // emit to update parent's places and markers
         this.$emit('update:places', this.places);
         this.$emit('update:markers', this.markers)
       }
     },
+
     geolocate: function() {
       navigator.geolocation.getCurrentPosition(position => {
         this.center = {
@@ -155,16 +149,23 @@ export default {
         };
       });
     },
-    addBarToCrawl: function() {
-      //// to do: update this so it doesn't duplicate pins?
-      this.selected.push(this.infoWindowPos);
-      this.$emit('update:selected', this.selected)
+
+    addBarToCrawl: function(m) {
+      // pushes the location into state, unless it's already in there
+      let names = [];
+      this.selected.forEach((location) => {
+        names.push(location.name)
+      })
+      if (!names.includes(m.position.name)) {
+        this.selected.push(m.position);
+        this.$emit('update:selected', this.selected);
+      }
     },
+
     removeBarFromCrawl: function(index) {
       this.selected.splice(index, 1);
       this.$emit('update:selected', this.selected)
     },
-    
   }
 };
 </script>

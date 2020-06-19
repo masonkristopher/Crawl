@@ -9,13 +9,13 @@ cd client
 npm install
 
 # Serve client
-npm run client(in root)
+npm run client(in client)
 
-# Add the database
-npm run db
+# Drop then add the database
+npm run db (in root)
 
 # Run server
-VScode debugger or npm run server  
+VScode debugger or npm run server (in client)
 
 # Production Build
 cd client

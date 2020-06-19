@@ -12,7 +12,7 @@
           placeholder="Enter a ZIP code or city"
           @focus="() => {this.currentPlace = ''}"
         >
-        <button @click="findBar">Search</button>
+        <button @click="findBar"> Search </button>
       </label>
       <br/>
 
@@ -30,8 +30,10 @@
         :position="infoWindowPos"
         :opened="infoWinOpen"
         @closeclick="infoWinOpen=false"
+       
       >
         <div v-html="infoContent"></div>
+        <button  @click="addBarToCrawl">  Add to Your Crawl  </button>
       </gmap-info-window>
     </gmap-map>
       <ul v-if="selected.length > 0">
@@ -91,17 +93,11 @@ export default {
     
     getInfoWindowContent: function(marker) {
       return `<div class="card">
-                <div class="card-image">
-                  <figure class="image is-4by3">
-                    <img src=${marker.position.photo}>
-                  </figure>
-                </div>
                 <div class="card-content">
                   <div class="media">
                    <div class="media-content">
                     <h3 class="barName">${marker.position.name}</h3>
                     <p class="address">${marker.position.address}</p>
-                    <button onClick="${this.addBarToCrawl(marker)}">Add</button>
                   </div>
                 </div>
                 </div>
@@ -152,14 +148,14 @@ export default {
       });
     },
 
-    addBarToCrawl: function(m) {
+    addBarToCrawl: function() {
       // pushes the location into state, unless it's already in there
       let names = [];
       this.selected.forEach((location) => {
         names.push(location.name)
       })
-      if (!names.includes(m.position.name)) {
-        this.selected.push(m.position);
+      if (!names.includes(this.infoWindowPos.name)) {
+        this.selected.push(this.infoWindowPos);
         this.$emit('update:selected', this.selected);
       }
     },
@@ -168,7 +164,6 @@ export default {
       this.selected.splice(index, 1);
       this.$emit('update:selected', this.selected)
     },
-
   }
 };
 </script>

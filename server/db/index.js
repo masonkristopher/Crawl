@@ -38,10 +38,16 @@ const getUser = (email) => {
 };
 
 const postUser = ({
-  username, nameFirst, nameLast, phoneNumber, email, imageUrl,
+  username, nameFirst, nameLast, phoneNumber, email, imageUrl, lat, lng,
 }) => {
-  const mysqlQuery = 'INSERT IGNORE INTO User VALUES(null, ?, ?, ?, ?, ?, ?);';
-  return query(mysqlQuery, [username, nameFirst, nameLast, phoneNumber, email, imageUrl]);
+  if (!lat) {
+    lat = 0.0;
+  }
+  if (!lng) {
+    lng = 0.0;
+  }
+  const mysqlQuery = 'INSERT IGNORE INTO User VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?);';
+  return query(mysqlQuery, [username, nameFirst, nameLast, phoneNumber, email, imageUrl, lat, lng]);
 };
 
 // CRAWL QUERIES

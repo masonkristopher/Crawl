@@ -22,7 +22,7 @@ Vue.use(VueRouter);
 const routes = [
   { path: '/home', component: Dash },
   { path: '/create', component: Create },
-  { path: '/crawl/joined/:crawlName/:crawlId', component: JoinedCrawl }
+  { path: '/crawl/joined/:userId/:crawlName/:crawlId', component: JoinedCrawl }
 ]
 
 // 3. Create the router instance and pass the `routes` option

@@ -93,6 +93,7 @@
 
 <script>
 import axios from 'axios'
+import debounce from 'lodash/debounce'
 
 export default {
   props: ['user'],
@@ -107,8 +108,10 @@ export default {
     CreatedCrawls: [{name: "Christmas Crawl 2k21"},],
     JoinedCrawls: [{name: "Naseer's 21st Birthday Bash"}, {name: "Mac's SuperBowl Crawl"}],
   }),
-  updated() {
-      axios.get(`${process.env.VUE_APP_MY_IP}/api/user/${this.user.email}`)
+
+  updated: debounce(function () {
+      this.$nextTick(() => {
+        axios.get(`${process.env.VUE_APP_MY_IP}/api/user/${this.user.email}`)
         .then((dbUser) => {
           const { Id } = dbUser.data[0]
           this.user.userId = Id
@@ -125,7 +128,28 @@ export default {
         .catch((err) => {
           console.log('Error getting user\'s db', err)
         })
-  },
+      })
+  }, 10000), // increase to ur needs
+
+  // updated() {
+  //     axios.get(`${process.env.VUE_APP_MY_IP}/api/user/${this.user.email}`)
+  //       .then((dbUser) => {
+  //         const { Id } = dbUser.data[0]
+  //         this.user.userId = Id
+  //         this.$emit('update:user', this.user)
+  //         axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/${Id}`)
+  //           .then((createdCrawlsRes) => {
+  //             console.log(createdCrawlsRes.data)
+  //             this.CreatedCrawls = createdCrawlsRes.data
+  //           })
+  //           .catch((err) => {
+  //             console.log('Error getting user\'s Created Crawls', err);
+  //           })
+  //       })
+  //       .catch((err) => {
+  //         console.log('Error getting user\'s db', err)
+  //       })
+  // },
   methods: {
     logout() {
       axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google/logout`)

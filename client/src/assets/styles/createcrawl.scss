@@ -1,9 +1,57 @@
+.vuesax-app-is-ltr {
+  background-color: #f5f3ec;
+}
+
+
 #crawl-forms {
   float: left;
 }
 
 #crawl-forms li{
   list-style: none;
+}
+
+.form_label {
+  color: #768d87;
+}
+
+.form_field {
+  outline: 0;
+  background-color: #f5f3ec;
+  border-width: 0 0 2px;
+  border-color: #768d87;
+}
+
+.form_field:focus {
+  border-color: rgb(255, 255, 255);
+}
+
+#save-crawl-button {
+	box-shadow: 0px 1px 0px 0px #91b8b3;
+	background:linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
+	background-color:#768d87;
+	border-radius:15px;
+	border:2px solid #566963;
+
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:14px;
+	font-weight:bold;
+	padding:2px 12px;
+	text-decoration:none;
+  text-shadow:0px 1px 0px #2b665e;
+  text-align: center;
+  width: 75px;
+  height: 40px;
+}
+#save-crawl-button:hover {
+	background:linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
+	background-color:#6c7c7c;
+}
+#save-crawl-button:active {
+	position:relative;
+	top:1px;
 }
 
 #create-map {

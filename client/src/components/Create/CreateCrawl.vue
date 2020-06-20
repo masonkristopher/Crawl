@@ -1,13 +1,13 @@
 <template>
-  <div id="create-component">
+  <div id="create">
     <ul id="crawl-forms">
       <!-- make App listen to changes in title by using emit and v-model -->
-      <li>Title: <br><input type="text" name="title" v-model="title" @input="$emit('update:title', title)"></li>
+      <li><label class="form_label">Title: </label><br><input class="form_field crawl-title" type="text" autocomplete="off" name="title" v-model="title" @input="$emit('update:title', title)"></li>
       <br>
       <br>
-      <li>Time & Date: <br><input type="datetime-local" name="datetime" v-model="crawlDate" @input="$emit('update:crawlDate', crawlDate)"></li>
+      <li><label class="form_label">Time & Date:</label><br><input class="form_field crawl-time-date" type="datetime-local" name="datetime" v-model="crawlDate" @input="$emit('update:crawlDate', crawlDate)"></li>
       <br>
-      <button v-on:click.stop="saveCrawl">
+      <button id="save-crawl-button" v-on:click.stop="saveCrawl">
         Save crawl
       </button>
     </ul>
@@ -99,5 +99,5 @@ export default {
 </script>
 
 <style>
-@import '../../assets/styles/createcrawl.scss';
+@import '../../assets/styles/createcrawl.scss'
 </style>

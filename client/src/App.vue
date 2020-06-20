@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div>
+    <div id="top">
       <img id="logo" alt="CRAWL logo" src="./assets/images/logo.png">
     </div>
 
@@ -8,7 +8,10 @@
       <NavBar v-bind:user="user"/>
     </div>
 
-    <router-view></router-view>
+    <notifications group="success" classes="notif" position="top center" />
+    <!-- <notifications group="failure" type="failure" classes="notif" position="bottom left" /> -->
+
+    <router-view> </router-view>
   </div>
 </template>
 

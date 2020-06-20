@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Notifications from 'vue-notification';
 import Vuesax from "vuesax";
+import "./assets/styles/notification.scss"
 import "vuesax/dist/vuesax.css";
 
 import App from "./App.vue";
@@ -43,6 +45,8 @@ Vue.use(Vuesax, {
     },
   },
 });
+
+Vue.use(Notifications);
 
 Vue.config.productionTip = false;
 

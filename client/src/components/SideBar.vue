@@ -60,7 +60,6 @@
         Help
       </vs-sidebar-item>
 
-      <!-- <vs-button @click="$vs.notify({title:'Icon mail',text:'Your Crawl Was Successfully Saved!',color:'success',icon:'check_box',position:'bottom-left'})" color="success" type="flat">Icon check_box</vs-button> -->
 
       <div class="footer-sidebar" slot="footer">
         <button class="log-button logout" color="danger" type="flat" @click="logout">log out</button>
@@ -166,8 +165,7 @@ export default {
         })
     },
     login() {
-      // axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google`)
-      this.$utilsMixin_export('Your Crawl Was Successfully Saved!')
+      axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google`)
       console.log('Log In Page')
     },
     remove() {

@@ -8,8 +8,9 @@ import Dash from "./components/DashBoard/UserDash.vue";
 import Create from "./components/Create/CreateCrawl.vue";
 import * as VueGoogleMaps from "vue2-google-maps";
 
-Vue.use(VueRouter);
+import utilsMixin from './mixin'
 
+Vue.use(VueRouter);
 
 // 1. Define route components.
 // These can be imported from other files, above, or created in ``const Foo = { template: '<div>foo</div>' }`` syntax
@@ -44,6 +45,9 @@ Vue.use(Vuesax, {
     },
   },
 });
+
+// Allow the moxin helpers (such as the vuesax notify) to be called from anywhere in the client code and not just in the template
+Vue.mixin(utilsMixin);
 
 Vue.config.productionTip = false;
 

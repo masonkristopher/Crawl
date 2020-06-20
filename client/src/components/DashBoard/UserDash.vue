@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="Dashboard">
       <google-map :places.sync="places" :markers.sync="markers"/>
     </div>
 </template>
@@ -21,3 +21,7 @@
     },
   }
 </script>
+
+<style>
+@import '../../assets/styles/dash.scss';
+</style>

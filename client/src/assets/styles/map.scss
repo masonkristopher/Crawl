@@ -1,0 +1,45 @@
+h2 {
+  color: #768d87;
+}
+
+#location-search {
+  outline: 0;
+  background-color: #f5f3ec;
+  border-width: 0 0 2px;
+  border-color: #768d87;
+}
+
+.location-search:focus {
+  border-color: rgb(255, 255, 255);
+}
+
+#location-search-button {
+	box-shadow: 0px 1px 0px 0px #91b8b3;
+	background:linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
+	background-color:#768d87;
+	border-radius:15px;
+	border:2px solid #566963;
+
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:10px;
+	font-weight:bold;
+	text-decoration:none;
+  text-shadow:0px 1px 0px #2b665e;
+  text-align: center;
+  width: 60px;
+  height: 20px;
+}
+#location-search-button:hover {
+	background:linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
+	background-color:#6c7c7c;
+}
+#location-search-button:active {
+	position:relative;
+	top:1px;
+}
+
+#info-window {
+	background-color: #d0cfcb;
+}

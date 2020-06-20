@@ -4,7 +4,8 @@
     <div>
       <h2>Search for bars</h2>
       <label>
-        <input 
+        <input
+          id="location-search" 
           type="text" 
           v-on:keyup.enter="findBar" 
           v-model="currentPlace" 
@@ -12,13 +13,15 @@
           placeholder="Enter a ZIP code or city"
           @focus="() => {this.currentPlace = ''}"
         >
-        <button @click="findBar"> Search </button>
+        <button id="location-search-button" @click="findBar"> Search </button>
       </label>
-      <br/>
+      <br>
+      <br>
 
     </div>
-    <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
+    <gmap-map :center="center" :zoom="12" :options="{styles: styles}" style="width:100%;  height: 400px;">
       <gmap-marker
+        id="marker"
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
@@ -26,6 +29,7 @@
       ></gmap-marker>
 
       <gmap-info-window
+        id="info-window"
         :options="infoOptions"
         :position="infoWindowPos"
         :opened="infoWinOpen"
@@ -67,7 +71,87 @@ export default {
           width: 0,
           height: -35
         }
-      }
+      },
+      styles: [
+            {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+            {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+            {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+            {
+              featureType: 'administrative.locality',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#d59563'}]
+            },
+            {
+              featureType: 'poi',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#d59563'}]
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'geometry',
+              stylers: [{color: '#263c3f'}]
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#6b9a76'}]
+            },
+            {
+              featureType: 'road',
+              elementType: 'geometry',
+              stylers: [{color: '#38414e'}]
+            },
+            {
+              featureType: 'road',
+              elementType: 'geometry.stroke',
+              stylers: [{color: '#212a37'}]
+            },
+            {
+              featureType: 'road',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#9ca5b3'}]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'geometry',
+              stylers: [{color: '#746855'}]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'geometry.stroke',
+              stylers: [{color: '#1f2835'}]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#f3d19c'}]
+            },
+            {
+              featureType: 'transit',
+              elementType: 'geometry',
+              stylers: [{color: '#2f3948'}]
+            },
+            {
+              featureType: 'transit.station',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#d59563'}]
+            },
+            {
+              featureType: 'water',
+              elementType: 'geometry',
+              stylers: [{color: '#17263c'}]
+            },
+            {
+              featureType: 'water',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#515c6d'}]
+            },
+            {
+              featureType: 'water',
+              elementType: 'labels.text.stroke',
+              stylers: [{color: '#17263c'}]
+            }
+          ]
     };
   },
 
@@ -167,3 +251,7 @@ export default {
   }
 };
 </script>
+
+<style>
+@import '../assets/styles/map.scss';
+</style>

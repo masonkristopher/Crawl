@@ -31,18 +31,18 @@
         Crawls
       </vs-divider>
 
-      <vs-sidebar-group title="My Crawls" v-if="CreatedCrawls !== null">
+      <vs-sidebar-group title="My Crawls" v-if="createdCrawls !== null">
 
-          <vs-sidebar-item v-for="(crawl, index) in CreatedCrawls" :key="crawl.Title" :index="`${index + 1}.${index}`" v-on:click="viewCrawl(crawl)">
+          <vs-sidebar-item v-for="(crawl, index) in createdCrawls" :key="crawl.Title" :index="`${index + 1}.${index}`" v-on:click="viewCrawl(crawl)">
             {{index + 1}}. {{crawl.Title}}
           </vs-sidebar-item>
 
       </vs-sidebar-group>
 
 
-      <vs-sidebar-group title="Crawls I've Joined" icon="down" v-if="JoinedCrawls !== null">
+      <vs-sidebar-group title="Crawls I've Joined" icon="down" v-if="joinedCrawls !== null">
 
-        <vs-sidebar-item v-for="(crawl, index) in JoinedCrawls" :key="crawl.Title" :index="`${index + 2}.${index}`" v-on:click="viewCrawl(crawl)">
+        <vs-sidebar-item v-for="(crawl, index) in joinedCrawls" :key="crawl.Title" :index="`${index + 2}.${index}`" v-on:click="viewCrawl(crawl)">
             {{index + 1}}. {{crawl.Title}}
         </vs-sidebar-item>
 
@@ -94,10 +94,15 @@
 
 <script>
 import axios from 'axios'
-import debounce from 'lodash/debounce'
+// import debounce from 'lodash/debounce'
 
 export default {
   props: ['user'],
+  computed: {
+      createdCrawls() {
+        return this.$store.createdCrawls
+      },
+    },
   data:()=>({
     User:{image: "https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512",
           name: "Jerry McDonald",
@@ -106,44 +111,31 @@ export default {
         },
     active:false,
     popupActivo:false,
-    CreatedCrawls: null,
-    JoinedCrawls: [],
+    // createdCrawls: null,
+    joinedCrawls: [],
   }),
-  updated: debounce(function () {
-      this.$nextTick(() => {
-        axios.get(`${process.env.VUE_APP_MY_IP}/api/user/${this.user.email}`)
-        .then((dbUser) => {
-          const { Id } = dbUser.data[0]
-          this.user.userId = Id
-          this.$emit('update:user', this.user)
-          axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/${Id}`)
-            .then((createdCrawlsRes) => {
-              this.CreatedCrawls = createdCrawlsRes.data
-            })
-            .catch((err) => {
-              console.log('Error getting user\'s Created Crawls', err);
-            })
-          axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/joined/${Id}`)
-            .then((res) => {
-              res.data.forEach(joined => {
-                axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/details/${joined.Id_Crawl}`)
-                  .then(res => {
-                    this.JoinedCrawls.push(res.data[0]);
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  })
+  watch: {
+    // whenever createdCrawls changes, this function will run
+    createdCrawls: function () {
+      const { id } = this.user;
+      axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/one/${id}`)
+        .then(() => {
+          return axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/joined/${id}`)
+        })
+        .then((response) => {
+          response.data.forEach(joined => {
+            axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/details/${joined.Id_Crawl}`)
+              .then(response => {
+                this.joinedCrawls.push(response.data[0]);
               })
-            })
+          })
+        })
             .catch((error) => {
-              console.log(error)
+              console.log(error);
             })
-        })
-        .catch((err) => {
-          console.log('Error getting user\'s db', err)
-        })
-      })
-  }, 3550), // increase to ur needs 3550
+      }
+  },
+
   methods: {
     logout() {
       axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google/logout`)
@@ -151,8 +143,8 @@ export default {
           console.log("Successful logout")
           this.popupActivo = true;
           this.user = null;
-          this.CreatedCrawls = null;
-          this.JoinedCrawls = null;
+          this.createdCrawls = null;
+          this.joinedCrawls = null;
         })
         .catch((err) => {
         console.log('Error logging client out:', err);
@@ -164,7 +156,9 @@ export default {
     },
     viewCrawl(crawl) {
       // send important user id and crawl data for grabing location for next comp
-      this.$router.push(`/crawl/joined/${this.user.userId}/${crawl.Title}/${crawl.Id}`);
+      // this keeps adding things on to the endpoint. so will it just get longer and longer?
+      this.$router.push(`/crawl/joined/${this.user.id}/${crawl.Title}/${crawl.Id}`);
+      // this.$router = (`/crawl/joined/${this.user.id}/${crawl.Title}/${crawl.Id}`);
     }
   }
 }

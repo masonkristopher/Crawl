@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{users}}
     <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
       <gmap-marker
         :key="index"
@@ -30,6 +31,7 @@ export default {
     return {
       // defaulted to New Orleans
       center: { lat: 29.9630486, lng: -90.0438412 },
+      users: [],
       crawlSpots: [],
       markers: [],
       selected: [],
@@ -55,13 +57,22 @@ export default {
     this.geolocate();
         axios.get(`${process.env.VUE_APP_MY_IP}/api/location/all/${this.crawlId}`)
         .then((res) => {
-          console.log('locations', res.data);
           this.crawlSpots = res.data;
-          console.log(this.crawlSpots);
           // this.$emit('update:crawlSpots', this.crawlSpots);
       }).then(() => {
         this.crawlSpots.forEach(bar => {
         this.addMarker(bar)
+        })
+        // retrieve all users who are in the specific crawl
+        return axios.get(`${process.env.VUE_APP_MY_IP}/api/user/crawlId/${this.crawlId}`)
+      })
+      .then((res) => {
+        const users = res.data;
+        console.log(users, 'after api/crawlId/crawlid')
+        // use the ids to retrieve the user object and push its info into our state
+        users.forEach((user) => {
+          const { Id, Lat, Lng } = user;
+          this.users.push({Id, Lat, Lng});
         })
       })
       .catch((err) => {
@@ -72,9 +83,7 @@ export default {
   created() {
     axios.get(`${process.env.VUE_APP_MY_IP}/api/location/all/${this.crawlId}`)
       .then((res) => {
-        console.log('locations', res.data);
         this.crawlSpots = res.data;
-        console.log(this.crawlSpots);
         this.$emit('update:crawlSpots', this.crawlSpots);
       })
       .catch((error) => {

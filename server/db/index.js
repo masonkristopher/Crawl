@@ -44,6 +44,12 @@ const postUser = ({
   return query(mysqlQuery, [username, nameFirst, nameLast, phoneNumber, email, imageUrl, lat, lng]);
 };
 
+const updateUserLoc = (location) => {
+  const { lat, lng } = location;
+  const mysqlQuery = 'UPDATE User SET Lat = ?, Lng = ?;';
+  return query(mysqlQuery, [lat, lng]);
+};
+
 // CRAWL QUERIES
 const getCrawl = (idCreator) => {
   const mysqlQuery = 'SELECT * FROM Crawl WHERE Id_Creator = ?;';
@@ -134,6 +140,7 @@ module.exports = {
   // USERS
   getUser,
   postUser,
+  updateUserLoc,
   // CRAWLS
   getCrawl,
   getUsersCrawls,

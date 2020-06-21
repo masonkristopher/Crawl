@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+  {{userLocation}}
     <div id="logo-area">
       <NavBar v-bind:user="user"/>
       <img id="logo" alt="CRAWL logo" src="./assets/images/logo.png">
@@ -36,7 +37,7 @@ export default {
     // whenever userlocation changes, this function will run
     userLocation: function () {
       // update user's location in the user table
-      axios.put(`/api/user/`, this.userLocation)
+      axios.put(`/api/user/${this.user.id}`, this.userLocation)
     },
     // after a user is logged in and stored in state, put their crawls in the global object
     user: function () {

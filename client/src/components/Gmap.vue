@@ -78,14 +78,15 @@ export default {
         // use the ids to retrieve the user object and push its info into our state
         let ids = []
         users.forEach((user) => {
-          ids.push(user.Id);
-        })
-        users.forEach((user) => {
           const { Id, Lat, Lng } = user;
-          if (!ids.inclues(Id)) {
-            this.users.push({id: Id, lat: Lat, lng: Lng});
-          }
+          ids.push({id: Id, lat: Lat, lng: Lng});
         })
+        this.users = ids;
+        // users.forEach((user) => {
+        //   if (!ids.includes(Id)) {
+        //     this.users.push({id: Id, lat: Lat, lng: Lng});
+        //   }
+        // })
       })
       .catch((err) => {
         console.log(err);
@@ -131,7 +132,6 @@ export default {
                    <div class="media-content">
                     <h3 class="barName">${marker.position.name}</h3>
                     <p class="address">${marker.position.address}</p>
-                    <button onClick="${this.addBarToCrawl(marker)}">Add</button>
                   </div>
                 </div>
                 </div>

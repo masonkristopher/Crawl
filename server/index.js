@@ -5,6 +5,7 @@ const fs = require('fs');
 
 require('dotenv').config();
 const path = require('path');
+const { session } = require('passport');
 const { apiRouter } = require('./api/index');
 
 const app = express();
@@ -19,7 +20,6 @@ app.use(cors());
 app.use(express.static(CLIENT_PATH));
 app.use(express.json());
 app.use('/api', apiRouter);
-
 
 if (process.env.DEPLOYED === 'true') {
   const options = {

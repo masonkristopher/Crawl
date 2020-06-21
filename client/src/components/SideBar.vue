@@ -143,7 +143,7 @@ export default {
           console.log('Error getting user\'s db', err)
         })
       })
-  }, 10000), // increase to ur needs 3550
+  }, 3550), // increase to ur needs 3550
   methods: {
     logout() {
       axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google/logout`)

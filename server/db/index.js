@@ -44,10 +44,10 @@ const postUser = ({
   return query(mysqlQuery, [username, nameFirst, nameLast, phoneNumber, email, imageUrl, lat, lng]);
 };
 
-const updateUserLoc = (location) => {
+const updateUserLoc = (location, idUser) => {
   const { lat, lng } = location;
-  const mysqlQuery = 'UPDATE User SET Lat = ?, Lng = ?;';
-  return query(mysqlQuery, [lat, lng]);
+  const mysqlQuery = 'UPDATE User SET Lat = ?, Lng = ? WHERE Id = ?;';
+  return query(mysqlQuery, [lat, lng, idUser]);
 };
 
 const getCrawlsUsers = (idCrawl) => {

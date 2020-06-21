@@ -39,9 +39,10 @@ userRouter.post('/add', (req, res) => {
     });
 });
 
-userRouter.put('/', (req, res) => {
+userRouter.put('/:idUser', (req, res) => {
   const location = req.body;
-  updateUserLoc(location)
+  const idUser = req.params.idUser;
+  updateUserLoc(location, idUser)
     .then(() => {
       res.send('User location updated');
     })

@@ -22,6 +22,7 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
+        v-bind:icon="'http://maps.google.com/mapfiles/kml/paddle/' + index + '-lv.png'"
         @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
 

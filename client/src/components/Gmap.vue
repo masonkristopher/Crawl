@@ -62,15 +62,26 @@ export default {
       }).then(() => {
         this.crawlSpots.forEach(bar => {
         this.addMarker(bar)
-    })
+        })
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    },
+
+  created() {
+    axios.get(`${process.env.VUE_APP_MY_IP}/api/location/all/${this.crawlId}`)
+      .then((res) => {
+        console.log('locations', res.data);
+        this.crawlSpots = res.data;
+        console.log(this.crawlSpots);
+        this.$emit('update:crawlSpots', this.crawlSpots);
       })
       .catch((error) => {
         console.log(error);
       })
   },
-  created() {
-    // change to accept any endpoint crawlId       ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-  },
+
   methods: {
     toggleInfoWindow: function(marker, idx) {
       this.infoWindowPos = marker.position;

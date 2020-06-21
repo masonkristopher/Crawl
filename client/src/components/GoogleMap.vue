@@ -25,6 +25,9 @@
         icon="'http://maps.google.com/mapfiles/kml/paddle/' + index + '-lv.png'"
         @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
+    <gmap-marker
+      icon="http://maps.google.com/mapfiles/kml/shapes/man.png"
+    ></gmap-marker> 
 
       <gmap-info-window
         :options="infoOptions"
@@ -108,7 +111,6 @@ export default {
 
     findBar() {
       // takes in the name of the city or zip code
-
       axios.get(`${process.env.VUE_APP_MY_IP}/api/map/${this.currentPlace}`)
         .then(bars =>  {
           // empty the markers and places and update before each search

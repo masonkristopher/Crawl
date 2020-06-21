@@ -165,7 +165,13 @@ export default {
         })
     },
     login() {
-      axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google`)
+      // axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google`)
+      this.$notify({
+        group: 'success',
+        type: 'success-type',
+        title: 'SAVED',
+        text: 'Your Crawl Has Been Created!'
+});
       console.log('Log In Page')
     },
     remove() {

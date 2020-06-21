@@ -1,11 +1,22 @@
 const { Router } = require('express');
-const { getUser, postUser, updateUserLoc } = require('../db/index');
+const { getUser, postUser, updateUserLoc, getCrawlsUsers } = require('../db/index');
 
 const userRouter = Router();
 
 userRouter.get('/:email', (req, res) => {
-  console.log(req.params.email);
   getUser(req.params.email)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send(err);
+    });
+});
+
+userRouter.get('/crawlId/:crawlId', (req, res) => {
+  const { crawlId } = req.params;
+  getCrawlsUsers(crawlId)
     .then((data) => {
       res.send(data);
     })

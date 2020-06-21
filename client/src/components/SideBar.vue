@@ -14,12 +14,12 @@
           </div>
           <vs-button color="primary" type="flat">...</vs-button>
 
-          <vs-sidebar-group title="User" v-if="this.user !== null">
-            <vs-sidebar-item index="1">
+          <vs-sidebar-group icon="person" title="User" v-if="this.user !== null">
+            <vs-sidebar-item icon="call" index="1">
               {{User.phoneNumber}}
             </vs-sidebar-item>
 
-            <vs-sidebar-item index="1.2">
+            <vs-sidebar-item icon="email" index="1.2">
               {{this.user.email}}
             </vs-sidebar-item>
           </vs-sidebar-group>
@@ -53,17 +53,17 @@
         Other
       </vs-divider>
 
-      <vs-sidebar-item index="5">
+      <vs-sidebar-item icon="https" index="5">
         Security
       </vs-sidebar-item>
-      <vs-sidebar-item index="6">
+      <vs-sidebar-item icon="help" index="6">
         Help
       </vs-sidebar-item>
 
 
       <div class="footer-sidebar" slot="footer">
-        <button class="log-button logout" color="danger" type="flat" @click="logout">log out</button>
-        <vs-button color="primary" type="border">settings</vs-button>
+        <vs-button icon="reply" class="log-button logout" color="danger" type="flat" @click="logout">log out</vs-button>
+        <vs-button icon="settings" color="primary" type="border">settings</vs-button>
       </div>
 
     </vs-sidebar>
@@ -83,7 +83,7 @@
         </p>
         <br>
         <br>
-        <button class="log-button login" @click="login">Log In</button>
+        <vs-button icon="arrow_right_alt" class="log-button login" color="success" type="flat" @click="login" style="float:right;">Log In</vs-button>
       </div>
     </vs-popup>
 
@@ -92,8 +92,10 @@
 </template>
 
 <script>
-import axios from 'axios'
-import debounce from 'lodash/debounce'
+import axios from 'axios';
+// import stylus from 'stylus';
+import 'material-icons/iconfont/material-icons.css';
+import debounce from 'lodash/debounce';
 
 export default {
   props: ['user'],

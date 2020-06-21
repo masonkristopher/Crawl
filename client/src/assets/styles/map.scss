@@ -40,6 +40,11 @@ h2 {
 	top:1px;
 }
 
-#info-window {
-	background-color: #d0cfcb;
+#map-el {
+	position: relative;
+}
+
+#bar-selected-list {
+	position: absolute;
+	float: left;
 }

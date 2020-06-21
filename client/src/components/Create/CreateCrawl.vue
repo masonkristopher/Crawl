@@ -20,6 +20,7 @@
 
 <script>
 import axios from 'axios';
+import 'material-icons/iconfont/material-icons.css';
 import GoogleMap from '../GoogleMap'
 
 export default {

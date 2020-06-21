@@ -19,9 +19,9 @@
       <br>
 
     </div>
-    <gmap-map :center="center" :zoom="12" :options="{styles: styles}" style="width:100%;  height: 400px;">
+  
+    <gmap-map :center="center" :zoom="12" :options="{styles: styles}" style="width:100%;  height: 400px; float:right;">
       <gmap-marker
-        id="marker"
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
@@ -29,7 +29,6 @@
       ></gmap-marker>
 
       <gmap-info-window
-        id="info-window"
         :options="infoOptions"
         :position="infoWindowPos"
         :opened="infoWinOpen"
@@ -40,15 +39,18 @@
         <button  @click="addBarToCrawl">  Add to Your Crawl  </button>
       </gmap-info-window>
     </gmap-map>
-      <ul v-if="selected.length > 0">
-        <h3>Bars in your crawl so far:</h3>
-        <li v-for="(bar, index) in selected" :key="bar.name">{{ bar.name }} at {{ bar.address }} <button @click="removeBarFromCrawl(index)">Remove</button></li>
-      </ul>
+
+    <ul id="bar-selected-list" v-if="selected.length > 0">
+      <h3>Bars in your crawl so far:</h3>
+      <li v-for="(bar, index) in selected" :key="bar.name">{{ bar.name }} at {{ bar.address }} <button @click="removeBarFromCrawl(index)">Remove</button></li>
+    </ul>
+
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import 'material-icons/iconfont/material-icons.css';
 export default {
   name: "GoogleMap",
   data() {

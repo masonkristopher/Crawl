@@ -25,12 +25,6 @@ connection.connect((err) => {
   }
 });
 
-// TEST QUERY
-const test = () => {
-  const mysqlQuery = 'SELECT * FROM User;';
-  return query(mysqlQuery);
-};
-
 // USER QUERIES
 const getUser = (email) => {
   const mysqlQuery = 'SELECT * FROM User WHERE Email = ?;';
@@ -56,12 +50,26 @@ const getCrawl = (idCreator) => {
   return query(mysqlQuery, [idCreator]);
 };
 
-// not sure if we need this, but here. can take out later
 const getUsersCrawls = (userId) => {
   const mysqlQuery = 'SELECT * FROM User_Crawl INNER JOIN Crawl ON Crawl.Id = User_Crawl.Id_Crawl && User_Crawl.Id_User = ?;';
   return query(mysqlQuery, [
     userId,
   ]);
+};
+
+const getOneCrawl = (id) => {
+  const mysqlQuery = 'SELECT * FROM Crawl WHERE Id = ?;';
+  return query(mysqlQuery, [id]);
+};
+
+const joinCrawl = (userId, crawlId) => {
+  const mysqlQuery = 'INSERT INTO User_Crawl VALUES(null, ?, ?);';
+  return query(mysqlQuery, [userId, crawlId]);
+};
+
+const getJoinedCrawls = (userId) => {
+  const mysqlQuery = 'SELECT * FROM User_Crawl WHERE Id_User = ?;';
+  return query(mysqlQuery, [userId]);
 };
 
 const postCrawl = ({
@@ -123,14 +131,16 @@ const userCrawl = (idUser, idCrawl) => {
 };
 
 module.exports = {
-  test,
   // USERS
   getUser,
   postUser,
   // CRAWLS
   getCrawl,
   getUsersCrawls,
+  getOneCrawl,
   postCrawl,
+  joinCrawl,
+  getJoinedCrawls,
   // LOCATIONS
   getLocation,
   postLocations,

@@ -29,6 +29,19 @@ locationRouter.get('/all/:crawlId', (req, res) => {
     });
 });
 
+locationRouter.get('/all/:crawlId', (req, res) => {
+  const { crawlId } = req.params;
+  getLocsInCrawl(crawlId)
+    .then((data) => {
+      console.log('locations retrieved');
+      res.send(data);
+    })
+    .catch((err) => {
+      console.log('Error retrieving crawls from DB:', err);
+      res.status(500).end();
+    });
+});
+
 locationRouter.post('/add', (req, res) => {
   const location = req.body;
   postLocations(location)
@@ -44,4 +57,4 @@ locationRouter.post('/add', (req, res) => {
 
 module.exports = {
   locationRouter,
-}
+};

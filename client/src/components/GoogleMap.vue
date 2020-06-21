@@ -22,14 +22,9 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        icon="http://maps.google.com/mapfiles/kml/shapes/bars.png"
+        icon="'http://maps.google.com/mapfiles/kml/paddle/' + index + '-lv.png'"
         @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
-    <gmap-marker
-    :position="userLocation"
-       
-    icon="http://maps.google.com/mapfiles/kml/shapes/man.png"
-    ></gmap-marker> 
 
       <gmap-info-window
         :options="infoOptions"

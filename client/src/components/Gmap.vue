@@ -133,24 +133,6 @@ export default {
         };
       });
     },
-
-    addBarToCrawl: function(m) {
-      // pushes the location into state, unless it's already in there
-      let names = [];
-      this.selected.forEach((location) => {
-        names.push(location.name)
-      })
-      if (!names.includes(m.position.name)) {
-        this.selected.push(m.position);
-        this.$emit('update:selected', this.selected);
-      }
-    },
-
-    removeBarFromCrawl: function(index) {
-      this.selected.splice(index, 1);
-      this.$emit('update:selected', this.selected)
-    },
-
   }
 };
 </script>

@@ -2,9 +2,10 @@
   background-color: #f5f3ec;
 }
 
-
 #crawl-forms {
   float: left;
+  margin-left: 185px;
+  margin-top: 160px;
 }
 
 #crawl-forms li{
@@ -56,6 +57,9 @@
 
 #create-map {
   float: right;
-  width: 600px;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 10px;
+  width: 620px;
   height: 500px;
 }

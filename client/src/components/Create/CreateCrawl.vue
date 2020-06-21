@@ -3,8 +3,7 @@
     <ul id="crawl-forms">
       <!-- make App listen to changes in title by using emit and v-model -->
       <li><label class="form_label">Title: </label><br><input class="form_field crawl-title" type="text" autocomplete="off" name="title" v-model="title" @input="$emit('update:title', title)"></li>
-      <br>
-      <br>
+      <br><br><br><br><br>
       <li><label class="form_label">Time & Date:</label><br><input class="form_field crawl-time-date" type="datetime-local" name="datetime" v-model="crawlDate" @input="$emit('update:crawlDate', crawlDate)"></li>
       <br>
       <button id="save-crawl-button" v-on:click.stop="saveCrawl">

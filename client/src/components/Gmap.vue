@@ -5,6 +5,7 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
+         v-bind:icon="'http://maps.google.com/mapfiles/kml/paddle/' + (index + 1) + '-lv.png'"
         @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
 
@@ -17,10 +18,6 @@
         <div v-html="infoContent"></div>
       </gmap-info-window>
     </gmap-map>
-      <ul v-if="selected.length > 0">
-        <h3>Bars in your crawl so far:</h3>
-        <li v-for="(bar, index) in selected" :key="bar.name">{{ bar.name }} at {{ bar.address }} <button @click="removeBarFromCrawl(index)">Remove</button></li>
-      </ul>
   </div>
 </template>
 
@@ -28,12 +25,11 @@
 import axios from "axios";
 export default {
   name: "GoogleMap",
+  props: ['crawlId', 'userId'],
   data() {
     return {
       // defaulted to New Orleans
       center: { lat: 29.9630486, lng: -90.0438412 },
-      crawlId: null,
-      userId: null,
       crawlSpots: [],
       markers: [],
       selected: [],
@@ -57,23 +53,23 @@ export default {
 
   mounted() {
     this.geolocate();
-    console.log(this.crawlSpots);
-    this.crawlSpots.forEach(bar => {
-      this.addMarker(bar)
+        axios.get(`${process.env.VUE_APP_MY_IP}/api/location/all/${this.crawlId}`)
+        .then((res) => {
+          console.log('locations', res.data);
+          this.crawlSpots = res.data;
+          console.log(this.crawlSpots);
+          // this.$emit('update:crawlSpots', this.crawlSpots);
+      }).then(() => {
+        this.crawlSpots.forEach(bar => {
+        this.addMarker(bar)
     })
-  },
-  created() {
-    // change to accept any endpoint crawlId       ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
-    axios.get(`${process.env.VUE_APP_MY_IP}/api/location/all/${this.crawlId}`)
-      .then((res) => {
-        console.log('locations', res.data);
-        this.crawlSpots = res.data;
-        console.log(this.crawlSpots);
-        this.$emit('update:crawlSpots', this.crawlSpots);
       })
       .catch((error) => {
         console.log(error);
       })
+  },
+  created() {
+    // change to accept any endpoint crawlId       ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
   },
   methods: {
     toggleInfoWindow: function(marker, idx) {

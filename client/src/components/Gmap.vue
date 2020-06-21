@@ -76,9 +76,15 @@ export default {
         const users = res.data;
         console.log(users, 'after api/crawlId/crawlid')
         // use the ids to retrieve the user object and push its info into our state
+        let ids = []
+        users.forEach((user) => {
+          ids.push(user.Id);
+        })
         users.forEach((user) => {
           const { Id, Lat, Lng } = user;
-          this.users.push({id: Id, lat: Lat, lng: Lng});
+          if (!ids.inclues(Id)) {
+            this.users.push({id: Id, lat: Lat, lng: Lng});
+          }
         })
       })
       .catch((err) => {

@@ -19,8 +19,7 @@ export default {
   },
   data() {
     return {
-      /////* ********** this should be this.$parent.user.id, cuz we want it to be the person who logged in
-      userId: this.$route.params.userId,
+      userId: this.$parent.user.id,
       crawlId: this.$route.params.crawlId,
       crawlName: this.$route.params.crawlName,
     }

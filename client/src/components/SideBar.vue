@@ -33,8 +33,8 @@
 
       <vs-sidebar-group title="My Crawls" v-if="CreatedCrawls !== null">
 
-          <vs-sidebar-item v-for="(crawl, index) in CreatedCrawls" :key="crawl.name" :index="`${index + 1}.${index}`">
-            {{index + 1}}. {{crawl.name}}
+          <vs-sidebar-item v-for="(crawl, index) in CreatedCrawls" :key="crawl.Title" :index="`${index + 1}.${index}`" v-on:click="viewCrawl(crawl)">
+            {{index + 1}}. {{crawl.Title}}
           </vs-sidebar-item>
 
       </vs-sidebar-group>
@@ -42,8 +42,8 @@
 
       <vs-sidebar-group title="Crawls I've Joined" icon="down" v-if="JoinedCrawls !== null">
 
-        <vs-sidebar-item v-on:click="viewCrawl" v-for="(crawl, index) in JoinedCrawls" :key="crawl.name" :index="`${index + 2}.${index}`">
-            {{index + 1}}. {{crawl.name}}
+        <vs-sidebar-item v-for="(crawl, index) in JoinedCrawls" :key="crawl.Title" :index="`${index + 2}.${index}`" v-on:click="viewCrawl(crawl)">
+            {{index + 1}}. {{crawl.Title}}
         </vs-sidebar-item>
 
       </vs-sidebar-group>
@@ -59,6 +59,7 @@
       <vs-sidebar-item index="6">
         Help
       </vs-sidebar-item>
+
 
 
       <div class="footer-sidebar" slot="footer">
@@ -93,22 +94,56 @@
 
 <script>
 import axios from 'axios'
+import debounce from 'lodash/debounce'
 
 export default {
   props: ['user'],
   data:()=>({
-    crawlName: 'Nass21',
-    crawlId: 2,
+    User:{image: "https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512",
+          name: "Jerry McDonald",
+          phoneNumber: "555-555-5555",
+          email: "jerryMcDonald@gmail.com",
+        },
     active:false,
     popupActivo:false,
-    User: {image: "https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512",
-           name: "Jerry McDonald",
-           phoneNumber: "555-555-5555",
-           email: "jerryMcDonald@gmail.com",
-           },
-    CreatedCrawls: [{name: "Christmas Crawl 2k21"},],
-    JoinedCrawls: [{name: "Naseer's 21st Birthday Bash"}, {name: "Mac's SuperBowl Crawl"}],
+    CreatedCrawls: null,
+    JoinedCrawls: [],
   }),
+  updated: debounce(function () {
+      this.$nextTick(() => {
+        axios.get(`${process.env.VUE_APP_MY_IP}/api/user/${this.user.email}`)
+        .then((dbUser) => {
+          const { Id } = dbUser.data[0]
+          this.user.userId = Id
+          this.$emit('update:user', this.user)
+          axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/${Id}`)
+            .then((createdCrawlsRes) => {
+              this.CreatedCrawls = createdCrawlsRes.data
+            })
+            .catch((err) => {
+              console.log('Error getting user\'s Created Crawls', err);
+            })
+          axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/joined/${Id}`)
+            .then((res) => {
+              res.data.forEach(joined => {
+                axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/details/${joined.Id_Crawl}`)
+                  .then(res => {
+                    this.JoinedCrawls.push(res.data[0]);
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  })
+              })
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+        })
+        .catch((err) => {
+          console.log('Error getting user\'s db', err)
+        })
+      })
+  }, 10000), // increase to ur needs 3550
   methods: {
     logout() {
       axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google/logout`)
@@ -127,9 +162,9 @@ export default {
       axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google`)
       console.log('Log In Page')
     },
-    viewCrawl() {
-      console.log('hello');
-      this.$router.push(`/crawl/joined/${this.crawlName}/${this.crawlId}`);
+    viewCrawl(crawl) {
+      // send important user id and crawl data for grabing location for next comp
+      this.$router.push(`/crawl/joined/${this.user.userId}/${crawl.Title}/${crawl.Id}`);
     }
   }
 }

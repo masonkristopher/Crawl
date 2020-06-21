@@ -13,8 +13,7 @@
         </button>
         <div v-if="crawlId !== null">
           <h3>Give this to your friends to have them join:</h3>
-          <!--*********** update me ****************-->
-          <h3 >{{url}}/viewCrawlEndPoint{{crawlId}}</h3>
+          <h3 >{{url}}/crawl/joined/{{this.$parent.user.id}}/{{this.title}}/{{crawlId}}</h3>
         </div>
       </ul>
       <google-map id="create-map" :selected.sync="selected"/>
@@ -79,6 +78,13 @@ export default {
             axios.post(`${process.env.VUE_APP_MY_IP}/api/join/lc/${response.data[0].Id}+${this.crawlId}+${order}`)
             order++;
           })
+        })
+        .then(() => {
+          // update our global data so navbar can update
+         axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/one/${this.$parent.user.id}`)
+        .then((response) => {
+          this.$store.createdCrawls = response.data;
+         })
         })
         .catch((err) => {
           console.log(err, 'unable to save crawl');

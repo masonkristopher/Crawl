@@ -117,10 +117,10 @@ export default {
     // whenever createdCrawls changes, this function will get all the crawls a user has joined
     createdCrawls: function () {
       const { id } = this.user;
-      axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/joined/${id}`)
+      axios.get(`/api/crawl/joined/${id}`)
         .then((response) => {
           response.data.forEach(joined => {
-            axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/details/${joined.Id_Crawl}`)
+            axios.get(`/api/crawl/details/${joined.Id_Crawl}`)
               .then(response => {
                 this.joinedCrawls.push(response.data[0]);
               })
@@ -131,7 +131,7 @@ export default {
 
   methods: {
     logout() {
-      axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google/logout`)
+      axios.get(`/api/auth/google/logout`)
         .then(() => {
           console.log("Successful logout")
           this.popupActivo = true;
@@ -144,7 +144,7 @@ export default {
         })
     },
     login() {
-      axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google`)
+      axios.get(`/api/auth/google`)
       console.log('Log In Page')
     },
     viewCrawl(crawl) {

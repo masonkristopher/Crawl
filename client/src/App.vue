@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+  {{userLocation}}
     <div id="logo-area">
       <NavBar v-bind:user="user"/>
       <img id="logo" alt="CRAWL logo" src="./assets/images/logo.png">
@@ -36,11 +37,11 @@ export default {
     // whenever userlocation changes, this function will run
     userLocation: function () {
       // update user's location in the user table
-      axios.put(`${process.env.VUE_APP_MY_IP}/api/user/`, this.userLocation)
+      axios.put(`/api/user/${this.user.id}`, this.userLocation)
     },
     // after a user is logged in and stored in state, put their crawls in the global object
     user: function () {
-      axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/one/${this.user.id}`)
+      axios.get(`/api/crawl/one/${this.user.id}`)
         .then((response) => {
           this.$store.createdCrawls = response.data;
         })
@@ -52,7 +53,7 @@ export default {
       .then(response => {
         if (response.data.redirect === '/') {
           const { user, email, image } = response.data
-          axios.get(`${process.env.VUE_APP_MY_IP}/api/user/${email}`)
+          axios.get(`/api/user/${email}`)
             .then((response) => {
               console.log(response, 'app created')
               this.user = {id: response.data[0].Id,
@@ -69,7 +70,7 @@ export default {
 
       .catch(function (error) {
         alert(error);
-        // window.location = "/login"
+        window.location = "/login"
       })
   },
 };

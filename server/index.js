@@ -5,6 +5,7 @@ const fs = require('fs');
 
 require('dotenv').config();
 const path = require('path');
+const { session } = require('passport');
 const { apiRouter } = require('./api/index');
 
 const app = express();
@@ -20,8 +21,7 @@ app.use(express.static(CLIENT_PATH));
 app.use(express.json());
 app.use('/api', apiRouter);
 
-
-if (process.env.DEPLOYED === true) {
+if (process.env.DEPLOYED === 'true') {
   const options = {
     key: fs.readFileSync('/etc/letsencrypt/live/crawl.southcentralus.cloudapp.azure.com/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/crawl.southcentralus.cloudapp.azure.com/fullchain.pem'),

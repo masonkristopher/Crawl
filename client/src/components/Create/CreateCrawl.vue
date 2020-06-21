@@ -49,7 +49,7 @@ export default {
       const date = crawlDate.split("T")[0];
       const time = crawlDate.split("T")[1];
       let order = 1;
-      axios.post(`${process.env.VUE_APP_MY_IP}/api/crawl/add`, {
+      axios.post(`/api/crawl/add`, {
         // idCreator: this.$parent.user.id,
         idCreator: this.$parent.user.id,
         title: title,
@@ -67,7 +67,7 @@ export default {
           // get locations from the database
           const { selected } = this;
           const promises = selected.map((location) => 
-            axios.get(`${process.env.VUE_APP_MY_IP}/api/location/${location.name}`)
+            axios.get(`/api/location/${location.name}`)
           )
           //promise.all ensures each promise resolves before moving on
           return Promise.all(promises)
@@ -75,13 +75,13 @@ export default {
         .then((data) => {
           // add locationId + crawlId + order to location_crawl table
           data.forEach((response) => {
-            axios.post(`${process.env.VUE_APP_MY_IP}/api/join/lc/${response.data[0].Id}+${this.crawlId}+${order}`)
+            axios.post(`/api/join/lc/${response.data[0].Id}+${this.crawlId}+${order}`)
             order++;
           })
         })
         .then(() => {
           // update our global data so navbar can update
-         axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/one/${this.$parent.user.id}`)
+         axios.get(`/api/crawl/one/${this.$parent.user.id}`)
         .then((response) => {
           this.$store.createdCrawls = response.data;
          })
@@ -95,13 +95,13 @@ export default {
       const { selected } = this;
       // add locations to database
       const promises = selected.map((location) => {
-        return axios.post(`${process.env.VUE_APP_MY_IP}/api/location/add`, location)
+        return axios.post(`/api/location/add`, location)
       });
       return Promise.all(promises);
     },
 
     saveUserCrawl: function(userId, crawlId) {
-      axios.post(`${process.env.VUE_APP_MY_IP}/api/join/uc/${userId}+${crawlId}`)
+      axios.post(`/api/join/uc/${userId}+${crawlId}`)
         .catch((err) => {
           console.log(err);
         })

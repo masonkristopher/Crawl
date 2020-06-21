@@ -44,10 +44,15 @@ const postUser = ({
   return query(mysqlQuery, [username, nameFirst, nameLast, phoneNumber, email, imageUrl, lat, lng]);
 };
 
-const updateUserLoc = (location) => {
+const updateUserLoc = (location, idUser) => {
   const { lat, lng } = location;
-  const mysqlQuery = 'UPDATE User SET Lat = ?, Lng = ?;';
-  return query(mysqlQuery, [lat, lng]);
+  const mysqlQuery = 'UPDATE User SET Lat = ?, Lng = ? WHERE Id = ?;';
+  return query(mysqlQuery, [lat, lng, idUser]);
+};
+
+const getCrawlsUsers = (idCrawl) => {
+  const mysqlQuery = 'SELECT * FROM User_Crawl INNER JOIN User ON Id_Crawl = ?;';
+  return query(mysqlQuery, [idCrawl]);
 };
 
 // CRAWL QUERIES
@@ -56,10 +61,10 @@ const getCrawl = (idCreator) => {
   return query(mysqlQuery, [idCreator]);
 };
 
-const getUsersCrawls = (userId) => {
+const getUsersCrawls = (idUser) => {
   const mysqlQuery = 'SELECT * FROM User_Crawl INNER JOIN Crawl ON Crawl.Id = User_Crawl.Id_Crawl && User_Crawl.Id_User = ?;';
   return query(mysqlQuery, [
-    userId,
+    idUser,
   ]);
 };
 
@@ -68,14 +73,14 @@ const getOneCrawl = (id) => {
   return query(mysqlQuery, [id]);
 };
 
-const joinCrawl = (userId, crawlId) => {
-  const mysqlQuery = 'INSERT INTO User_Crawl VALUES(null, ?, ?);';
-  return query(mysqlQuery, [userId, crawlId]);
+const joinCrawl = (idUser, idCrawl) => {
+  const mysqlQuery = 'INSERT IGNORE INTO User_Crawl VALUES(null, ?, ?);';
+  return query(mysqlQuery, [idUser, idCrawl]);
 };
 
-const getJoinedCrawls = (userId) => {
+const getJoinedCrawls = (idUser) => {
   const mysqlQuery = 'SELECT * FROM User_Crawl WHERE Id_User = ?;';
-  return query(mysqlQuery, [userId]);
+  return query(mysqlQuery, [idUser]);
 };
 
 const postCrawl = ({
@@ -99,10 +104,10 @@ const getLocation = (name) => {
 };
 
 
-const getLocsInCrawl = (crawlId) => {
+const getLocsInCrawl = (idCrawl) => {
   const mysqlQuery = 'SELECT * FROM Location_Crawl INNER JOIN Location ON Location.Id = Location_Crawl.Id_Location && Location_Crawl.Id_Crawl = ?;';
   return query(mysqlQuery, [
-    crawlId,
+    idCrawl,
   ]);
 };
 
@@ -141,6 +146,7 @@ module.exports = {
   getUser,
   postUser,
   updateUserLoc,
+  getCrawlsUsers,
   // CRAWLS
   getCrawl,
   getUsersCrawls,

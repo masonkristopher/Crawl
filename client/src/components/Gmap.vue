@@ -32,6 +32,9 @@ export default {
     return {
       // defaulted to New Orleans
       center: { lat: 29.9630486, lng: -90.0438412 },
+      crawlId: null,
+      userId: null,
+      crawlSpots: [],
       markers: [],
       selected: [],
       places: [],
@@ -54,8 +57,24 @@ export default {
 
   mounted() {
     this.geolocate();
+    console.log(this.crawlSpots);
+    this.crawlSpots.forEach(bar => {
+      this.addMarker(bar)
+    })
   },
-
+  created() {
+    // change to accept any endpoint crawlId       ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+    axios.get(`${process.env.VUE_APP_MY_IP}/api/location/all/${this.crawlId}`)
+      .then((res) => {
+        console.log('locations', res.data);
+        this.crawlSpots = res.data;
+        console.log(this.crawlSpots);
+        this.$emit('update:crawlSpots', this.crawlSpots);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  },
   methods: {
     toggleInfoWindow: function(marker, idx) {
       this.infoWindowPos = marker.position;
@@ -90,29 +109,13 @@ export default {
                 </div>
               </div>`;
     },
-
-    findBar() {
-      // takes in the name of the city or zip code
-
-      axios.get(`${process.env.VUE_APP_MY_IP}/api/map/${this.currentPlace}`)
-        .then(bars =>  {
-          // empty the markers and places and update before each search
-          this.markers = [];
-          this.places = [];
-          bars.data.forEach(bar => {
-            this.addMarker(bar);
-          });
-        })
-        .catch(error => console.log(error));
-    },
-
     addMarker(bar) {
       if (bar) {
         const marker = {
-          lat: bar.geometry.location.lat,
-          lng: bar.geometry.location.lng,
-          name: bar.name,
-          address: bar.vicinity,
+          lat: bar.Lat,
+          lng: bar.Lng,
+          name: bar.Name,
+          address: bar.Address,
           //some bars don't have photos
           // photo: bar.photos[0],
           

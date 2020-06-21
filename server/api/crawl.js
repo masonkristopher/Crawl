@@ -63,7 +63,7 @@ crawlRouter.post('/join/:crawlId/:userId', (req, res) => {
   const { crawlId, userId } = req.params;
   joinCrawl(userId, crawlId)
     .then(() => {
-      res.send(`${userId} joined crawl`);
+      res.send(`joined crawl as ${userId}`);
     })
     .catch((error) => {
       console.log('Error joining user into crawl in DB:', error);

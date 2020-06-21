@@ -2,10 +2,10 @@
   <div>
     <br />
     <div>
-      <h2>Search for bars</h2>
       <label>
+        <vs-icon icon="search"></vs-icon>
         <input
-          id="location-search" 
+          id="location-search"
           type="text" 
           v-on:keyup.enter="findBar" 
           v-model="currentPlace" 
@@ -13,7 +13,7 @@
           placeholder="Enter a ZIP code or city"
           @focus="() => {this.currentPlace = ''}"
         >
-        <button id="location-search-button" @click="findBar"> Search </button>
+        <button id="location-search-button" @click="findBar">Search </button>
       </label>
       <br>
       <br>

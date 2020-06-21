@@ -21,7 +21,7 @@ crawlRouter.get('/one/:idCreator', (req, res) => {
       res.send(err);
     });
 });
-// don't think we need this, but we might
+
 crawlRouter.get('/all/:idCreator', (req, res) => {
   console.log(req.params.idCreator);
   getUsersCrawls(req.params.idCreator)

@@ -94,10 +94,10 @@
 
 <script>
 import axios from 'axios'
-// import debounce from 'lodash/debounce'
 
 export default {
   props: ['user'],
+  // in data, 'this' doesnt exist yet. we want createdCrawls to be equal to the global storage, so we do it in computed instead
   computed: {
       createdCrawls() {
         return this.$store.createdCrawls
@@ -111,17 +111,13 @@ export default {
         },
     active:false,
     popupActivo:false,
-    // createdCrawls: null,
     joinedCrawls: [],
   }),
   watch: {
-    // whenever createdCrawls changes, this function will run
+    // whenever createdCrawls changes, this function will get all the crawls a user has joined
     createdCrawls: function () {
       const { id } = this.user;
-      axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/one/${id}`)
-        .then(() => {
-          return axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/joined/${id}`)
-        })
+      axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/joined/${id}`)
         .then((response) => {
           response.data.forEach(joined => {
             axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/details/${joined.Id_Crawl}`)
@@ -130,10 +126,7 @@ export default {
               })
           })
         })
-            .catch((error) => {
-              console.log(error);
-            })
-      }
+    }
   },
 
   methods: {
@@ -165,5 +158,5 @@ export default {
 </script>
 
 <style scoped>
-  @import '../assets/styles/sidebar.scss'
+  @import '../assets/styles/sidebar.scss';
 </style>

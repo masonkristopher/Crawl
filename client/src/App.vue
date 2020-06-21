@@ -69,7 +69,7 @@ export default {
 
       .catch(function (error) {
         alert(error);
-        window.location = "/login"
+        // window.location = "/login"
       })
   },
 };

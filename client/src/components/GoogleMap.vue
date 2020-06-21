@@ -22,7 +22,6 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        icon="'http://maps.google.com/mapfiles/kml/paddle/' + index + '-lv.png'"
         @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
     <gmap-marker
@@ -112,11 +111,11 @@ export default {
     findBar() {
       // takes in the name of the city or zip code
       axios.get(`${process.env.VUE_APP_MY_IP}/api/map/${this.currentPlace}`)
-        .then(bars =>  {
+        .then(response =>  {
           // empty the markers and places and update before each search
           this.markers = [];
           this.places = [];
-          bars.data.forEach(bar => {
+          response.data.forEach(bar => {
             this.addMarker(bar);
           });
         })
@@ -149,15 +148,15 @@ export default {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        this.userLocation.lat = position.coords.latitude;
-        this.userLocation.lng = position.coords.longitude;
         // give the user's location to createCrawl.  it may not need it though, consider removing
-        this.$emit('update:userLocation', this.userLocation);
+        // this.userLocation.lat = position.coords.latitude;
+        // this.userLocation.lng = position.coords.longitude;
+        // this.$emit('update:userLocation', this.userLocation);
       });
     },
 
-    addBarToCrawl: function() {
       // pushes the location into state, unless it's already in there
+    addBarToCrawl: function() {
       let names = [];
       this.selected.forEach((location) => {
         names.push(location.name)
@@ -167,7 +166,7 @@ export default {
         this.$emit('update:selected', this.selected);
       }
     },
-
+    // removes the bar from the state
     removeBarFromCrawl: function(index) {
       this.selected.splice(index, 1);
       this.$emit('update:selected', this.selected)

@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      /////* ********** this should be this.$parent.user.id, cuz we want it to be the person who logged in 
+      /////* ********** this should be this.$parent.user.id, cuz we want it to be the person who logged in
       userId: this.$route.params.userId,
       crawlId: this.$route.params.crawlId,
       crawlName: this.$route.params.crawlName,
@@ -40,6 +40,6 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+  @import "../assets/styles/joinedcrawl.scss"
 </style>

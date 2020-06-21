@@ -1,28 +1,10 @@
 <template>
   <div>
-    <br />
-    <div>
-      <h2>Search for bars</h2>
-      <label>
-        <input 
-          type="text" 
-          v-on:keyup.enter="findBar" 
-          v-model="currentPlace" 
-          @input="$emit('update:currentPlace', currentPlace)" 
-          placeholder="Enter a ZIP code or city"
-          @focus="() => {this.currentPlace = ''}"
-        >
-        <button @click="findBar"> Search </button>
-      </label>
-      <br/>
-
-    </div>
     <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
       <gmap-marker
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        v-bind:icon="'http://maps.google.com/mapfiles/kml/paddle/' + index + '-lv.png'"
         @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
 
@@ -31,10 +13,8 @@
         :position="infoWindowPos"
         :opened="infoWinOpen"
         @closeclick="infoWinOpen=false"
-       
       >
         <div v-html="infoContent"></div>
-        <button  @click="addBarToCrawl">  Add to Your Crawl  </button>
       </gmap-info-window>
     </gmap-map>
       <ul v-if="selected.length > 0">
@@ -52,6 +32,9 @@ export default {
     return {
       // defaulted to New Orleans
       center: { lat: 29.9630486, lng: -90.0438412 },
+      crawlId: null,
+      userId: null,
+      crawlSpots: [],
       markers: [],
       selected: [],
       places: [],
@@ -74,8 +57,24 @@ export default {
 
   mounted() {
     this.geolocate();
+    console.log(this.crawlSpots);
+    this.crawlSpots.forEach(bar => {
+      this.addMarker(bar)
+    })
   },
-
+  created() {
+    // change to accept any endpoint crawlId       ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+    axios.get(`${process.env.VUE_APP_MY_IP}/api/location/all/${this.crawlId}`)
+      .then((res) => {
+        console.log('locations', res.data);
+        this.crawlSpots = res.data;
+        console.log(this.crawlSpots);
+        this.$emit('update:crawlSpots', this.crawlSpots);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  },
   methods: {
     toggleInfoWindow: function(marker, idx) {
       this.infoWindowPos = marker.position;
@@ -94,39 +93,29 @@ export default {
     
     getInfoWindowContent: function(marker) {
       return `<div class="card">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src=${marker.position.photo}>
+                  </figure>
+                </div>
                 <div class="card-content">
                   <div class="media">
                    <div class="media-content">
                     <h3 class="barName">${marker.position.name}</h3>
                     <p class="address">${marker.position.address}</p>
+                    <button onClick="${this.addBarToCrawl(marker)}">Add</button>
                   </div>
                 </div>
                 </div>
               </div>`;
     },
-
-    findBar() {
-      // takes in the name of the city or zip code
-
-      axios.get(`${process.env.VUE_APP_MY_IP}/api/map/${this.currentPlace}`)
-        .then(bars =>  {
-          // empty the markers and places and update before each search
-          this.markers = [];
-          this.places = [];
-          bars.data.forEach(bar => {
-            this.addMarker(bar);
-          });
-        })
-        .catch(error => console.log(error));
-    },
-
     addMarker(bar) {
       if (bar) {
         const marker = {
-          lat: bar.geometry.location.lat,
-          lng: bar.geometry.location.lng,
-          name: bar.name,
-          address: bar.vicinity,
+          lat: bar.Lat,
+          lng: bar.Lng,
+          name: bar.Name,
+          address: bar.Address,
           //some bars don't have photos
           // photo: bar.photos[0],
           
@@ -149,14 +138,14 @@ export default {
       });
     },
 
-    addBarToCrawl: function() {
+    addBarToCrawl: function(m) {
       // pushes the location into state, unless it's already in there
       let names = [];
       this.selected.forEach((location) => {
         names.push(location.name)
       })
-      if (!names.includes(this.infoWindowPos.name)) {
-        this.selected.push(this.infoWindowPos);
+      if (!names.includes(m.position.name)) {
+        this.selected.push(m.position);
         this.$emit('update:selected', this.selected);
       }
     },
@@ -165,6 +154,7 @@ export default {
       this.selected.splice(index, 1);
       this.$emit('update:selected', this.selected)
     },
+
   }
 };
 </script>

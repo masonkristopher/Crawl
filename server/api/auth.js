@@ -56,7 +56,7 @@ authRouter.get('/google/login', (req, res) => {
 authRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 // this is the route called after a user clicks their sign in information
-authRouter.get('/google/callback', passport.authenticate('google', { failureRedirect: 'failed' }),
+authRouter.get('/google/callback', passport.authenticate('google', { scope: ['profile', 'email'], failureRedirect: 'failed' }),
   (req, res) => {
     // Successful authentication, redirect home.
     res.redirect('/');
@@ -73,7 +73,9 @@ authRouter.get('/google/failed', (req, res) => res.send('You failed to log in'))
 authRouter.get('/google/logout', (req, res) => {
   req.session = null;
   req.logout();
-  res.redirect('notLoggedIn');
+  // when redirecting to notLoggedIn, it said 'net::ERR_CONNECTION_CLOSED', so just send the reponse here
+  // res.redirect('notLoggedIn');
+  res.send('not logged in');
 });
 
 

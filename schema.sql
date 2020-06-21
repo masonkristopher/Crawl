@@ -14,7 +14,9 @@ CREATE TABLE `User` (
   `Name_Last` VARCHAR(80),
   `Phone_Number` VARCHAR(12),
   `Email` VARCHAR(50) NOT NULL UNIQUE,
-  `Image_Url` VARCHAR(160)
+  `Image_Url` VARCHAR(160),
+  `Lat`  DECIMAL(10, 8),
+  `Lng` DECIMAL(10,8)
 );
 
 CREATE TABLE `Crawl` (

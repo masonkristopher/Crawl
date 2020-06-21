@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="google-map">
     <br />
     <div>
       <h2>Search for bars</h2>
@@ -22,9 +22,11 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        v-bind:icon="'http://maps.google.com/mapfiles/kml/paddle/' + index + '-lv.png'"
         @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
+    <gmap-marker
+      icon="http://maps.google.com/mapfiles/kml/shapes/man.png"
+    ></gmap-marker> 
 
       <gmap-info-window
         :options="infoOptions"
@@ -37,7 +39,7 @@
         <button  @click="addBarToCrawl">  Add to Your Crawl  </button>
       </gmap-info-window>
     </gmap-map>
-      <ul v-if="selected.length > 0">
+      <ul id="bar-list" v-if="selected.length > 0">
         <h3>Bars in your crawl so far:</h3>
         <li v-for="(bar, index) in selected" :key="bar.name">{{ bar.name }} at {{ bar.address }} <button @click="removeBarFromCrawl(index)">Remove</button></li>
       </ul>
@@ -55,6 +57,7 @@ export default {
       markers: [],
       selected: [],
       places: [],
+      userLocation: {},
       currentPlace: null,
       infoContent: "",
       infoWindowPos: {
@@ -107,13 +110,12 @@ export default {
 
     findBar() {
       // takes in the name of the city or zip code
-
       axios.get(`${process.env.VUE_APP_MY_IP}/api/map/${this.currentPlace}`)
-        .then(bars =>  {
+        .then(response =>  {
           // empty the markers and places and update before each search
           this.markers = [];
           this.places = [];
-          bars.data.forEach(bar => {
+          response.data.forEach(bar => {
             this.addMarker(bar);
           });
         })
@@ -134,9 +136,9 @@ export default {
         this.markers.push({ position: marker });
         this.places.push(bar);
         this.center = marker;
-        // emit to update parent's places and markers
+        // emit to update createCrawl's places and markers
         this.$emit('update:places', this.places);
-        this.$emit('update:markers', this.markers)
+        this.$emit('update:markers', this.markers);
       }
     },
 
@@ -146,11 +148,15 @@ export default {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
+        // give the user's location to createCrawl.  it may not need it though, consider removing
+        // this.userLocation.lat = position.coords.latitude;
+        // this.userLocation.lng = position.coords.longitude;
+        // this.$emit('update:userLocation', this.userLocation);
       });
     },
 
-    addBarToCrawl: function() {
       // pushes the location into state, unless it's already in there
+    addBarToCrawl: function() {
       let names = [];
       this.selected.forEach((location) => {
         names.push(location.name)
@@ -160,7 +166,7 @@ export default {
         this.$emit('update:selected', this.selected);
       }
     },
-
+    // removes the bar from the state
     removeBarFromCrawl: function(index) {
       this.selected.splice(index, 1);
       this.$emit('update:selected', this.selected)
@@ -168,3 +174,7 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="scss">
+@import '../assets/styles/googlemap.scss'
+</style>

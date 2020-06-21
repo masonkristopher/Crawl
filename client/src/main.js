@@ -48,8 +48,12 @@ Vue.use(Vuesax, {
 });
 
 Vue.config.productionTip = false;
+//creating a reactive componenet and adding it to prototype to be globally accessible
+const store = Vue.observable({ createdCrawls: [],});
+Vue.prototype.$store = store;
 
 new Vue({
   router,
   render: (h) => h(App),
 }).$mount("#app");
+

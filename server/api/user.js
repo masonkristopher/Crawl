@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getUser, postUser } = require('../db/index');
+const { getUser, postUser, updateUserLoc } = require('../db/index');
 
 const userRouter = Router();
 
@@ -24,9 +24,22 @@ userRouter.post('/add', (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.send();
+      res.status().end();
     });
 });
+
+userRouter.put('/', (req, res) => {
+  const location = req.body;
+  updateUserLoc(location)
+    .then(() => {
+      res.send('User location updated');
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).end();
+    });
+});
+
 
 module.exports = {
   userRouter,

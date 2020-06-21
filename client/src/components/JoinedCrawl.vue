@@ -19,6 +19,7 @@ export default {
   },
   data() {
     return {
+      /////* ********** this should be this.$parent.user.id, cuz we want it to be the person who logged in
       userId: this.$route.params.userId,
       crawlId: this.$route.params.crawlId,
       crawlName: this.$route.params.crawlName,
@@ -26,6 +27,7 @@ export default {
   },
   methods: {
     join() {
+      console.log(this.$route.params)
       axios.post(`${process.env.VUE_APP_MY_IP}/api/crawl/join/${this.crawlId}/${this.userId}`)
         .then(res => {
           console.log(res.data);
@@ -38,6 +40,6 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+  @import "../assets/styles/joinedcrawl.scss"
 </style>

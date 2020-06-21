@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const https = require('https');
+const fs = require('fs');
 
-// const parse = require('body-parser');
 require('dotenv').config();
 const path = require('path');
 const { apiRouter } = require('./api/index');
@@ -18,9 +19,19 @@ app.use(cors());
 app.use(express.static(CLIENT_PATH));
 app.use(express.json());
 app.use('/api', apiRouter);
-app.listen(PORT, () => {
-  console.log(`Server Listening on Port:${PORT} 🚀`);
-});
+
+
+if (process.env.DEPLOYED === true) {
+  const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/crawl.southcentralus.cloudapp.azure.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/crawl.southcentralus.cloudapp.azure.com/fullchain.pem'),
+  };
+  https.createServer(options, app).listen(PORT);
+} else {
+  app.listen(PORT, () => {
+    console.log(`Server Listening on Port:${PORT} 🚀`);
+  });
+}
 
 module.exports = {
   PORT,

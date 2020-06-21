@@ -25,28 +25,42 @@ connection.connect((err) => {
   }
 });
 
-// TEST QUERY
-const test = () => {
-  const mysqlQuery = 'SELECT * FROM User;';
-  return query(mysqlQuery);
-};
-
 // USER QUERIES
 const getUser = (email) => {
   const mysqlQuery = 'SELECT * FROM User WHERE Email = ?;';
   return query(mysqlQuery, [email]);
 };
+
 const postUser = ({
-  username, nameFirst, nameLast, phoneNumber, email, imageUrl,
+  username, nameFirst, nameLast, phoneNumber, email, imageUrl, lat, lng,
 }) => {
-  const mysqlQuery = 'INSERT IGNORE INTO User VALUES(null, ?, ?, ?, ?, ?, ?);';
-  return query(mysqlQuery, [username, nameFirst, nameLast, phoneNumber, email, imageUrl]);
+  if (!lat) {
+    lat = 0.0;
+  }
+  if (!lng) {
+    lng = 0.0;
+  }
+  const mysqlQuery = 'INSERT IGNORE INTO User VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?);';
+  return query(mysqlQuery, [username, nameFirst, nameLast, phoneNumber, email, imageUrl, lat, lng]);
+};
+
+const updateUserLoc = (location) => {
+  const { lat, lng } = location;
+  const mysqlQuery = 'UPDATE User SET Lat = ?, Lng = ?;';
+  return query(mysqlQuery, [lat, lng]);
 };
 
 // CRAWL QUERIES
 const getCrawl = (idCreator) => {
   const mysqlQuery = 'SELECT * FROM Crawl WHERE Id_Creator = ?;';
   return query(mysqlQuery, [idCreator]);
+};
+
+const getUsersCrawls = (userId) => {
+  const mysqlQuery = 'SELECT * FROM User_Crawl INNER JOIN Crawl ON Crawl.Id = User_Crawl.Id_Crawl && User_Crawl.Id_User = ?;';
+  return query(mysqlQuery, [
+    userId,
+  ]);
 };
 
 const getOneCrawl = (id) => {
@@ -84,6 +98,14 @@ const getLocation = (name) => {
   ]);
 };
 
+
+const getLocsInCrawl = (crawlId) => {
+  const mysqlQuery = 'SELECT * FROM Location_Crawl INNER JOIN Location ON Location.Id = Location_Crawl.Id_Location && Location_Crawl.Id_Crawl = ?;';
+  return query(mysqlQuery, [
+    crawlId,
+  ]);
+};
+
 const postLocations = ({
   address, lat, lng, name,
 }) => {
@@ -107,30 +129,21 @@ const locationCrawl = (idLocation, idCrawl, order) => {
 };
 
 const userCrawl = (idUser, idCrawl) => {
-  const mysqlQuery = 'INSERT INTO User_Crawl VALUES(null, ?, ?);';
+  const mysqlQuery = 'INSERT IGNORE INTO User_Crawl VALUES(null, ?, ?);';
   return query(mysqlQuery, [
     idUser,
     idCrawl,
   ]);
 };
 
-const getUsersCrawls = (userId) => {
-  const mysqlQuery = 'SELECT * FROM User_Crawl INNER JOIN Crawl ON Crawl.Id = User_Crawl.Id_Crawl && User_Crawl.Id_User = ?;';
-  return query(mysqlQuery, [userId]);
-};
-
-const getLocsInCrawl = (crawlId) => {
-  const mysqlQuery = 'SELECT * FROM Location_Crawl INNER JOIN Location ON Location.Id = Location_Crawl.Id_Location && Location_Crawl.Id_Crawl = ?;';
-  return query(mysqlQuery, [crawlId]);
-};
-
 module.exports = {
-  test,
   // USERS
   getUser,
   postUser,
+  updateUserLoc,
   // CRAWLS
   getCrawl,
+  getUsersCrawls,
   getOneCrawl,
   postCrawl,
   joinCrawl,
@@ -138,9 +151,8 @@ module.exports = {
   // LOCATIONS
   getLocation,
   postLocations,
+  getLocsInCrawl,
   // JOIN
   locationCrawl,
   userCrawl,
-  getLocsInCrawl,
-  getUsersCrawls,
 };

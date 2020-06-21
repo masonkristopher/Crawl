@@ -3,7 +3,7 @@
   <h1>Viewing crawl locations for {{ crawlName }}</h1>
   <button v-on:click="join">Join</button>
   <div>
-    <Map >
+    <Map :userId.sync="userId" :crawlId.sync="crawlId">
   </div>
 </div>
 </template>
@@ -22,18 +22,7 @@ export default {
       userId: this.$route.params.userId,
       crawlId: this.$route.params.crawlId,
       crawlName: this.$route.params.crawlName,
-      crawlSpots: null,
     }
-  },
-  created() {
-    axios.get(`${process.env.VUE_APP_MY_IP}/api/location/all/1`)
-      .then((res) => {
-        console.log('locations', res.data);
-        this.crawlSpots = res.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      })
   },
   methods: {
     join() {

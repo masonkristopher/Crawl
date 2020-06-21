@@ -10,6 +10,12 @@
         @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
 
+        <gmap-marker
+        :key="index"
+        v-for="(user, index) in users"
+        :position="user"
+      ></gmap-marker>
+
       <gmap-info-window
         :options="infoOptions"
         :position="infoWindowPos"
@@ -55,7 +61,7 @@ export default {
 
   mounted() {
     this.geolocate();
-        axios.get(`${process.env.VUE_APP_MY_IP}/api/location/all/${this.crawlId}`)
+        axios.get(`/api/location/all/${this.crawlId}`)
         .then((res) => {
           this.crawlSpots = res.data;
           // this.$emit('update:crawlSpots', this.crawlSpots);
@@ -64,7 +70,7 @@ export default {
         this.addMarker(bar)
         })
         // retrieve all users who are in the specific crawl
-        return axios.get(`${process.env.VUE_APP_MY_IP}/api/user/crawlId/${this.crawlId}`)
+        return axios.get(`/api/user/crawlId/${this.crawlId}`)
       })
       .then((res) => {
         const users = res.data;
@@ -72,7 +78,7 @@ export default {
         // use the ids to retrieve the user object and push its info into our state
         users.forEach((user) => {
           const { Id, Lat, Lng } = user;
-          this.users.push({Id, Lat, Lng});
+          this.users.push({id: Id, lat: Lat, lng: Lng});
         })
       })
       .catch((err) => {
@@ -81,7 +87,7 @@ export default {
     },
 
   created() {
-    axios.get(`${process.env.VUE_APP_MY_IP}/api/location/all/${this.crawlId}`)
+    axios.get(`/api/location/all/${this.crawlId}`)
       .then((res) => {
         this.crawlSpots = res.data;
         this.$emit('update:crawlSpots', this.crawlSpots);

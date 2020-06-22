@@ -42,12 +42,20 @@
         <div v-html="infoContent"></div>
         <button  @click="addBarToCrawl">  Add to Your Crawl  </button>
       </gmap-info-window>
-    </gmap-map><br><br>
-    
-      <ul id="bar-selected-list" v-if="selected.length > 0">
+    </gmap-map>
         <h3>Bars in your crawl so far:</h3>
-        <li v-for="(bar, index) in selected" :key="bar.name">{{ bar.name }} at {{ bar.address }} <button @click="removeBarFromCrawl(index)">Remove</button></li>
-      </ul>
+<table id="bar-selected-list" v-if="selected.length > 0">
+  <tr>
+    <th>Bar Name</th>
+    <th>Bar Adress</th>
+    <th>Remove</th>
+  </tr>
+  <tr v-for="(bar, index) in selected" :key="bar.name">
+    <td>{{ bar.name }}</td>
+    <td>{{ bar.address }}</td>
+    <td><button @click="removeBarFromCrawl(index)">Remove</button></td>
+  </tr>
+</table>
   </div>
 </template>
 

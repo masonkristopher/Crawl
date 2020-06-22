@@ -69,7 +69,7 @@ export default {
                     }
               })
         } else if (response.data.redirect === '/login') {
-          window.location.href = 'api/auth/google';
+          window.location.href = '/api/auth/google/callback/';
         }
       })
       .catch(function (error) {

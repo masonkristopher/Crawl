@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-  {{userLocation}}
-    <div id="logo-area">
-      <NavBar v-bind:user="user"/>
+    <div id="top">
       <img id="logo" alt="CRAWL logo" src="./assets/images/logo.png">
     </div>
+      <NavBar v-bind:user="user"/>
     <div>
       <router-view></router-view>
     </div>
+
     <GoogleMap v-show="false" :userLocation.sync="userLocation"></GoogleMap>
   </div>
 </template>
@@ -56,24 +56,25 @@ export default {
           axios.get(`/api/user/${email}`)
             .then((response) => {
               console.log(response, 'app created')
-              this.user = {id: response.data[0].Id,
+              const { Id, Phone_Number } = response.data[0];
+              this.user = {
+                      id: Id,
                       name: user,
                       email: email,
-                      image
+                      image,
+                      phoneNumber: Phone_Number
                     }
               })
         } else if (response.data.redirect === '/login') {
           window.location.href = 'api/auth/google';
         }
       })
-
-
       .catch(function (error) {
         alert(error);
         window.location = "/login"
       })
   },
-};
+}; 
 </script>
 
 <style scoped>

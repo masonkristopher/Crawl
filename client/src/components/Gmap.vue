@@ -1,5 +1,11 @@
 <template>
   <div>
+    <ul>
+      <li id="bar" v-for="(m, index) in markers" :key="index">Bar Number {{index + 1}}: {{m.position.name}}</li>
+    </ul>
+    <div>
+        <button v-on:click="join">Join</button>
+    </div>
     <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
       <gmap-marker
         :key="index"
@@ -9,6 +15,14 @@
          v-bind:icon="'http://maps.google.com/mapfiles/kml/paddle/' + (index + 1) + '-lv.png'"
         @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
+        <div v-if="this.showLocation">
+        <gmap-marker
+        :key="index"
+        v-for="(user, index) in users"
+        :position="user"
+      ></gmap-marker>
+
+        </div>
 
       <gmap-info-window
         :options="infoOptions"
@@ -26,11 +40,13 @@
 import axios from "axios";
 export default {
   name: "GoogleMap",
-  props: ['crawlId', 'userId'],
+  props: ['crawlId', 'userId',],
   data() {
     return {
       // defaulted to New Orleans
       center: { lat: 29.9630486, lng: -90.0438412 },
+      showLocation: false,
+      users: [],
       crawlSpots: [],
       markers: [],
       selected: [],
@@ -134,16 +150,32 @@ export default {
 
   mounted() {
     this.geolocate();
-        axios.get(`${process.env.VUE_APP_MY_IP}/api/location/all/${this.crawlId}`)
+        axios.get(`/api/location/all/${this.crawlId}`)
         .then((res) => {
-          console.log('locations', res.data);
           this.crawlSpots = res.data;
-          console.log(this.crawlSpots);
           // this.$emit('update:crawlSpots', this.crawlSpots);
       }).then(() => {
         this.crawlSpots.forEach(bar => {
         this.addMarker(bar)
         })
+        // retrieve all users who are in the specific crawl
+        return axios.get(`/api/user/crawlId/${this.crawlId}`)
+      })
+      .then((res) => {
+        const users = res.data;
+        console.log(users, 'after api/crawlId/crawlid')
+        // use the ids to retrieve the user object and push its info into our state
+        let ids = []
+        users.forEach((user) => {
+          const { Id, Lat, Lng } = user;
+          ids.push({id: Id, lat: Lat, lng: Lng});
+        })
+        this.users = ids;
+        // users.forEach((user) => {
+        //   if (!ids.includes(Id)) {
+        //     this.users.push({id: Id, lat: Lat, lng: Lng});
+        //   }
+        // })
       })
       .catch((err) => {
         console.log(err);
@@ -151,11 +183,9 @@ export default {
     },
 
   created() {
-    axios.get(`${process.env.VUE_APP_MY_IP}/api/location/all/${this.crawlId}`)
+    axios.get(`/api/location/all/${this.crawlId}`)
       .then((res) => {
-        console.log('locations', res.data);
         this.crawlSpots = res.data;
-        console.log(this.crawlSpots);
         this.$emit('update:crawlSpots', this.crawlSpots);
       })
       .catch((error) => {
@@ -191,7 +221,6 @@ export default {
                    <div class="media-content">
                     <h3 class="barName">${marker.position.name}</h3>
                     <p class="address">${marker.position.address}</p>
-                    <button onClick="${this.addBarToCrawl(marker)}">Add</button>
                   </div>
                 </div>
                 </div>
@@ -224,6 +253,10 @@ export default {
           lng: position.coords.longitude
         };
       });
+    },
+    join() {
+      axios.post(`/api/crawl/join/${this.crawlId}/${this.userId}`)
+      this.showLocation = true;
     },
   }
 };

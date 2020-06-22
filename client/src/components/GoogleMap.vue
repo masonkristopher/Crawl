@@ -196,7 +196,7 @@ export default {
 
     findBar() {
       // takes in the name of the city or zip code
-      axios.get(`${process.env.VUE_APP_MY_IP}/api/map/${this.currentPlace}`)
+      axios.get(`/api/map/${this.currentPlace}`)
         .then(response =>  {
           // empty the markers and places and update before each search
           this.markers = [];
@@ -234,10 +234,10 @@ export default {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        // give the user's location to createCrawl.  it may not need it though, consider removing
-        // this.userLocation.lat = position.coords.latitude;
-        // this.userLocation.lng = position.coords.longitude;
-        // this.$emit('update:userLocation', this.userLocation);
+        // give the user's location to App.  it may not need it though, consider removing
+        this.userLocation.lat = position.coords.latitude;
+        this.userLocation.lng = position.coords.longitude;
+        this.$emit('update:userLocation', this.userLocation);
       });
     },
 

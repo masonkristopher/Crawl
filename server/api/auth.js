@@ -70,11 +70,12 @@ authRouter.get('/google/failed', (req, res) => res.send('You failed to log in'))
 
 // this is a possible logout route
 authRouter.get('/google/logout', (req, res) => {
+  console.log('test');
   req.session = null;
   req.logout();
   // when redirecting to notLoggedIn, it said 'net::ERR_CONNECTION_CLOSED', so just send the reponse here
-  // res.redirect('notLoggedIn');
-  res.send('not logged in');
+  // res.redirect('/');
+  res.send('logged out');
 });
 
 

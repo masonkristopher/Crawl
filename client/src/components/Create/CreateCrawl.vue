@@ -104,6 +104,14 @@ export default {
 
     saveUserCrawl: function(userId, crawlId) {
       axios.post(`${process.env.VUE_APP_MY_IP}/api/join/uc/${userId}+${crawlId}`)
+        .then(() => {
+          this.$vs.notify({
+            title:'SAVED',
+            text: 'YOUR CRAWL HAS BEEN ADDED',
+            color:'success',
+            icon:'check'
+          })
+        })
         .catch((err) => {
           console.log(err);
         })

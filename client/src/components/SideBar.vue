@@ -37,19 +37,19 @@
         Crawls
       </vs-divider>
 
-      <vs-sidebar-group title="My Crawls" v-if="CreatedCrawls !== null">
+      <vs-sidebar-group title="My Crawls" v-if="createdCrawls !== null">
 
-          <vs-sidebar-item v-for="(crawl, index) in CreatedCrawls" :key="crawl.Title" :index="`${index + 1}.${index}`">
+          <vs-sidebar-item v-for="(crawl, index) in createdCrawls" :key="crawl.Title" :index="`${index + 1}.${index}`" v-on:click="viewCrawl(crawl)">
             {{index + 1}}. {{crawl.Title}} <button id="delete-crawl" style="float:right; color:red;" @click="remove">--</button>
           </vs-sidebar-item>
 
       </vs-sidebar-group>
 
 
-      <vs-sidebar-group title="Crawls I've Joined" icon="down" v-if="JoinedCrawls !== null">
+      <vs-sidebar-group title="Crawls I've Joined" icon="down" v-if="joinedCrawls !== null">
 
-        <vs-sidebar-item v-for="(crawl, index) in JoinedCrawls" :key="crawl.name" :index="`${index + 2}.${index}`">
-            {{index + 1}}. {{crawl.name}}
+        <vs-sidebar-item v-for="(crawl, index) in joinedCrawls" :key="crawl.Title" :index="`${index + 2}.${index}`" v-on:click="viewCrawl(crawl)">
+            {{index + 1}}. {{crawl.Title}}
         </vs-sidebar-item>
 
       </vs-sidebar-group>
@@ -65,6 +65,7 @@
       <vs-sidebar-item icon="help" index="6">
         Help
       </vs-sidebar-item>
+
 
 
       <div class="footer-sidebar" slot="footer">
@@ -104,13 +105,23 @@ import debounce from 'lodash/debounce';
 
 export default {
   props: ['user'],
+  // in data, 'this' doesnt exist yet. we want createdCrawls to be equal to the global storage, so we do it in computed instead
+  computed: {
+      createdCrawls() {
+        return this.$store.createdCrawls
+      },
+    },
   data:()=>({
+    User:{image: "https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512",
+          name: "Jerry McDonald",
+          phoneNumber: "555-555-5555",
+          email: "jerryMcDonald@gmail.com",
+        },
     active:false,
     popupActivo:false,
     showNumberInput:false,
     userNumberChange:"",
-    CreatedCrawls: [{name: "Christmas Crawl 2k21"},],
-    JoinedCrawls: [{name: "Naseer's 21st Birthday Bash"}, {name: "Mac's SuperBowl Crawl"}],
+    joinedCrawls: [],
   }),
 
   updated: debounce(function () {
@@ -137,6 +148,23 @@ export default {
         })
       })
   }, 10000), // increase to ur needs
+
+  watch: {
+    // whenever createdCrawls changes, this function will get all the crawls a user has joined
+    createdCrawls: function () {
+      const { id } = this.user;
+      axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/joined/${id}`)
+        .then((response) => {
+          response.data.forEach(joined => {
+            axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/details/${joined.Id_Crawl}`)
+              .then(response => {
+                this.joinedCrawls.push(response.data[0]);
+              })
+          })
+        })
+    }
+  },
+
   methods: {
     logout() {
       axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google/logout`)
@@ -144,8 +172,8 @@ export default {
           console.log("Successful logout")
           this.popupActivo = true;
           this.user = null;
-          this.CreatedCrawls = null;
-          this.JoinedCrawls = null;
+          this.createdCrawls = null;
+          this.joinedCrawls = null;
         })
         .catch((err) => {
         console.log('Error logging client out:', err);
@@ -186,67 +214,17 @@ export default {
     },
     remove() {
       console.log('removed crawl');
-      // axios.get()
+    },
+    viewCrawl(crawl) {
+      // send important user id and crawl data for grabing location for next comp
+      // this keeps adding things on to the endpoint. so will it just get longer and longer?
+      this.$router.push(`/crawl/joined/${this.user.id}/${crawl.Title}/${crawl.Id}`);
+      // this.$router = (`/crawl/joined/${this.user.id}/${crawl.Title}/${crawl.Id}`);
     }
   }
 }
 </script>
 
 <style>
-  #view-profile {
-    bottom: 0;
-  }
-  #phone-edit-span {
-    width: 40%;
-  }
-
-  #phone-edit {
-   float: right;
-  }
-
-  #delete-crawl {
-    background: none;
-    border: none;
-  }
-
-  .logout:link, .logout:visited {
-    background-color: #f6372a;
-    color: white;
-    padding: 14px 25px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .logout:hover, .logout:active {
-    background-color: rgb(255, 27, 27);
-    font-size: 18px;
-  }
-  
-  #text {
-    align-content: center;
-  }
-
-  #popup-title {
-    -webkit-text-stroke: .2px black;
-  }
-
-  .login {
-    float:right;
-    bottom: 4px;
-  }
-
-  .login:link, .login:visited {
-    background-color: #23f52d;
-    color: white;
-    padding: 14px 25px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .login:hover, .login:active {
-    background-color: rgb(9, 255, 0);
-    font-size: 18px;
-  }
+  @import '../assets/styles/sidebar.scss';
 </style>

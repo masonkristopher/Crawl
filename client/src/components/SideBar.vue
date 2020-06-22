@@ -105,10 +105,14 @@ import 'material-icons/iconfont/material-icons.css';
 export default {
   props: ['user'],
   // in data, 'this' doesnt exist yet. we want createdCrawls to be equal to the global storage, so we do it in computed instead
+  // $store is reactive, so when it is updated, everything that it touches updates tooooo
   computed: {
       createdCrawls() {
-        return this.$store.createdCrawls
+        return this.$store.createdCrawls;
       },
+      joinedCrawls() {
+        return this.$store.joinedCrawls;
+      }
     },
   data:() => ({
     active:false,
@@ -118,29 +122,8 @@ export default {
     foundNumberKey: 1,
     userNumber: null,
     userNumberChange: "",
-    joinedCrawls: [],
   }),
-  watch: {
-    // whenever createdCrawls changes, this function will get all the crawls a user has joined
-    createdCrawls: function () {
-      const { id } = this.user;
-      axios.get(`/api/crawl/joined/${id}`)
-        .then((response) => {
-          response.data.forEach(joined => {
-            axios.get(`/api/crawl/details/${joined.Id_Crawl}`)
-              .then(response => {
-                if (response.Id_Creator !== id) {
-                  this.joinedCrawls.push(response.data[0]);
-                }
-              })
-          })
-        })
-    },
-    // showNumberInput: function () {
-    //   this.$force
-    // },
 
-  },
   methods: {
     logout() {
       axios.get(`/api/auth/google/logout`)

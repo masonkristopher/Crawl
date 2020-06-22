@@ -3,6 +3,16 @@
     <ul>
       <li id="bar" v-for="(m, index) in markers" :key="index">Bar Number {{index + 1}}: {{m.position.name}}</li>
     </ul>
+    <table>
+  <tr>
+    <th>Bar Number</th>
+    <th>Bar Name</th>
+  </tr>
+  <tr id="bar" v-for="(m, index) in markers" :key="index">
+    <td>{{index + 1}}</td>
+    <td>{{m.position.name}}</td>
+  </tr>
+</table>
     <div>
         <button v-on:click="join">Join</button>
     </div>

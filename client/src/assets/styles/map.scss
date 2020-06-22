@@ -87,7 +87,8 @@ input:not(:focus):valid ~ .floating-label{
 	margin-bottom: 10px;
 }
 
-#bar-selected-list {
-	position: absolute;
-	float: left;
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
 }

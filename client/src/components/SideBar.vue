@@ -183,6 +183,7 @@ export default {
       // this keeps adding things on to the endpoint. so will it just get longer and longer?
       this.$router.push(`/crawl/joined/${this.user.id}/${crawl.Title}/${crawl.Id}`);
       // this.$router = (`/crawl/joined/${this.user.id}/${crawl.Title}/${crawl.Id}`);
+      location.reload();
     }
   }
 }

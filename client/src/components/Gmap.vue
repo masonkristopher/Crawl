@@ -262,7 +262,7 @@ export default {
       });
     },
     join() {
-      // add user to user_crawl table
+      // add user to user_crawl table.
       axios.post(`/api/crawl/join/${this.crawlId}/${this.userId}`);
       // update the joined crawls array on the store, hopefully triggering renders elsewehere
         axios.get(`/api/crawl/joined/${this.userId}`)

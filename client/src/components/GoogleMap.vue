@@ -2,25 +2,26 @@
   <div>
     <br />
     <div>
-      <label>
-        <vs-icon icon="search"></vs-icon>
+      <div class="user-input-wrp map-expand">
+
         <input
           id="location-search"
           type="text" 
           v-on:keyup.enter="findBar" 
           v-model="currentPlace" 
           @input="$emit('update:currentPlace', currentPlace)" 
-          placeholder="Enter a ZIP code or city"
           @focus="() => {this.currentPlace = ''}"
-        >
-        <button id="location-search-button" @click="findBar">Search </button>
-      </label>
+        required/>
+        <div class="border-map"></div>
+        <span class="floating-label">Enter ZIP Code/City</span><button id="location-search-button" @click="findBar">Search</button>
+      </div>
       <br>
       <br>
-
+      <br>
     </div>
-  
-    <gmap-map :center="center" :zoom="12" :options="{styles: styles}" style="width:100%;  height: 400px; float:right;">
+    <br>
+
+    <gmap-map class="move-right" id="map-el" :center="center" :zoom="12" :options="{styles: styles}" style="width:100%;  height: 400px; float:right;">
       <gmap-marker
         :key="index"
         v-for="(m, index) in markers"
@@ -38,7 +39,7 @@
         <div v-html="infoContent"></div>
         <button  @click="addBarToCrawl">  Add to Your Crawl  </button>
       </gmap-info-window>
-    </gmap-map>
+    </gmap-map><br><br>
 
     <ul id="bar-selected-list" v-if="selected.length > 0">
       <h3>Bars in your crawl so far:</h3>

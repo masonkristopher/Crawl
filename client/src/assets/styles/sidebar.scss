@@ -1,5 +1,5 @@
 .vs-sidebar {
-  background-color: hotpink;
+  background-color: #5c5a6bec;
 }
 
 #view-profile {
@@ -13,9 +13,8 @@
  float: right;
 }
 
-#delete-crawl {
-  background: none;
-  border: none;
+.vs-sidebar--footer {
+  background-color: #5a5768f6;
 }
 
 .logout:link, .logout:visited {

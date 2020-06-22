@@ -56,18 +56,19 @@ export default {
           axios.get(`${process.env.VUE_APP_MY_IP}/api/user/${email}`)
             .then((response) => {
               console.log(response, 'app created')
-              this.user = {id: response.data[0].Id,
+              const { Id, Phone_Number } = response.data[0];
+              this.user = {
+                      id: Id,
                       name: user,
                       email: email,
-                      image
+                      image,
+                      phoneNumber: Phone_Number
                     }
               })
         } else if (response.data.redirect === '/login') {
           window.location.href = 'api/auth/google';
         }
       })
-
-
       .catch(function (error) {
         alert(error);
         // window.location = "/login"

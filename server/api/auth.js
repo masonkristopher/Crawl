@@ -13,18 +13,6 @@ authRouter.use(cookieSession({
   keys: ['key1', 'key2'],
 }));
 
-// make it possible to check if the user is logged in
-const isLoggedIn = (req, res, next) => {
-  if (req.user) {
-    console.log('user is logged in');
-    next();
-  } else {
-    console.log('user not logged in');
-    res.redirect('/api/auth/google');
-  }
-};
-
-
 // use the two helper funcitons initialize and session
 // http://www.passportjs.org/docs/configure
 authRouter.use(passport.initialize());

@@ -50,9 +50,12 @@
     <th>Bar Adress</th>
     <th>Remove</th>
   </tr>
-
-
-
+  <tr v-for="(bar, index) in selected" :key="bar.name">
+    <td>{{ bar.name }}</td>
+    <td>{{ bar.address }}</td>
+    <td><button @click="removeBarFromCrawl(index)">Remove</button></td>
+  </tr>
+</table>
   </div>
 </template>
 

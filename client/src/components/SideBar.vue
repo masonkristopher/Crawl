@@ -148,7 +148,7 @@ export default {
       console.log(this.showNumberInput);
     },
     addNumber() {
-      axios.post(`${process.env.VUE_APP_MY_IP}/api/user/contact`, {
+      axios.post(`/api/user/contact`, {
           number: this.userNumberChange,
           userId: this.user.id,
       })

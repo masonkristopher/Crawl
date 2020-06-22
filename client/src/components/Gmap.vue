@@ -1,8 +1,5 @@
 <template>
   <div>
-    <ul>
-      <li id="bar" v-for="(m, index) in markers" :key="index">Bar Number {{index + 1}}: {{m.position.name}}</li>
-    </ul>
     <table>
   <tr>
     <th>Bar Number</th>

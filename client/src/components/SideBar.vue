@@ -15,8 +15,14 @@
           <vs-button color="primary" type="flat">...</vs-button>
 
           <vs-sidebar-group icon="person" title="User" v-if="this.user !== null">
-            <vs-sidebar-item icon="call" index="1">
-              {{User.phoneNumber}}
+
+            <vs-sidebar-item style="color:red;" index="1" v-if="this.user.phoneNumber === null">
+              <div v-if="this.showNumberInput === false">Register Your Phone Number <span id="phone-edit-span"><vs-icon id="phone-edit" icon="create" @click="showInput"></vs-icon></span></div>
+              <span v-else-if="this.showNumberInput === true"><vs-input icon-after="true" icon="check" v-on:icon-click="addNumber" placeholder=" - - - "  v-model="userNumberChange"/></span>
+            </vs-sidebar-item>
+            <vs-sidebar-item icon="call" index="1" v-else-if="this.user.phoneNumber !== null">
+              <div v-if="this.showNumberInput === false">{{User.phoneNumber}} <span id="phone-edit-span"><vs-icon id="phone-edit" icon="create" @click="showInput"></vs-icon></span></div>
+              <span v-else-if="this.showNumberInput === true"><vs-input icon-after="true" icon="check" v-on:icon-click="addNumber" placeholder=" - - - " v-model="userNumberChange"/></span>
             </vs-sidebar-item>
 
             <vs-sidebar-item icon="email" index="1.2">
@@ -93,7 +99,6 @@
 
 <script>
 import axios from 'axios';
-// import stylus from 'stylus';
 import 'material-icons/iconfont/material-icons.css';
 import debounce from 'lodash/debounce';
 
@@ -102,11 +107,8 @@ export default {
   data:()=>({
     active:false,
     popupActivo:false,
-    User:{image: "https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512",
-          name: "Jerry McDonald",
-          phoneNumber: "555-555-5555",
-          email: "jerryMcDonald@gmail.com",
-         }, 
+    showNumberInput:false,
+    userNumberChange:"",
     CreatedCrawls: [{name: "Christmas Crawl 2k21"},],
     JoinedCrawls: [{name: "Naseer's 21st Birthday Bash"}, {name: "Mac's SuperBowl Crawl"}],
   }),
@@ -115,12 +117,15 @@ export default {
       this.$nextTick(() => {
         axios.get(`${process.env.VUE_APP_MY_IP}/api/user/${this.user.email}`)
         .then((dbUser) => {
-          const { Id } = dbUser.data[0]
-          this.user.userId = Id
-          this.$emit('update:user', this.user)
+          const { Id, Phone_Number } = dbUser.data[0];
+          this.user.userId = Id;
+
+          Phone_Number === "" ? this.user.phoneNumber = null : this.user.phoneNumber = Phone_Number;
+
+          this.$emit('update:user', this.user);
+
           axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/${Id}`)
             .then((createdCrawlsRes) => {
-              console.log(createdCrawlsRes.data)
               this.CreatedCrawls = createdCrawlsRes.data
             })
             .catch((err) => {
@@ -132,26 +137,6 @@ export default {
         })
       })
   }, 10000), // increase to ur needs
-
-  // updated() {
-  //     axios.get(`${process.env.VUE_APP_MY_IP}/api/user/${this.user.email}`)
-  //       .then((dbUser) => {
-  //         const { Id } = dbUser.data[0]
-  //         this.user.userId = Id
-  //         this.$emit('update:user', this.user)
-  //         axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/${Id}`)
-  //           .then((createdCrawlsRes) => {
-  //             console.log(createdCrawlsRes.data)
-  //             this.CreatedCrawls = createdCrawlsRes.data
-  //           })
-  //           .catch((err) => {
-  //             console.log('Error getting user\'s Created Crawls', err);
-  //           })
-  //       })
-  //       .catch((err) => {
-  //         console.log('Error getting user\'s db', err)
-  //       })
-  // },
   methods: {
     logout() {
       axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google/logout`)
@@ -168,13 +153,36 @@ export default {
     },
     login() {
       // axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google`)
-      this.$notify({
-        group: 'success',
-        type: 'success-type',
-        title: 'SAVED',
-        text: 'Your Crawl Has Been Created!'
-});
       console.log('Log In Page')
+    },
+    showInput() {
+      this.showNumberInput = true;
+      console.log(this.showNumberInput);
+    },
+    addNumber() {
+      axios.post(`${process.env.VUE_APP_MY_IP}/api/user/contact`, {
+          number: this.userNumberChange,
+          userId: this.user.userId,
+      })
+        .then(() => {
+          this.showNumberInput = false;
+          console.log('number changed!');
+          this.$vs.notify({
+            title:'SAVED',
+            text: 'YOUR NUMBER HAS BEEN ADDED',
+            color:'success',
+            icon:'check'
+          })
+        })
+        .catch((err) => {
+          this.$vs.notify({
+            title:'PLEASE TRY AGAIN',
+            text: 'Your Number Was Not Added',
+            color:'danger',
+            icon:'error'
+          })
+          console.log('Error adding the phone number:', err)
+        })
     },
     remove() {
       console.log('removed crawl');
@@ -187,6 +195,13 @@ export default {
 <style>
   #view-profile {
     bottom: 0;
+  }
+  #phone-edit-span {
+    width: 40%;
+  }
+
+  #phone-edit {
+   float: right;
   }
 
   #delete-crawl {

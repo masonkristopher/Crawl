@@ -1,11 +1,10 @@
 <template>
   <div id="create">
     <ul id="crawl-forms">
-      <!-- make App listen to changes in title by using emit and v-model -->
-
       <li>
         <div class="user-input-wrp expand">
           <br/>
+      <!-- make App listen to changes in title by using emit and v-model -->
           <input class="form_field crawl-title" type="text" autocomplete="off" name="title" v-model="title" @input="$emit('update:title', title)" required/>
           <div class="border"></div>
           <span class="floating-label">Title</span>
@@ -16,7 +15,7 @@
         <div class="user-input-wrp expand">
           <br/>
           <input class="form_field crawl-time-date" type="datetime-local" name="datetime" v-model="crawlDate" @input="$emit('update:crawlDate', crawlDate)" required/>
-          <div class="border"></div>
+          <div class="border"></div> 
         </div>
       </li>
       <br>
@@ -25,7 +24,8 @@
       </button>
       <div v-if="crawlId !== null">
         <h3>Give this to your friends to have them join:</h3>
-        <h3 >{{url}}/crawl/joined/{{this.$parent.user.id}}/{{this.title}}/{{crawlId}}</h3>
+        <h3 >https://crawl.southcentralus.cloudapp.azure.com:8081/#/crawl/joined/3/join/9
+/crawl/joined/{{this.$parent.user.id}}/{{this.title}}/{{crawlId}}</h3>
       </div>
     </ul>
 
@@ -74,7 +74,6 @@ export default {
         .then((response) => {
           // save locations to database, and store the crawlId that was just created
           this.crawlId = response.data.insertId;
-          // ********************* this.$parent.user.id instead of 1 *****************
           this.saveUserCrawl(this.$parent.user.id, this.crawlId);
           return this.saveLocations();
         })

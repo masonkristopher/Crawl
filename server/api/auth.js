@@ -18,12 +18,6 @@ authRouter.use(cookieSession({
 authRouter.use(passport.initialize());
 authRouter.use(passport.session());
 
-
-// a possible route to for the user to go to I used before just directing them to the homepage
-authRouter.get('/google/good', isLoggedIn, (req, res) => {
-  res.send(`Welcome ${req.user.displayName}`);
-});
-
 // this may be the main log in route from the main.js
 authRouter.get('/google/login', (req, res) => {
   if (req.user) {

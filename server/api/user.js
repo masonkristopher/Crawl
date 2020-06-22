@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getUser, postUser, updateContact, updateUserLoc  } = require('../db/index');
+const { getUser, postUser, updateContact, updateUserLoc } = require('../db/index');
 
 const userRouter = Router();
 

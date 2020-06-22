@@ -145,7 +145,7 @@ export default {
       console.log(this.showNumberInput);
     },
     addNumber() {
-      axios.post(`${process.env.VUE_APP_MY_IP}/api/user/contact`, {
+      axios.post(`/api/user/contact`, {
           number: this.userNumberChange,
           userId: this.user.id,
       })
@@ -180,6 +180,7 @@ export default {
       // this keeps adding things on to the endpoint. so will it just get longer and longer?
       this.$router.push(`/crawl/joined/${this.user.id}/${crawl.Title}/${crawl.Id}`);
       // this.$router = (`/crawl/joined/${this.user.id}/${crawl.Title}/${crawl.Id}`);
+      location.reload();
     }
   }
 }

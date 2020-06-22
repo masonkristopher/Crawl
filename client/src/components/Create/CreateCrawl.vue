@@ -1,6 +1,10 @@
 <template>
   <div id="create">
     <ul id="crawl-forms">
+      <div v-if="crawlId !== null">
+        <h3>Send this crawl to your friends to have them join!</h3>
+        <vs-input id="copy-url" icon-after="true" icon="content_copy" color="#d29362" :key="joinCrawlKey" v-on:icon-click="newCopyBehavior(joinCrawlUrl)" v-model="joinCrawlUrl"/>
+      </div><br>
       <li>
         <div class="user-input-wrp expand">
           <br/>
@@ -21,18 +25,12 @@
       <br>
       <button id="save-crawl-button" v-on:click.stop="saveCrawl">
         Save crawl
-      </button>
-      <div v-if="crawlId !== null">
-        <h3>Give this to your friends to have them join:</h3>
-        <h3 >https://crawl.southcentralus.cloudapp.azure.com:8081/#/crawl/joined/{{this.$parent.user.id}}/{{this.title}}/{{crawlId}}</h3>
-      </div>
+      </button><br><br>
+      
     </ul>
 
     <div>
       <google-map id="create-map" :selected.sync="selected"/>
-
-    
-    
   </div>
 
 </template>
@@ -54,6 +52,8 @@ export default {
       selected: [],
       crawlId: null,
       url: process.env.VUE_APP_MY_IP,
+      joinCrawlUrl: "",
+      joinCrawlKey: 0,
     }
   },
   methods: {
@@ -115,6 +115,8 @@ export default {
     saveUserCrawl: function(userId, crawlId) {
       axios.post(`/api/join/uc/${userId}+${crawlId}`)
         .then(() => {
+        this.joinCrawlUrl = `https://crawl.southcentralus.cloudapp.azure.com:8081/#/crawl/joined/${this.$parent.user.id}/${this.title}/${this.crawlId}`.replace(/\s+/g, '');
+        this.joinCrawlKey += 1;
           this.$vs.notify({
             title:'SAVED',
             text: 'YOUR CRAWL HAS BEEN ADDED',
@@ -126,6 +128,27 @@ export default {
           console.log(err);
         })
     },
+
+    newCopyBehavior: function(url) {
+      // Overwrite what is being copied to the clipboard.
+      document.addEventListener('copy', function(e) {
+
+      /* e.clipboardData is initially empty, but we can set it to the
+         data that we want copied onto the clipboard.*/
+      e.clipboardData.setData('text/plain', url);
+      console.log(url)
+
+      /* This is necessary to prevent the current document selection from
+         being written to the clipboard. */
+      e.preventDefault();
+      });
+      this.copyToClipBoard();
+    },
+
+    copyToClipBoard: function() {
+      document.execCommand("copy");
+      console.log('COPIED:')
+    }
   }
 }
 </script>

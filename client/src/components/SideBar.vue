@@ -40,7 +40,7 @@
       <vs-sidebar-group title="My Crawls" v-if="createdCrawls !== null">
 
           <vs-sidebar-item v-for="(crawl, index) in createdCrawls" :key="crawl.Title" :index="`${index + 1}.${index}`" v-on:click="viewCrawl(crawl)">
-            {{index + 1}}. {{crawl.Title}} <button id="delete-crawl" style="float:right; color:red;" @click="remove">--</button>
+            {{index + 1}}. {{crawl.Title}}
           </vs-sidebar-item>
 
       </vs-sidebar-group>
@@ -59,9 +59,6 @@
         Other
       </vs-divider>
 
-      <vs-sidebar-item icon="https" index="5">
-        Security
-      </vs-sidebar-item>
       <vs-sidebar-item icon="help" index="6">
         Help
       </vs-sidebar-item>

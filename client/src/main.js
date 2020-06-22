@@ -4,7 +4,6 @@ import Vuesax from "vuesax";
 import "vuesax/dist/vuesax.css";
 
 import App from "./App.vue";
-import Dash from "./components/DashBoard/UserDash.vue";
 import Create from "./components/Create/CreateCrawl.vue";
 import JoinedCrawl from "./components/JoinedCrawl.vue";
 import * as VueGoogleMaps from "vue2-google-maps";
@@ -19,7 +18,6 @@ Vue.use(VueRouter);
 // either be an actual component constructor created via
 // Vue.extend(), or just a component options object.
 const routes = [
-  { path: '/home', component: Dash },
   { path: '/create', component: Create },
   { path: '/crawl/joined/:userId/:crawlName/:crawlId', component: JoinedCrawl }
 ]

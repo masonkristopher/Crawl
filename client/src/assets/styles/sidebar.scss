@@ -5,6 +5,33 @@
 #view-profile {
   bottom: 0;
 }
+#phone-edit-span {
+  width: 40%;
+}
+
+#phone-edit {
+ float: right;
+}
+
+#delete-crawl {
+  background: none;
+  border: none;
+}
+
+.logout:link, .logout:visited {
+  background-color: #f6372a;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.logout:hover, .logout:active {
+  background-color: rgb(255, 27, 27);
+  font-size: 18px;
+}
+
 #text {
   align-content: center;
 }
@@ -19,7 +46,7 @@
 }
 
 .login:link, .login:visited {
-  background-color: #f6372a;
+  background-color: #23f52d;
   color: white;
   padding: 14px 25px;
   text-align: center;
@@ -28,6 +55,6 @@
 }
 
 .login:hover, .login:active {
-  background-color: rgb(255, 27, 27);
+  background-color: rgb(9, 255, 0);
   font-size: 18px;
 }

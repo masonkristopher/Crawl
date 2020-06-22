@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getUser, postUser, updateUserLoc, getCrawlsUsers } = require('../db/index');
+const { getUser, postUser, updateContact, updateUserLoc } = require('../db/index');
 
 const userRouter = Router();
 
@@ -28,7 +28,6 @@ userRouter.get('/crawlId/:crawlId', (req, res) => {
 
 userRouter.post('/add', (req, res) => {
   const profile = req.body;
-  console.log(profile);
   postUser(profile)
     .then(() => {
       res.send('User added to DB');
@@ -39,7 +38,19 @@ userRouter.post('/add', (req, res) => {
     });
 });
 
-userRouter.put('/:idUser', (req, res) => {
+userRouter.post('/contact', (req, res) => {
+  const { number, userId } = req.body;
+  updateContact(number, userId)
+    .then((dataRes) => {
+      console.log(dataRes);
+      res.send('Contact Number Updated');
+    })
+    .catch((err) => {
+      console.log('Could not update phone number:', err);
+    });
+});
+
+userRouter.put('/', (req, res) => {
   const location = req.body;
   const idUser = req.params.idUser;
   updateUserLoc(location, idUser)

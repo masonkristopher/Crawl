@@ -1,21 +1,35 @@
 <template>
-  <div id="create-crawl">
-    <br/>
-      <ul id="crawl-forms">
-        <!-- make App listen to changes in title by using emit and v-model -->
-        <li>Name your crawl: <br><input type="text" name="title" v-model="title" @input="$emit('update:title', title)"></li>
-        <br>
-        <br>
-        <li>When is your crawl? <br><input type="datetime-local" name="datetime" v-model="crawlDate" @input="$emit('update:crawlDate', crawlDate)"></li>
-        <br>
-        <button v-on:click.stop="saveCrawl">
-          Save crawl
-        </button>
-        <div v-if="crawlId !== null">
-          <h3>Give this to your friends to have them join:</h3>
-          <h3 >{{url}}/crawl/joined/{{this.$parent.user.id}}/{{this.title}}/{{crawlId}}</h3>
+  <div id="create">
+    <ul id="crawl-forms">
+      <!-- make App listen to changes in title by using emit and v-model -->
+
+      <li>
+        <div class="user-input-wrp expand">
+          <br/>
+          <input class="form_field crawl-title" type="text" autocomplete="off" name="title" v-model="title" @input="$emit('update:title', title)" required/>
+          <div class="border"></div>
+          <span class="floating-label">Title</span>
         </div>
-      </ul>
+      </li>
+      <br><br><br><br><br>
+      <li>
+        <div class="user-input-wrp expand">
+          <br/>
+          <input class="form_field crawl-time-date" type="datetime-local" name="datetime" v-model="crawlDate" @input="$emit('update:crawlDate', crawlDate)" required/>
+          <div class="border"></div>
+        </div>
+      </li>
+      <br>
+      <button id="save-crawl-button" v-on:click.stop="saveCrawl">
+        Save crawl
+      </button>
+      <div v-if="crawlId !== null">
+        <h3>Give this to your friends to have them join:</h3>
+        <h3 >{{url}}/crawl/joined/{{this.$parent.user.id}}/{{this.title}}/{{crawlId}}</h3>
+      </div>
+    </ul>
+
+    <div>
       <google-map id="create-map" :selected.sync="selected"/>
 
     
@@ -26,6 +40,7 @@
 
 <script>
 import axios from 'axios';
+import 'material-icons/iconfont/material-icons.css';
 import GoogleMap from '../GoogleMap'
 
 export default {
@@ -101,7 +116,15 @@ export default {
     },
 
     saveUserCrawl: function(userId, crawlId) {
-      axios.post(`/api/join/uc/${userId}+${crawlId}`)
+      axios.post(`${process.env.VUE_APP_MY_IP}/api/join/uc/${userId}+${crawlId}`)
+        .then(() => {
+          this.$vs.notify({
+            title:'SAVED',
+            text: 'YOUR CRAWL HAS BEEN ADDED',
+            color:'success',
+            icon:'check'
+          })
+        })
         .catch((err) => {
           console.log(err);
         })
@@ -110,6 +133,6 @@ export default {
 }
 </script>
 
-<style scoped>
-  @import '../../assets/styles/createcrawl.scss';
+<style>
+@import '../../assets/styles/createcrawl.scss';
 </style>

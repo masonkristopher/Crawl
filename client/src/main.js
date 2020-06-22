@@ -11,7 +11,6 @@ import * as VueGoogleMaps from "vue2-google-maps";
 
 Vue.use(VueRouter);
 
-
 // 1. Define route components.
 // These can be imported from other files, above, or created in ``const Foo = { template: '<div>foo</div>' }`` syntax
 

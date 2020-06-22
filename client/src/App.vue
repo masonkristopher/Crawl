@@ -8,9 +8,6 @@
       <NavBar v-bind:user="user"/>
     </div>
 
-    <notifications group="success" classes="notif" position="top center" />
-    <notifications group="failure" classes="notif" position="left center" />
-
     <router-view> </router-view>
   </div>
 </template>

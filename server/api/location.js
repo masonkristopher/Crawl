@@ -4,14 +4,14 @@ const { getLocation, postLocations, getLocsInCrawl } = require('../db/index');
 const locationRouter = Router();
 
 locationRouter.get('/:name', (req, res) => {
-  const name = req.params.name;
+  const { name } = req.params;
   getLocation(name)
     .then((data) => {
-      console.log('location retrieved');
+      // console.log('location retrieved');
       res.send(data);
     })
     .catch((err) => {
-      console.log('Error retrieving crawl from DB:', err);
+      // console.log('Error retrieving crawl from DB:', err);
       res.status(500).end();
     });
 });

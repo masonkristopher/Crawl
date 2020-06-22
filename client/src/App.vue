@@ -37,7 +37,7 @@ export default {
     // whenever userlocation changes, this function will run
     // userLocation: function () {
     //   // update user's location in the user table
-    //   console.log(this.user.id, 'userLocation');
+    //   axios.put(`/api/user/${this.user.id}`, this.userLocation)
     // },
     // after a user is logged in and stored in state, put their crawls in the global object
     user: function () {
@@ -45,7 +45,7 @@ export default {
         .then((response) => {
           this.$store.createdCrawls = response.data;
         })
-        .then( () => {
+        .then(() => {
           axios.put(`/api/user/${this.user.id}`, this.userLocation)
         })
     },

@@ -11,43 +11,30 @@ const {
 const crawlRouter = Router();
 
 crawlRouter.get('/one/:idCreator', (req, res) => {
-  console.log(req.params.idCreator);
-  getCrawl(req.params.idCreator)
+  const { idCreator } = req.params;
+  getCrawl(idCreator)
     .then((data) => {
       res.send(data);
     })
-    .catch((err) => {
-      console.log('Error retrieving crawls from DB:', err);
-      res.send(err);
+    .catch(() => {
+      res.status(500).end();
     });
 });
 
 crawlRouter.get('/all/:idCreator', (req, res) => {
-  console.log(req.params.idCreator);
-  getUsersCrawls(req.params.idCreator)
+  const { idCreator } = req.params;
+  getUsersCrawls(idCreator)
     .then((data) => {
       res.send(data);
     })
-    .catch((err) => {
-      console.log('Error retrieving crawls from DB:', err);
-      res.send(err);
-    });
-});
-
-crawlRouter.get('/all/:idCreator', (req, res) => {
-  console.log(req.params.idCreator);
-  getUsersCrawls(req.params.idCreator)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      console.log('Error retrieving crawls from DB:', err);
-      res.send(err);
+    .catch(() => {
+      // console.log('Error retrieving crawls from DB:', err);
+      res.status(500).end();
     });
 });
 
 crawlRouter.get('/details/:id', (req, res) => {
-  console.log(req.params.id);
+
   getOneCrawl(req.params.id)
     .then((data) => {
       res.send(data);

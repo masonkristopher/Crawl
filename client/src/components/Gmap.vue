@@ -1,6 +1,11 @@
 <template>
   <div>
-    {{users}}
+    <ul>
+      <li id="bar" v-for="(m, index) in markers" :key="index">Bar Number {{index + 1}}: {{m.position.name}}</li>
+    </ul>
+    <div>
+        <button v-on:click="join">Join</button>
+    </div>
     <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
       <gmap-marker
         :key="index"
@@ -10,12 +15,14 @@
          v-bind:icon="'http://maps.google.com/mapfiles/kml/paddle/' + (index + 1) + '-lv.png'"
         @click="toggleInfoWindow(m,index)"
       ></gmap-marker>
-
+        <div v-if="this.showLocation">
         <gmap-marker
         :key="index"
         v-for="(user, index) in users"
         :position="user"
       ></gmap-marker>
+
+        </div>
 
       <gmap-info-window
         :options="infoOptions"
@@ -33,11 +40,12 @@
 import axios from "axios";
 export default {
   name: "GoogleMap",
-  props: ['crawlId', 'userId'],
+  props: ['crawlId', 'userId',],
   data() {
     return {
       // defaulted to New Orleans
       center: { lat: 29.9630486, lng: -90.0438412 },
+      showLocation: false,
       users: [],
       crawlSpots: [],
       markers: [],
@@ -245,6 +253,10 @@ export default {
           lng: position.coords.longitude
         };
       });
+    },
+    join() {
+      axios.post(`/api/crawl/join/${this.crawlId}/${this.userId}`)
+      this.showLocation = true;
     },
   }
 };

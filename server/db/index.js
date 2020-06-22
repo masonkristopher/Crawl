@@ -49,7 +49,7 @@ const updateContact = (number, userId) => {
   return query(mysqlQuery, [number, userId]);
 };
 
-const updateUserLoc = (location) => {
+const updateUserLoc = (location, idUser) => {
   const { lat, lng } = location;
   const mysqlQuery = 'UPDATE User SET Lat = ?, Lng = ? WHERE Id = ?;';
   return query(mysqlQuery, [lat, lng, idUser]);

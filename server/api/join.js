@@ -11,11 +11,11 @@ joinRouter.post('/lc/:locCrawl', (req, res) => {
   const order = locCrawl[2];
   locationCrawl(loc, crawl, order)
     .then((data) => {
-      console.log('locCrawl added');
+      // console.log('locCrawl added');
       res.send(data);
     })
     .catch((err) => {
-      console.log('locCrawl not added');
+      // console.log('locCrawl not added', err);
       res.status(500).end();
     });
 });
@@ -27,11 +27,11 @@ joinRouter.post('/uc/:userCrawl', (req, res) => {
   const idCrawl = ids[1];
   userCrawl(idUser, idCrawl)
     .then((data) => {
-      console.log('userCrawl added');
+      // console.log('userCrawl added');
       res.send(data);
     })
     .catch((err) => {
-      console.log('userCrawl not added', err);
+      // console.log('userCrawl not added', err);
       res.status(500).end();
     });
 });

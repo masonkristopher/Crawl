@@ -24,8 +24,7 @@
       </button>
       <div v-if="crawlId !== null">
         <h3>Give this to your friends to have them join:</h3>
-        <h3 >https://crawl.southcentralus.cloudapp.azure.com:8081/#/crawl/joined/3/join/9
-/crawl/joined/{{this.$parent.user.id}}/{{this.title}}/{{crawlId}}</h3>
+        <h3 >https://crawl.southcentralus.cloudapp.azure.com:8081/#/crawl/joined/{{this.$parent.user.id}}/{{this.title}}/{{crawlId}}</h3>
       </div>
     </ul>
 
@@ -65,7 +64,6 @@ export default {
       const time = crawlDate.split("T")[1];
       let order = 1;
       axios.post(`/api/crawl/add`, {
-        // idCreator: this.$parent.user.id,
         idCreator: this.$parent.user.id,
         title: title,
         crawlDate: date,

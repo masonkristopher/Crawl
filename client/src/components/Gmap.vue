@@ -262,7 +262,28 @@ export default {
       });
     },
     join() {
-      axios.post(`/api/crawl/join/${this.crawlId}/${this.userId}`)
+      // add user to user_crawl table
+      axios.post(`/api/crawl/join/${this.crawlId}/${this.userId}`);
+      // update the joined crawls array on the store, hopefully triggering renders elsewehere
+        axios.get(`/api/crawl/joined/${this.userId}`)
+        .then((response) => {
+          response.data.forEach(joined => {
+            axios.get(`/api/crawl/details/${joined.Id_Crawl}`)
+              .then(response => {
+                //hello Kris et al, hope Legacy is finding you well. this function makes sure that the stuff we are adding 
+                // does not duplicate.
+                if (response.data[0].Id_Creator !== this.userId) {
+                  let joinedCrawlIds = [];
+                  this.$store.joinedCrawls.forEach((crawl) => {
+                    joinedCrawlIds.push(crawl.Id)
+                  })
+                  if (!joinedCrawlIds.includes(response.data[0].Id)) {
+                    this.$store.joinedCrawls.push(response.data[0]);
+                  }
+                }
+              })
+          })
+        })
       this.showLocation = true;
     },
   }

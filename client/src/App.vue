@@ -35,15 +35,18 @@ export default {
   },
   watch: {
     // whenever userlocation changes, this function will run
-    userLocation: function () {
-      // update user's location in the user table
-      axios.put(`/api/user/${this.user.id}`, this.userLocation)
-    },
+    // userLocation: function () {
+    //   // update user's location in the user table
+    //   console.log(this.user.id, 'userLocation');
+    // },
     // after a user is logged in and stored in state, put their crawls in the global object
     user: function () {
       axios.get(`/api/crawl/one/${this.user.id}`)
         .then((response) => {
           this.$store.createdCrawls = response.data;
+        })
+        .then( () => {
+          axios.put(`/api/user/${this.user.id}`, this.userLocation)
         })
     },
   },
@@ -63,7 +66,7 @@ export default {
                     }
               })
         } else if (response.data.redirect === '/login') {
-          window.location.href = 'api/auth/google';
+          window.location.href = '/api/auth/google/callback/';
         }
       })
 

@@ -16,12 +16,12 @@
 
           <vs-sidebar-group icon="person" title="User" v-if="this.user !== null">
 
-            <vs-sidebar-item style="color:red;" index="1" v-if="this.user.phoneNumber === null">
+            <vs-sidebar-item style="color:red;" index="1" :key="unfoundNumberKey" v-if="this.user.phoneNumber === ''">
               <div v-if="this.showNumberInput === false">Register Your Phone Number <span id="phone-edit-span"><vs-icon id="phone-edit" icon="create" @click="showInput"></vs-icon></span></div>
               <span v-else-if="this.showNumberInput === true"><vs-input icon-after="true" icon="check" v-on:icon-click="addNumber" placeholder=" - - - "  v-model="userNumberChange"/></span>
             </vs-sidebar-item>
-            <vs-sidebar-item icon="call" index="1" v-else-if="this.user.phoneNumber !== null">
-              <div v-if="this.showNumberInput === false">{{User.phoneNumber}} <span id="phone-edit-span"><vs-icon id="phone-edit" icon="create" @click="showInput"></vs-icon></span></div>
+            <vs-sidebar-item icon="call" index="1" :key="foundNumberKey" v-else-if="this.user.phoneNumber !== ''">
+              <div v-if="this.showNumberInput === false">{{this.user.phoneNumber}} <span id="phone-edit-span"><vs-icon id="phone-edit" icon="create" @click="showInput"></vs-icon></span></div>
               <span v-else-if="this.showNumberInput === true"><vs-input icon-after="true" icon="check" v-on:icon-click="addNumber" placeholder=" - - - " v-model="userNumberChange"/></span>
             </vs-sidebar-item>
 
@@ -101,7 +101,6 @@
 <script>
 import axios from 'axios';
 import 'material-icons/iconfont/material-icons.css';
-import debounce from 'lodash/debounce';
 
 export default {
   props: ['user'],
@@ -111,60 +110,37 @@ export default {
         return this.$store.createdCrawls
       },
     },
-  data:()=>({
-    User:{image: "https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512",
-          name: "Jerry McDonald",
-          phoneNumber: "555-555-5555",
-          email: "jerryMcDonald@gmail.com",
-        },
+  data:() => ({
     active:false,
     popupActivo:false,
     showNumberInput:false,
-    userNumberChange:"",
+    unfoundNumberKey: 0,
+    foundNumberKey: 1,
+    userNumber: null,
+    userNumberChange: "",
     joinedCrawls: [],
   }),
-
-  updated: debounce(function () {
-      this.$nextTick(() => {
-        axios.get(`${process.env.VUE_APP_MY_IP}/api/user/${this.user.email}`)
-        .then((dbUser) => {
-          const { Id, Phone_Number } = dbUser.data[0];
-          this.user.userId = Id;
-
-          Phone_Number === "" ? this.user.phoneNumber = null : this.user.phoneNumber = Phone_Number;
-
-          this.$emit('update:user', this.user);
-
-          axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/${Id}`)
-            .then((createdCrawlsRes) => {
-              this.CreatedCrawls = createdCrawlsRes.data
-            })
-            .catch((err) => {
-              console.log('Error getting user\'s Created Crawls', err);
-            })
-        })
-        .catch((err) => {
-          console.log('Error getting user\'s db', err)
-        })
-      })
-  }, 10000), // increase to ur needs
-
   watch: {
     // whenever createdCrawls changes, this function will get all the crawls a user has joined
     createdCrawls: function () {
-      const { id } = this.user;
+      const { id} = this.user;
       axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/joined/${id}`)
         .then((response) => {
           response.data.forEach(joined => {
             axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/details/${joined.Id_Crawl}`)
               .then(response => {
-                this.joinedCrawls.push(response.data[0]);
+                if (response.Id_Creator !== id) {
+                  this.joinedCrawls.push(response.data[0]);
+                }
               })
           })
         })
-    }
-  },
+    },
+    // showNumberInput: function () {
+    //   this.$force
+    // },
 
+  },
   methods: {
     logout() {
       axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google/logout`)
@@ -185,16 +161,21 @@ export default {
     },
     showInput() {
       this.showNumberInput = true;
+      this.foundNumberKey += 1;
+      this.unfoundNumberKey += 1;
       console.log(this.showNumberInput);
     },
     addNumber() {
       axios.post(`${process.env.VUE_APP_MY_IP}/api/user/contact`, {
           number: this.userNumberChange,
-          userId: this.user.userId,
+          userId: this.user.id,
       })
         .then(() => {
           this.showNumberInput = false;
-          console.log('number changed!');
+          this.foundNumberKey -= 1;
+          this.unfoundNumberKey -= 1;
+
+          this.user.phoneNumber = this.userNumberChange;
           this.$vs.notify({
             title:'SAVED',
             text: 'YOUR NUMBER HAS BEEN ADDED',

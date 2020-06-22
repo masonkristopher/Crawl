@@ -3,8 +3,8 @@
     <ul id="crawl-forms">
       <div v-if="crawlId !== null">
         <h3>Send this crawl to your friends to have them join!</h3>
-        <vs-input id="copy-url" icon-after="true" icon="content_copy" :key="joinCrawlKey" v-on:icon-click="newCopyBehavior(joinCrawlUrl)" v-model="joinCrawlUrl"/>
-      </div><br><br>
+        <vs-input id="copy-url" icon-after="true" icon="content_copy" color="#d29362" :key="joinCrawlKey" v-on:icon-click="newCopyBehavior(joinCrawlUrl)" v-model="joinCrawlUrl"/>
+      </div><br>
       <li>
         <div class="user-input-wrp expand">
           <br/>

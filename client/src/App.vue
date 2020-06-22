@@ -9,7 +9,7 @@
     </div>
 
     <notifications group="success" classes="notif" position="top center" />
-    <!-- <notifications group="failure" type="failure" classes="notif" position="bottom left" /> -->
+    <notifications group="failure" classes="notif" position="left center" />
 
     <router-view> </router-view>
   </div>
@@ -42,7 +42,8 @@ export default {
           this.user = {
                        name: user,
                        email: email,
-                       image
+                       image,
+                       phoneNumber: null
                       }
         } else if (response.data.redirect === '/login') {
           window.location.href = 'api/auth/google';
@@ -53,7 +54,7 @@ export default {
         // window.location = "/login"
       })
   },
-};
+}; 
 </script>
 
 <style>

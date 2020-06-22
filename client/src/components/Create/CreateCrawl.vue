@@ -1,6 +1,10 @@
 <template>
   <div id="create">
     <ul id="crawl-forms">
+      <div v-if="crawlId !== null">
+        <h3>Send this crawl to your friends to have them join!</h3>
+        <vs-input id="copy-url" icon-after="true" icon="content_copy" :key="joinCrawlKey" v-on:icon-click="newCopyBehavior(joinCrawlUrl)" v-model="joinCrawlUrl"/>
+      </div><br><br>
       <li>
         <div class="user-input-wrp expand">
           <br/>
@@ -22,10 +26,7 @@
       <button id="save-crawl-button" v-on:click.stop="saveCrawl">
         Save crawl
       </button><br><br>
-      <div v-if="crawlId !== null">
-        <h3>Send this crawl to your friends to have them join!</h3>
-        <vs-input icon-after="true" icon="content_copy" :key="joinCrawlKey" v-on:icon-click="copyToClipboard" v-model="joinCrawlUrl"/>
-      </div>
+      
     </ul>
 
     <div>
@@ -114,7 +115,7 @@ export default {
     saveUserCrawl: function(userId, crawlId) {
       axios.post(`/api/join/uc/${userId}+${crawlId}`)
         .then(() => {
-        this.joinCrawlUrl = `https://crawl.southcentralus.cloudapp.azure.com:8081/#/crawl/joined/${this.$parent.user.id}/${this.title}/${this.crawlId}`;
+        this.joinCrawlUrl = `https://crawl.southcentralus.cloudapp.azure.com:8081/#/crawl/joined/${this.$parent.user.id}/${this.title}/${this.crawlId}`.replace(/\s+/g, '');
         this.joinCrawlKey += 1;
           this.$vs.notify({
             title:'SAVED',
@@ -128,9 +129,26 @@ export default {
         })
     },
 
-    copyToClipBoard: function() {
+    newCopyBehavior: function(url) {
+      // Overwrite what is being copied to the clipboard.
+      document.addEventListener('copy', function(e) {
 
+      /* e.clipboardData is initially empty, but we can set it to the
+         data that we want copied onto the clipboard.*/
+      e.clipboardData.setData('text/plain', url);
+      console.log(url)
+
+      /* This is necessary to prevent the current document selection from
+         being written to the clipboard. */
+      e.preventDefault();
+      });
+      this.copyToClipBoard();
     },
+
+    copyToClipBoard: function() {
+      document.execCommand("copy");
+      console.log('COPIED:')
+    }
   }
 }
 </script>

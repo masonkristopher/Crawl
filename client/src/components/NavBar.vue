@@ -1,7 +1,6 @@
 <template>
   <div class='nav-bar'>
     <SideBar id="sidebar-button" v-bind:user="user"/>
-    <router-link class="nav-link" to="/home">Home</router-link>
     <router-link class="nav-link" to="/create">Create</router-link>
   </div>
 </template>

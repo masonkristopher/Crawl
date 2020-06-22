@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getUser, postUser } = require('../db/index');
+const { getUser, postUser, updateContact } = require('../db/index');
 
 const userRouter = Router();
 
@@ -16,7 +16,6 @@ userRouter.get('/:email', (req, res) => {
 
 userRouter.post('/add', (req, res) => {
   const profile = req.body;
-  console.log(profile);
   postUser(profile)
     .then(() => {
       res.send('User added to DB');
@@ -24,6 +23,18 @@ userRouter.post('/add', (req, res) => {
     .catch((err) => {
       console.log(err);
       res.send();
+    });
+});
+
+userRouter.post('/contact', (req, res) => {
+  const { number, userId } = req.body;
+  updateContact(number, userId)
+  .then((dataRes) => {
+    console.log(dataRes);
+    res.send('Contact Number Updated');
+    })
+    .catch((err) => {
+      console.log('Could not update phone number:', err);
     });
 });
 

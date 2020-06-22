@@ -59,9 +59,6 @@
         Other
       </vs-divider>
 
-      <vs-sidebar-item icon="https" index="5">
-        Security
-      </vs-sidebar-item>
       <vs-sidebar-item icon="help" index="6">
         Help
       </vs-sidebar-item>

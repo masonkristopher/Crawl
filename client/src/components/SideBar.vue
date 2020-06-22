@@ -14,12 +14,18 @@
           </div>
           <vs-button color="primary" type="flat">...</vs-button>
 
-          <vs-sidebar-group title="User" v-if="this.user !== null">
-            <vs-sidebar-item index="1">
-              {{User.phoneNumber}}
+          <vs-sidebar-group icon="person" title="User" v-if="this.user !== null">
+
+            <vs-sidebar-item style="color:red;" index="1" :key="unfoundNumberKey" v-if="this.user.phoneNumber === ''">
+              <div v-if="this.showNumberInput === false">Register Your Phone Number <span id="phone-edit-span"><vs-icon id="phone-edit" icon="create" @click="showInput"></vs-icon></span></div>
+              <span v-else-if="this.showNumberInput === true"><vs-input icon-after="true" icon="check" v-on:icon-click="addNumber" placeholder=" - - - "  v-model="userNumberChange"/></span>
+            </vs-sidebar-item>
+            <vs-sidebar-item icon="call" index="1" :key="foundNumberKey" v-else-if="this.user.phoneNumber !== ''">
+              <div v-if="this.showNumberInput === false">{{this.user.phoneNumber}} <span id="phone-edit-span"><vs-icon id="phone-edit" icon="create" @click="showInput"></vs-icon></span></div>
+              <span v-else-if="this.showNumberInput === true"><vs-input icon-after="true" icon="check" v-on:icon-click="addNumber" placeholder=" - - - " v-model="userNumberChange"/></span>
             </vs-sidebar-item>
 
-            <vs-sidebar-item index="1.2">
+            <vs-sidebar-item icon="email" index="1.2">
               {{this.user.email}}
             </vs-sidebar-item>
           </vs-sidebar-group>
@@ -34,7 +40,7 @@
       <vs-sidebar-group title="My Crawls" v-if="createdCrawls !== null">
 
           <vs-sidebar-item v-for="(crawl, index) in createdCrawls" :key="crawl.Title" :index="`${index + 1}.${index}`" v-on:click="viewCrawl(crawl)">
-            {{index + 1}}. {{crawl.Title}}
+            {{index + 1}}. {{crawl.Title}} <button id="delete-crawl" style="float:right; color:red;" @click="remove">--</button>
           </vs-sidebar-item>
 
       </vs-sidebar-group>
@@ -53,18 +59,18 @@
         Other
       </vs-divider>
 
-      <vs-sidebar-item index="5">
+      <vs-sidebar-item icon="https" index="5">
         Security
       </vs-sidebar-item>
-      <vs-sidebar-item index="6">
+      <vs-sidebar-item icon="help" index="6">
         Help
       </vs-sidebar-item>
 
 
 
       <div class="footer-sidebar" slot="footer">
-        <button color="danger" type="flat" @click="logout">log out</button>
-        <vs-button color="primary" type="border">settings</vs-button>
+        <vs-button icon="reply" class="log-button logout" color="danger" type="flat" @click="logout">log out</vs-button>
+        <vs-button icon="settings" color="primary" type="border">settings</vs-button>
       </div>
 
     </vs-sidebar>
@@ -84,7 +90,7 @@
         </p>
         <br>
         <br>
-        <button class="login" @click="login">Log In</button>
+        <vs-button icon="arrow_right_alt" class="log-button login" color="success" type="flat" @click="login" style="float:right;">Log In</vs-button>
       </div>
     </vs-popup>
 
@@ -93,7 +99,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import 'material-icons/iconfont/material-icons.css';
 
 export default {
   props: ['user'],
@@ -103,32 +110,37 @@ export default {
         return this.$store.createdCrawls
       },
     },
-  data:()=>({
-    User:{image: "https://ca.slack-edge.com/T02P3HQD6-URYEC04TS-1d8e4abade33-512",
-          name: "Jerry McDonald",
-          phoneNumber: "555-555-5555",
-          email: "jerryMcDonald@gmail.com",
-        },
+  data:() => ({
     active:false,
     popupActivo:false,
+    showNumberInput:false,
+    unfoundNumberKey: 0,
+    foundNumberKey: 1,
+    userNumber: null,
+    userNumberChange: "",
     joinedCrawls: [],
   }),
   watch: {
     // whenever createdCrawls changes, this function will get all the crawls a user has joined
     createdCrawls: function () {
-      const { id } = this.user;
+      const { id} = this.user;
       axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/joined/${id}`)
         .then((response) => {
           response.data.forEach(joined => {
             axios.get(`${process.env.VUE_APP_MY_IP}/api/crawl/details/${joined.Id_Crawl}`)
               .then(response => {
-                this.joinedCrawls.push(response.data[0]);
+                if (response.Id_Creator !== id) {
+                  this.joinedCrawls.push(response.data[0]);
+                }
               })
           })
         })
-    }
-  },
+    },
+    // showNumberInput: function () {
+    //   this.$force
+    // },
 
+  },
   methods: {
     logout() {
       axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google/logout`)
@@ -144,8 +156,45 @@ export default {
         })
     },
     login() {
-      axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google`)
+      // axios.get(`${process.env.VUE_APP_MY_IP}/api/auth/google`)
       console.log('Log In Page')
+    },
+    showInput() {
+      this.showNumberInput = true;
+      this.foundNumberKey += 1;
+      this.unfoundNumberKey += 1;
+      console.log(this.showNumberInput);
+    },
+    addNumber() {
+      axios.post(`${process.env.VUE_APP_MY_IP}/api/user/contact`, {
+          number: this.userNumberChange,
+          userId: this.user.id,
+      })
+        .then(() => {
+          this.showNumberInput = false;
+          this.foundNumberKey -= 1;
+          this.unfoundNumberKey -= 1;
+
+          this.user.phoneNumber = this.userNumberChange;
+          this.$vs.notify({
+            title:'SAVED',
+            text: 'YOUR NUMBER HAS BEEN ADDED',
+            color:'success',
+            icon:'check'
+          })
+        })
+        .catch((err) => {
+          this.$vs.notify({
+            title:'PLEASE TRY AGAIN',
+            text: 'Your Number Was Not Added',
+            color:'danger',
+            icon:'error'
+          })
+          console.log('Error adding the phone number:', err)
+        })
+    },
+    remove() {
+      console.log('removed crawl');
     },
     viewCrawl(crawl) {
       // send important user id and crawl data for grabing location for next comp
@@ -157,6 +206,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   @import '../assets/styles/sidebar.scss';
 </style>

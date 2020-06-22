@@ -5,7 +5,7 @@ require('dotenv').config({ path: '../.env' });
 
 const DB_HOST = process.env.DB_HOST || 'localhost';
 const DB_USER = process.env.DB_USER || 'root';
-const DB_PASS = process.env.DB_PASS || '';
+const DB_PASS = process.env.DB_PASS || 'password';
 const DB_NAME = process.env.DB_NAME || 'crawl';
 
 const connection = mysql.createConnection({
@@ -42,6 +42,11 @@ const postUser = ({
   }
   const mysqlQuery = 'INSERT IGNORE INTO User VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?);';
   return query(mysqlQuery, [username, nameFirst, nameLast, phoneNumber, email, imageUrl, lat, lng]);
+};
+
+const updateContact = (number, userId) => {
+  const mysqlQuery = 'UPDATE User SET Phone_Number = ? WHERE Id = ?;';
+  return query(mysqlQuery, [number, userId]);
 };
 
 const updateUserLoc = (location) => {
@@ -140,6 +145,7 @@ module.exports = {
   // USERS
   getUser,
   postUser,
+  updateContact,
   updateUserLoc,
   // CRAWLS
   getCrawl,

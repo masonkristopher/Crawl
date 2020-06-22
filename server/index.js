@@ -12,9 +12,6 @@ const app = express();
 const PORT = process.env.PORT || 8081;
 
 const CLIENT_PATH = path.join(__dirname, '../client/dist');
-// const corsOptions = {
-//   origin: [process.env.VUE_APP_MY_IP, process.env.VUE_APP_MY_DNS],
-// };
 app.use(cors());
 app.use(express.static(CLIENT_PATH));
 app.use(express.json());

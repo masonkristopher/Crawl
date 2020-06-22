@@ -21,18 +21,15 @@
       <br>
       <button id="save-crawl-button" v-on:click.stop="saveCrawl">
         Save crawl
-      </button>
+      </button><br><br>
       <div v-if="crawlId !== null">
-        <h3>Give this to your friends to have them join:</h3>
-        <h3 >https://crawl.southcentralus.cloudapp.azure.com:8081/#/crawl/joined/{{this.$parent.user.id}}/{{this.title}}/{{crawlId}}</h3>
+        <h3>Send this crawl to your friends to have them join!</h3>
+        <vs-input icon-after="true" icon="content_copy" :key="joinCrawlKey" v-on:icon-click="copyToClipboard" v-model="joinCrawlUrl"/>
       </div>
     </ul>
 
     <div>
       <google-map id="create-map" :selected.sync="selected"/>
-
-    
-    
   </div>
 
 </template>
@@ -54,6 +51,8 @@ export default {
       selected: [],
       crawlId: null,
       url: process.env.VUE_APP_MY_IP,
+      joinCrawlUrl: "",
+      joinCrawlKey: 0,
     }
   },
   methods: {
@@ -115,6 +114,8 @@ export default {
     saveUserCrawl: function(userId, crawlId) {
       axios.post(`/api/join/uc/${userId}+${crawlId}`)
         .then(() => {
+        this.joinCrawlUrl = `https://crawl.southcentralus.cloudapp.azure.com:8081/#/crawl/joined/${this.$parent.user.id}/${this.title}/${this.crawlId}`;
+        this.joinCrawlKey += 1;
           this.$vs.notify({
             title:'SAVED',
             text: 'YOUR CRAWL HAS BEEN ADDED',
@@ -125,6 +126,10 @@ export default {
         .catch((err) => {
           console.log(err);
         })
+    },
+
+    copyToClipBoard: function() {
+
     },
   }
 }

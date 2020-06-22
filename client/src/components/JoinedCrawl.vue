@@ -1,6 +1,6 @@
 <template>
 <div>
-  <h1>Viewing crawl locations for {{ crawl.Title }} on {{crawl.Crawl_Date}} at {{crawl.Crawl_Time}}</h1>
+  <h1>Viewing crawl locations for {{ crawl.Title }} on {{ new Date(Date.parse(crawl.Crawl_Date)).toDateString() }} at {{crawl.Crawl_Time}}</h1>
   <div>
     <Map v-bind:userId="userId" v-bind:crawlId="crawlId"/>
   </div>

@@ -16,5 +16,10 @@ module.exports = {
     ecmaVersion: 2018,
     parser: 'babel-eslint',
   },
-  rules: {},
+  rules: {
+    "no-console": 0,
+    "no-debugger": 1,
+    "arrow-parens": 0,
+    "arrow-body-style": 0,
+  },
 };

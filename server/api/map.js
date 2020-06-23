@@ -32,7 +32,6 @@ mapRouter.get('/:place', (req, res) => {
     });
 });
 
-
 module.exports = {
   mapRouter,
 };

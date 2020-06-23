@@ -14,7 +14,7 @@ joinRouter.post('/lc/:locCrawl', (req, res) => {
       // console.log('locCrawl added');
       res.send(data);
     })
-    .catch((err) => {
+    .catch(() => {
       // console.log('locCrawl not added', err);
       res.status(500).end();
     });
@@ -30,7 +30,7 @@ joinRouter.post('/uc/:userCrawl', (req, res) => {
       // console.log('userCrawl added');
       res.send(data);
     })
-    .catch((err) => {
+    .catch(() => {
       // console.log('userCrawl not added', err);
       res.status(500).end();
     });

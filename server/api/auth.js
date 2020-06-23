@@ -43,7 +43,6 @@ authRouter.get('/google/callback', passport.authenticate('google', { scope: ['pr
     res.redirect('/');
   });
 
-
 // this is a possible you are not logged in route
 authRouter.get('/google/notLoggedIn', (req, res) => res.send('You are not logged in'));
 
@@ -55,11 +54,11 @@ authRouter.get('/google/logout', (req, res) => {
   console.log('test');
   req.session = null;
   req.logout();
-  // when redirecting to notLoggedIn, it said 'net::ERR_CONNECTION_CLOSED', so just send the reponse here
+  // when redirecting to notLoggedIn,
+  // it said 'net::ERR_CONNECTION_CLOSED', so just send the reponse here
   // res.redirect('/');
   res.send('logged out');
 });
-
 
 module.exports = {
   authRouter,

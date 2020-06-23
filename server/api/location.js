@@ -10,14 +10,14 @@ locationRouter.get('/:name', (req, res) => {
       // console.log('location retrieved');
       res.send(data);
     })
-    .catch((err) => {
+    .catch(() => {
       // console.log('Error retrieving crawl from DB:', err);
       res.status(500).end();
     });
 });
 
 locationRouter.get('/all/:crawlId', (req, res) => {
-  const crawlId = req.params.crawlId;
+  const { crawlId } = req.params;
   getLocsInCrawl(crawlId)
     .then((data) => {
       console.log('locations retrieved');
@@ -49,7 +49,7 @@ locationRouter.post('/add', (req, res) => {
       console.log('Location added to database');
       res.send(data);
     })
-    .catch((err) => {
+    .catch(() => {
       console.log('Location not added to database');
       res.status(500).end();
     });

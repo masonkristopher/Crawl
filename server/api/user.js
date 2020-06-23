@@ -1,5 +1,11 @@
 const { Router } = require('express');
-const { getUser, postUser, updateUserLoc, getCrawlsUsers, updateContact  } = require('../db/index');
+const {
+  getUser,
+  postUser,
+  updateUserLoc,
+  getCrawlsUsers,
+  updateContact,
+} = require('../db/index');
 
 const userRouter = Router();
 
@@ -32,7 +38,7 @@ userRouter.post('/add', (req, res) => {
     .then(() => {
       res.send('User added to DB');
     })
-    .catch((err) => {
+    .catch(() => {
       // console.log(err);
       res.status(500).end();
     });
@@ -41,7 +47,7 @@ userRouter.post('/add', (req, res) => {
 userRouter.post('/contact', (req, res) => {
   const { number, userId } = req.body;
   updateContact(number, userId)
-    .then((dataRes) => {
+    .then(() => {
       // console.log(dataRes);
       res.send('Contact Number Updated');
     })
@@ -53,7 +59,7 @@ userRouter.post('/contact', (req, res) => {
 
 userRouter.put('/:idUser', (req, res) => {
   const location = req.body;
-  const idUser = req.params.idUser;
+  const { idUser } = req.params;
   updateUserLoc(location, idUser)
     .then(() => {
       res.send('User location updated');
@@ -63,7 +69,6 @@ userRouter.put('/:idUser', (req, res) => {
       res.status(500).end();
     });
 });
-
 
 module.exports = {
   userRouter,

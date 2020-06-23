@@ -108,7 +108,6 @@ const getLocation = (name) => {
   ]);
 };
 
-
 const getLocsInCrawl = (idCrawl) => {
   const mysqlQuery = 'SELECT * FROM Location_Crawl INNER JOIN Location ON Location.Id = Location_Crawl.Id_Location && Location_Crawl.Id_Crawl = ?;';
   return query(mysqlQuery, [

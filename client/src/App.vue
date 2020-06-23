@@ -52,7 +52,7 @@ export default {
           this.$store.createdCrawls = response.data;
         })
         .then(() => {
-          axios.put(`/api/user/${this.user.id}`, this.userLocation)
+          axios.put(`/api/user/${this.user.id}`, this.userLocation);
         });
     },
   },

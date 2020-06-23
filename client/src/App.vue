@@ -1,7 +1,11 @@
 <template>
   <div id="app">
     <div id="top">
-      <img id="logo" alt="CRAWL logo" src="./assets/images/logo.png">
+      <img
+        id="logo"
+        alt="CRAWL logo"
+        src="./assets/images/logo.png"
+      >
     </div>
     <NavBar v-bind:user="user"/>
     <div>

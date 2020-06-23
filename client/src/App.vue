@@ -7,7 +7,7 @@
         src="./assets/images/logo.png"
       >
     </div>
-    <NavBar v-bind:user="user"/>
+    <NavBar v-bind:user="user" />
     <div>
       <router-view />
     </div>

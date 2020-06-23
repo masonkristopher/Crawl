@@ -5,7 +5,7 @@ const fs = require('fs');
 
 require('dotenv').config();
 const path = require('path');
-const { session } = require('passport');
+// const { session } = require('passport');
 const { apiRouter } = require('./api/index');
 
 const app = express();

@@ -34,7 +34,6 @@ crawlRouter.get('/all/:idCreator', (req, res) => {
 });
 
 crawlRouter.get('/details/:id', (req, res) => {
-
   getOneCrawl(req.params.id)
     .then((data) => {
       res.send(data);

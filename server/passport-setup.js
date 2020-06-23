@@ -11,7 +11,6 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -20,7 +19,7 @@ passport.use(new GoogleStrategy({
 },
 (accessToken, refreshToken, profile, done) => {
   // The INSERT IGNORE in the schema will not allow us to add duplicate users
-    // create the user object to add to the database
+  // create the user object to add to the database
   const userDetails = {
     username: profile.displayName,
     nameFirst: profile.name.givenName,

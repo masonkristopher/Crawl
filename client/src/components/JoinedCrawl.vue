@@ -1,18 +1,21 @@
 <template>
-<div>
-  <h1>Viewing crawl locations for {{ crawl.Title }} on {{ new Date(Date.parse(crawl.Crawl_Date)).toDateString() }} at {{crawl.Crawl_Time}}</h1>
   <div>
-    <Map v-bind:userId="userId" v-bind:crawlId="crawlId"/>
+    <h1>Viewing crawl locations for {{ crawl.Title }} on {{ new Date(Date.parse(crawl.Crawl_Date)).toDateString() }} at {{ crawl.Crawl_Time }}</h1>
+    <div>
+      <Map
+        v-bind:userId="userId"
+        v-bind:crawlId="crawlId"
+      />
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-import Map from "./Gmap.vue";
-import axios from "axios"
+import axios from 'axios';
+import Map from './Gmap.vue';
 
 export default {
-  name: "JoinedCrawl",
+  name: 'JoinedCrawl',
   components: {
     Map,
   },
@@ -22,18 +25,17 @@ export default {
       crawlId: this.$route.params.crawlId,
       // crawlName: this.$route.params.crawlName,
       crawl: {},
-
-    }
+    };
   },
   mounted() {
     axios.get(`api/crawl/details/${this.$route.params.crawlId}`)
       .then((response) => {
         this.crawl = response.data[0];
-      })
-  }
-}
+      });
+  },
+};
 </script>
 
 <style scoped>
-  @import "../assets/styles/joinedcrawl.scss"
+  @import '../assets/styles/joinedcrawl.scss'
 </style>

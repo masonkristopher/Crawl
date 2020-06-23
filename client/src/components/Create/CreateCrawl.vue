@@ -4,11 +4,12 @@
       <div v-if="crawlId !== null">
         <h3>Send this crawl to your friends to have them join!</h3>
         <vs-input id="copy-url" icon-after="true" icon="content_copy" color="#d29362" :key="joinCrawlKey" v-on:icon-click="newCopyBehavior(joinCrawlUrl)" v-model="joinCrawlUrl"/>
-      </div><br>
+      </div>
+      <br>
       <li>
         <div class="user-input-wrp expand">
-          <br/>
-      <!-- make App listen to changes in title by using emit and v-model -->
+          <br>
+          <!-- make App listen to changes in title by using emit and v-model -->
           <input class="form_field crawl-title" type="text" autocomplete="off" name="title" v-model="title" @input="$emit('update:title', title)" required/>
           <div class="border"></div>
           <span class="floating-label">Title</span>
@@ -17,22 +18,21 @@
       <br><br><br><br><br>
       <li>
         <div class="user-input-wrp expand">
-          <br/>
+          <br>
           <input class="form_field crawl-time-date" type="datetime-local" name="datetime" v-model="crawlDate" @input="$emit('update:crawlDate', crawlDate)" required/>
-          <div class="border"></div> 
+          <div class="border"></div>
         </div>
       </li>
       <br>
       <button id="save-crawl-button" v-on:click.stop="saveCrawl">
         Save crawl
-      </button><br><br>
-      
+      </button>
+      <br><br>
     </ul>
-
     <div>
       <google-map id="create-map" :selected.sync="selected"/>
+    </div>
   </div>
-
 </template>
 
 <script>
@@ -45,7 +45,7 @@ export default {
   components: {
     GoogleMap,
   },
-  data () {
+  data() {
     return {
       crawlDate: null,
       title: null,
@@ -54,10 +54,10 @@ export default {
       url: process.env.VUE_APP_MY_IP,
       joinCrawlUrl: "",
       joinCrawlKey: 0,
-    }
+    },
   },
   methods: {
-    //saves crawl to the database
+    // saves crawl to the database
     saveCrawl: function () {
       const { crawlDate, title } = this;
       const date = crawlDate.split("T")[0];
@@ -78,11 +78,11 @@ export default {
         .then(() => {
           // get locations from the database
           const { selected } = this;
-          const promises = selected.map((location) => 
+          const promises = selected.map((location) =>
             axios.get(`/api/location/${location.name}`)
-          )
+          );
           //promise.all ensures each promise resolves before moving on
-          return Promise.all(promises)
+          return Promise.all(promises);
         })
         .then((data) => {
           // add locationId + crawlId + order to location_crawl table

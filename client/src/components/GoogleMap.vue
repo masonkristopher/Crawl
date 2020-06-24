@@ -8,7 +8,7 @@
           v-model="currentPlace"
           type="text"
           required
-          v-on:keyup.enter="findBar"
+          @keyup.enter="findBar"
           @input="$emit('update:currentPlace', currentPlace)"
           @focus="() => {this.currentPlace = ''}"
         >

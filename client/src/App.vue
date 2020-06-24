@@ -73,6 +73,13 @@ export default {
                 image,
                 phoneNumber: Phone_Number,
               };
+              this.$store.appUser = {
+                id: Id,
+                name: user,
+                email,
+                image,
+                phoneNumber: Phone_Number,
+              };
             });
         } else if (response.data.redirect === '/login') {
           window.location.href = '/api/auth/google/callback/';

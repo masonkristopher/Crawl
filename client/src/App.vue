@@ -63,10 +63,17 @@ export default {
         if (response.data.redirect === '/') {
           const { user, email, image } = response.data;
           axios.get(`/api/user/${email}`)
-            .then((response) => {
-              console.log(response, 'app created');
-              const { Id, Phone_Number } = response.data[0];
+            .then(({ data }) => {
+              console.log(data, 'app created');
+              const { Id, Phone_Number } = data[0];
               this.user = {
+                id: Id,
+                name: user,
+                email,
+                image,
+                phoneNumber: Phone_Number,
+              };
+              this.$store.appUser = {
                 id: Id,
                 name: user,
                 email,

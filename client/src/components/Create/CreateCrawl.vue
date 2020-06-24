@@ -10,7 +10,7 @@
           icon-after="true"
           icon="content_copy"
           color="#d29362"
-          v-on:icon-click="newCopyBehavior(joinCrawlUrl)"
+          @icon-click="newCopyBehavior(joinCrawlUrl)"
         />
       </div>
       <br>
@@ -49,7 +49,7 @@
       <br>
       <button
         id="save-crawl-button"
-        v-on:click.stop="saveCrawl"
+        @click.stop="saveCrawl"
       >
         Save crawl
       </button>

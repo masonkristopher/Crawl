@@ -1,11 +1,12 @@
 <template>
   <div>
-    <h1>Viewing crawl locations for {{ crawl.Title }} on {{ new Date(Date.parse(crawl.Crawl_Date)).toDateString() }} at {{ crawl.Crawl_Time }}</h1>
-    <Participants />
+    <h1>
+      Viewing bars for {{ crawl.Title }} on {{ new Date(Date.parse(crawl.Crawl_Date)).toDateString() }} at {{ crawl.Crawl_Time }}
+    </h1>
     <div>
       <Map
-        v-bind:userId="userId"
-        v-bind:crawlId="crawlId"
+        :userId="userId"
+        :crawlId="crawlId"
       />
     </div>
   </div>
@@ -13,17 +14,18 @@
 
 <script>
 import axios from 'axios';
-import Map from './Gmap.vue';
+import CrawlMap from './CrawlMap.vue';
 import Participants from './Participants.vue';
 
 export default {
   name: 'JoinedCrawl',
   components: {
-    Map,
+    CrawlMap,
     Participants,
   },
   data() {
     return {
+      // note that this userId is currently defunct
       userId: this.$parent.user.id,
       crawlId: this.$route.params.crawlId,
       // crawlName: this.$route.params.crawlName,
@@ -32,10 +34,8 @@ export default {
   },
   mounted() {
     axios.get(`api/crawl/details/${this.$route.params.crawlId}`)
-      .then((response) => {
-        const { data } = response;
-        const [crawl] = data;
-        this.crawl = crawl;
+      .then(({ data }) => {
+        [this.crawl] = data;
       });
   },
 };

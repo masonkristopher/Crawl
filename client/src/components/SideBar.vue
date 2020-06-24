@@ -121,7 +121,9 @@
           :index="`${index + 1}.${index}`"
           @click="viewCrawl(crawl)"
         >
-          {{ index + 1 }}. {{ crawl.Title }}
+          {{ index + 1 }}. {{ crawl.Title }}<br />
+          {{ moment(crawl.Crawl_Date).fromNow() }}<br />
+          {{ moment(crawl.Crawl_Date).format('MM/DD/YYYY') }} at {{ moment(crawl.Crawl_Time, "HH:mm:ss").format('hh:mm A') }}<br />
         </vs-sidebar-item>
       </vs-sidebar-group>
       <vs-sidebar-group
@@ -135,18 +137,11 @@
           :index="`${index + 2}.${index}`"
           @click="viewCrawl(crawl)"
         >
-          {{ index + 1 }}. {{ crawl.Title }}
+          {{ index + 1 }}. {{ crawl.Title }}<br />
+          {{ moment(crawl.Crawl_Date).fromNow() }}<br />
+          {{ moment(crawl.Crawl_Date).format('MM/DD/YYYY') }} at {{ moment(crawl.Crawl_Time, "HH:mm:ss").format('hh:mm A') }}<br />
         </vs-sidebar-item>
       </vs-sidebar-group>
-      <vs-divider position="left">
-        Other
-      </vs-divider>
-      <vs-sidebar-item
-        icon="help"
-        index="6"
-      >
-        Help
-      </vs-sidebar-item>
       <div
         slot="footer"
         class="footer-sidebar"

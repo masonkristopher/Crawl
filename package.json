@@ -29,6 +29,7 @@
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
     "sass": "^1.26.8",
+    "twilio": "^3.47.0",
     "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {

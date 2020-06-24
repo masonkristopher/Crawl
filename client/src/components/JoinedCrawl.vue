@@ -3,7 +3,7 @@
     <h1>Viewing crawl locations for {{ crawl.Title }} on {{ new Date(Date.parse(crawl.Crawl_Date)).toDateString() }} at {{ crawl.Crawl_Time }}</h1>
     <Participants />
     <div>
-      <Map
+      <CrawlMap
         v-bind:userId="userId"
         v-bind:crawlId="crawlId"
       />
@@ -13,17 +13,18 @@
 
 <script>
 import axios from 'axios';
-import Map from './Gmap.vue';
+import CrawlMap from './CrawlMap.vue';
 import Participants from './Participants.vue';
 
 export default {
   name: 'JoinedCrawl',
   components: {
-    Map,
+    CrawlMap,
     Participants,
   },
   data() {
     return {
+      // note that this userId is currently defunct
       userId: this.$parent.user.id,
       crawlId: this.$route.params.crawlId,
       // crawlName: this.$route.params.crawlName,

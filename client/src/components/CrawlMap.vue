@@ -55,7 +55,7 @@
 import axios from 'axios';
 
 export default {
-  name: 'GoogleMap',
+  name: 'CrawlMap',
   props: ['crawlId', 'userId'],
   data() {
     return {

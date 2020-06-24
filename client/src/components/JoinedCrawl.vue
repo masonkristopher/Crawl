@@ -3,8 +3,9 @@
     <h1>
       Viewing bars for {{ crawl.Title }} on {{ new Date(Date.parse(crawl.Crawl_Date)).toDateString() }} at {{ crawl.Crawl_Time }}
     </h1>
+    <Participants />
     <div>
-      <Map
+      <CrawlMap
         :userId="userId"
         :crawlId="crawlId"
       />

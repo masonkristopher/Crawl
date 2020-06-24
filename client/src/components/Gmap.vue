@@ -179,7 +179,7 @@ export default {
       })
       .then((res) => {
         const users = res.data;
-        console.log(users, 'after api/crawlId/crawlid');
+        // console.log(users, 'after api/crawlId/crawlid');
         // use the ids to retrieve the user object and push its info into our state
         const ids = [];
         users.forEach((user) => {
@@ -265,23 +265,23 @@ export default {
     },
     join() {
       // add user to user_crawl table.
-      axios.post(`/api/crawl/join/${this.crawlId}/${this.userId}`);
+      axios.post(`/api/crawl/join/${this.crawlId}/${this.$store.appUser.id}`);
       // update the joined crawls array on the store, hopefully triggering renders elsewehere
-      axios.get(`/api/crawl/joined/${this.userId}`)
+      axios.get(`/api/crawl/joined/${this.$store.appUser.id}`)
         .then((response) => {
           response.data.forEach(joined => {
             axios.get(`/api/crawl/details/${joined.Id_Crawl}`)
-              .then(response => {
+              .then(res => {
                 // hello Kris et al, hope Legacy is finding you well.
                 // this function makes sure that the stuff we are adding
                 // does not duplicate.
-                if (response.data[0].Id_Creator !== this.userId) {
+                if (res.data[0].Id_Creator !== this.$store.appUser.id) {
                   const joinedCrawlIds = [];
                   this.$store.joinedCrawls.forEach((crawl) => {
                     joinedCrawlIds.push(crawl.Id);
                   });
-                  if (!joinedCrawlIds.includes(response.data[0].Id)) {
-                    this.$store.joinedCrawls.push(response.data[0]);
+                  if (!joinedCrawlIds.includes(res.data[0].Id)) {
+                    this.$store.joinedCrawls.push(res.data[0]);
                   }
                 }
               });

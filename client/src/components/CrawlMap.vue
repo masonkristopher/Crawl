@@ -272,14 +272,13 @@ export default {
           response.data.forEach(joined => {
             axios.get(`/api/crawl/details/${joined.Id_Crawl}`)
               .then(res => {
-                // hello Kris et al, hope Legacy is finding you well.
-                // this function makes sure that the stuff we are adding
-                // does not duplicate.
+                // don't include crawls the user created in joinedCrawls
                 if (res.data[0].Id_Creator !== this.$store.appUser.id) {
                   const joinedCrawlIds = [];
                   this.$store.joinedCrawls.forEach((crawl) => {
                     joinedCrawlIds.push(crawl.Id);
                   });
+                  // check for duplicates in the database
                   if (!joinedCrawlIds.includes(res.data[0].Id)) {
                     this.$store.joinedCrawls.push(res.data[0]);
                   }

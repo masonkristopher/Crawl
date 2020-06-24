@@ -2,7 +2,7 @@
   <div class="nav-bar">
     <SideBar
       id="sidebar-button"
-      v-bind:user="user"
+      :user="user"
     />
     <router-link
       class="nav-link"
@@ -21,7 +21,12 @@ export default {
   components: {
     SideBar,
   },
-  props: ['user'],
+  props: {
+    user: {
+      type: Object,
+      default: null,
+    },
+  },
 };
 </script>
 

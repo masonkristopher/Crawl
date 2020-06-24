@@ -15,7 +15,7 @@
       </tr>
     </table>
     <div>
-      <button v-on:click="join">
+      <button @click="join">
         Join
       </button>
     </div>
@@ -29,7 +29,7 @@
         :key="index"
         :options="{styles: styles}"
         :position="m.position"
-         v-bind:icon="'http://maps.google.com/mapfiles/kml/paddle/' + (index + 1) + '-lv.png'"
+        :icon="'http://maps.google.com/mapfiles/kml/paddle/' + (index + 1) + '-lv.png'"
         @click="toggleInfoWindow(m,index)"
       />
       <div v-if="this.showLocation">

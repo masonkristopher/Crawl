@@ -1,10 +1,12 @@
 <template>
   <div>
-    <h1>Viewing crawl locations for {{ crawl.Title }} on {{ new Date(Date.parse(crawl.Crawl_Date)).toDateString() }} at {{ crawl.Crawl_Time }}</h1>
+    <h1>
+      Viewing bars for {{ crawl.Title }} on {{ new Date(Date.parse(crawl.Crawl_Date)).toDateString() }} at {{ crawl.Crawl_Time }}
+    </h1>
     <div>
       <Map
-        v-bind:userId="userId"
-        v-bind:crawlId="crawlId"
+        :userId="userId"
+        :crawlId="crawlId"
       />
     </div>
   </div>
@@ -29,8 +31,8 @@ export default {
   },
   mounted() {
     axios.get(`api/crawl/details/${this.$route.params.crawlId}`)
-      .then((response) => {
-        this.crawl = response.data[0];
+      .then(({ data }) => {
+        [this.crawl] = data;
       });
   },
 };

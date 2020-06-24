@@ -45,6 +45,7 @@ Vue.use(Vuesax, {
 });
 
 Vue.config.productionTip = false;
+Vue.config.devtools = true;
 
 // creating a reactive component and adding it to prototype to be globally accessible
 const store = Vue.observable({ createdCrawls: [], joinedCrawls: [] });

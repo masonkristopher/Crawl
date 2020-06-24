@@ -8,10 +8,10 @@
           v-model="currentPlace"
           type="text"
           required
-          v-on:keyup.enter="findBar"
+          @keyup.enter="findBar"
           @input="$emit('update:currentPlace', currentPlace)"
           @focus="() => {this.currentPlace = ''}"
-        ><input>
+        >
         <div class="border-map" />
         <span class="floating-label">Enter ZIP Code/City</span>
         <button

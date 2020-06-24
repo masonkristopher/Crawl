@@ -69,7 +69,7 @@
                   icon-after="true"
                   icon="check"
                   placeholder=" - - - "
-                  v-on:icon-click="addNumber"
+                  @icon-click="addNumber"
                 />
               </span>
             </vs-sidebar-item>
@@ -95,7 +95,7 @@
                   placeholder=" - - - "
                   icon-after="true"
                   icon="check"
-                  v-on:icon-click="addNumber"
+                  @icon-click="addNumber"
                 />
               </span>
             </vs-sidebar-item>
@@ -119,7 +119,7 @@
           v-for="(crawl, index) in createdCrawls"
           :key="crawl.Title"
           :index="`${index + 1}.${index}`"
-          v-on:click="viewCrawl(crawl)"
+          @click="viewCrawl(crawl)"
         >
           {{ index + 1 }}. {{ crawl.Title }}
         </vs-sidebar-item>
@@ -133,7 +133,7 @@
           v-for="(crawl, index) in joinedCrawls"
           :key="crawl.Title"
           :index="`${index + 2}.${index}`"
-          v-on:click="viewCrawl(crawl)"
+          @click="viewCrawl(crawl)"
         >
           {{ index + 1 }}. {{ crawl.Title }}
         </vs-sidebar-item>
@@ -208,7 +208,12 @@ import axios from 'axios';
 import 'material-icons/iconfont/material-icons.css';
 
 export default {
-  props: ['user'],
+  props: {
+    user: {
+      type: Object,
+      default: null,
+    },
+  },
   // in data, 'this' doesnt exist yet. we want createdCrawls to be equal to the global storage,
   // so we do it in computed instead
   // $store is reactive, so when it is updated, everything that it touches updates tooooo
@@ -261,7 +266,6 @@ export default {
           this.showNumberInput = false;
           this.foundNumberKey -= 1;
           this.unfoundNumberKey -= 1;
-
           this.user.phoneNumber = this.userNumberChange;
           this.$vs.notify({
             title: 'SAVED',

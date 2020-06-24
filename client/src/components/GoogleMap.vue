@@ -195,22 +195,32 @@ export default {
           stylers: [{ color: '#17263c' }],
         },
       ],
-      // mapCoordinates: {
-      //   lat: 0,
-      //   lng: 0,
-      // },
     };
   },
+  computed: {
+    mapCoordinates() {
+      if (!this.map) {
+        return {
+          lat: 0,
+          lng: 0,
+        };
+      }
+      return {
+        lat: this.map.getCenter().lat().toFixed(4),
+        lng: this.map.getCenter().lng().toFixed(4),
+      };
+    },
+  },
+
   created() {
 
   },
+
   mounted() {
-    console.log('ref', this.$refs);
+    this.geolocate();
     this.$refs.mapRef.$mapPromise.then(map => {
       this.map = map;
     }).catch(err => console.log(err));
-    this.geolocate();
-    // this.$refs.mapRef.$mapPromise.then(map => this.map = map).catch(err => console.log(err)); // ====>
   },
 
   methods: {
@@ -305,20 +315,7 @@ export default {
       this.$emit('update:selected', this.selected);
     },
     // add a computed object with a function that will go in ==>>
-    computed: {
-      mapCoordinates() {
-        if (!this.map) {
-          return {
-            lat: 0,
-            lng: 0,
-          };
-        }
-        return {
-          lat: this.map.getCenter().lat(),
-          lng: this.map.getCenter().lng(),
-        };
-      },
-    },
+
   },
 };
 </script>

@@ -1,17 +1,12 @@
 <template>
   <div>
-    <p>Participant</p>
+    <p>{{ participant.Email }}</p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Participant',
-  props: {
-    participant: {
-      type: String,
-      default: 'meathead',
-    },
-  },
+  props: ['participant'],
 };
 </script>

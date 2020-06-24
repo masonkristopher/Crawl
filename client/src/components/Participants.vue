@@ -2,7 +2,7 @@
   <div>
     <h2>Crawlers:</h2>
     <div
-      v-for="participant in participants"
+      v-for="participant in crawlUsers"
       :key="participant.id"
     >
       <Participant :participant="participant" />
@@ -11,7 +11,7 @@
 </template>
 <script>
 
-// import axios from 'axios';
+import axios from 'axios';
 import Participant from './Participant.vue';
 
 export default {
@@ -19,11 +19,18 @@ export default {
   components: {
     Participant,
   },
-  props: {
-    participants: {
-      type: String,
-      default: 'egghead',
-    },
+  props: ['crawlId'],
+  data() {
+    return {
+      crawlUsers: [],
+    };
+  },
+  mounted() {
+    axios.get(`api/crawl/joined/by/${this.crawlId}`)
+      .then(({ data }) => {
+        this.crawlUsers = data;
+        console.log('crawlUsers===>', this.crawlUsers);
+      });
   },
   methods: {
     // addParticipants(id) {

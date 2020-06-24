@@ -6,6 +6,7 @@ const {
   getJoinedCrawls,
   getUsersCrawls,
   joinCrawl,
+  getCrawlsUsers,
 } = require('../db/index');
 
 const crawlRouter = Router();
@@ -71,6 +72,16 @@ crawlRouter.post('/join/:crawlId/:userId', (req, res) => {
 crawlRouter.get('/joined/:userId', (req, res) => {
   getJoinedCrawls(req.params.userId)
     .then((data) => {
+      res.send(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+crawlRouter.get('/joined/by/:crawlId', (req, res) => {
+  getCrawlsUsers(req.params.crawlId)
+    .then(data => {
       res.send(data);
     })
     .catch((error) => {

@@ -2,7 +2,9 @@
   <div id="google-map">
     <br>
     <div>
-      <div class="user-input-wrp map-expand">
+      <diV
+        class="user-input-wrp map-expand"
+      >
         <input
           id="location-search"
           v-model="currentPlace"
@@ -14,6 +16,10 @@
         >
         <div class="border-map" />
         <span class="floating-label">Enter ZIP Code/City</span>
+        <div>
+          <h1>Map Coordinates</h1>
+          <p>{{ mapCoordinates.lat }}:latitude{{ mapCoordinates.lng }}:longitude</p>
+        </div>
         <button
           id="location-search-button"
           @click="findBar"
@@ -28,6 +34,7 @@
     <br>
     <gmap-map
       id="map-el"
+      ref="mapRef"
       class="move-right"
       :center="center"
       :zoom="12"
@@ -89,6 +96,7 @@ export default {
     return {
       // defaulted to New Orleans
       center: { lat: 29.9630486, lng: -90.0438412 },
+      map: null,
       markers: [],
       selected: [],
       places: [],
@@ -189,9 +197,30 @@ export default {
       ],
     };
   },
+  computed: {
+    mapCoordinates() {
+      if (!this.map) {
+        return {
+          lat: 0,
+          lng: 0,
+        };
+      }
+      return {
+        lat: this.map.getCenter().lat().toFixed(4),
+        lng: this.map.getCenter().lng().toFixed(4),
+      };
+    },
+  },
+
+  created() {
+
+  },
 
   mounted() {
     this.geolocate();
+    this.$refs.mapRef.$mapPromise.then(map => {
+      this.map = map;
+    }).catch(err => console.log(err));
   },
 
   methods: {
@@ -285,6 +314,8 @@ export default {
       this.selected.splice(index, 1);
       this.$emit('update:selected', this.selected);
     },
+    // add a computed object with a function that will go in ==>>
+
   },
 };
 </script>

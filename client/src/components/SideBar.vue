@@ -16,6 +16,7 @@
       default-index="1"
       color="primary"
       class="sidebarx"
+      id="sidebar"
       spacer
     >
       <div
@@ -46,6 +47,7 @@
             v-if="this.user !== null"
             icon="person"
             title="User"
+            id="sidebar-group"
           >
             <vs-sidebar-item
               v-if="this.user.phoneNumber === ''"
@@ -108,12 +110,11 @@
           </vs-sidebar-group>
         </h4>
       </div>
-      <vs-divider position="left">
-        Crawls
-      </vs-divider>
+      <vs-divider position="left" icon="local_bar" />
       <vs-sidebar-group
         v-if="createdCrawls !== null"
         title="My Crawls"
+        id="sidebar-group"
       >
         <vs-sidebar-item
           v-for="(crawl, index) in createdCrawls"
@@ -121,15 +122,16 @@
           :index="`${index + 1}.${index}`"
           @click="viewCrawl(crawl)"
         >
-          {{ index + 1 }}. {{ crawl.Title }}<br />
+          {{ index + 1 }}. {{ crawl.Title.toUpperCase() }}<br />
           {{ moment(crawl.Crawl_Date).fromNow() }}<br />
           {{ moment(crawl.Crawl_Date).format('MM/DD/YYYY') }} at {{ moment(crawl.Crawl_Time, "HH:mm:ss").format('hh:mm A') }}<br />
         </vs-sidebar-item>
       </vs-sidebar-group>
       <vs-sidebar-group
         v-if="joinedCrawls !== null"
-        title="Crawls I've Joined"
+        title="Joined Crawls"
         icon="down"
+        id="sidebar-group"
       >
         <vs-sidebar-item
           v-for="(crawl, index) in joinedCrawls"
@@ -137,7 +139,7 @@
           :index="`${index + 2}.${index}`"
           @click="viewCrawl(crawl)"
         >
-          {{ index + 1 }}. {{ crawl.Title }}<br />
+          {{ index + 1 }}. {{ crawl.Title.toUpperCase() }}<br />
           {{ moment(crawl.Crawl_Date).fromNow() }}<br />
           {{ moment(crawl.Crawl_Date).format('MM/DD/YYYY') }} at {{ moment(crawl.Crawl_Time, "HH:mm:ss").format('hh:mm A') }}<br />
         </vs-sidebar-item>

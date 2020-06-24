@@ -14,15 +14,18 @@
 
 <script>
 import axios from 'axios';
-import Map from './Gmap.vue';
+import CrawlMap from './CrawlMap.vue';
+import Participants from './Participants.vue';
 
 export default {
   name: 'JoinedCrawl',
   components: {
-    Map,
+    CrawlMap,
+    Participants,
   },
   data() {
     return {
+      // note that this userId is currently defunct
       userId: this.$parent.user.id,
       crawlId: this.$route.params.crawlId,
       // crawlName: this.$route.params.crawlName,

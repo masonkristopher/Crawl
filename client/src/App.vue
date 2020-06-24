@@ -53,6 +53,29 @@ export default {
         })
         .then(() => {
           axios.put(`/api/user/${this.user.id}`, this.userLocation);
+        })
+        .then(() => {
+          // update the joined crawls array on the store, hopefully triggering renders elsewehere
+          axios.get(`/api/crawl/joined/${this.user.id}`)
+            .then((response) => {
+              response.data.forEach(joined => {
+                axios.get(`/api/crawl/details/${joined.Id_Crawl}`)
+                  .then(res => {
+                    // this function makes sure that the stuff we are adding
+                    // does not duplicate.
+                    if (res.data[0].Id_Creator !== this.user.id) {
+                      const joinedCrawlIds = [];
+                      this.$store.joinedCrawls.forEach((crawl) => {
+                        joinedCrawlIds.push(crawl.Id);
+                      });
+                      if (!joinedCrawlIds.includes(res.data[0].Id)) {
+                        this.$store.joinedCrawls.push(res.data[0]);
+                      }
+                    }
+                  });
+              });
+            });
+          this.showLocation = true;
         });
     },
   },

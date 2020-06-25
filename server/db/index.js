@@ -137,23 +137,24 @@ const postLocations = ({
 };
 
 // STATUS QUERIES
-// const getCrawlStatus = (idCrawl) => {
-//   const mysqlQuery = 'SELECT Crawl_Status from Crawl WHERE Id = ?';
-//   return query(mysqlQuery, []);
-// };
+const getCrawlStatusNum = (idCrawl) => {
+  const mysqlQuery = 'SELECT Crawl_Status from Crawl WHERE Id = ?';
+  return query(mysqlQuery, [idCrawl]);
+};
 
 const getLocationOfCrawl = (idCrawl) => {
   const mysqlQuery = `
     SELECT Name from Location INNER JOIN Location_Crawl INNER JOIN Crawl
     ON Location_Crawl.Order_Position = Crawl_Status
     && Crawl.Id = ?
-    && Location.Id = Location_Crawl.Id_Location;
+    && Location.Id = Location_Crawl.Id_Location
+    && Crawl.Id = Location_Crawl.Id_Crawl;
   `;
   return query(mysqlQuery, [idCrawl]);
 };
 
 // advances crawl status by 1
-const postCrawlStatus = async (idCrawl) => {
+const changeCrawlStatus = async (idCrawl) => {
   const mysqlQuery = 'UPDATE Crawl SET Crawl_Status = Crawl_Status + 1 WHERE Id = ?';
   return query(mysqlQuery, [idCrawl]);
 };
@@ -207,8 +208,9 @@ module.exports = {
   postLocations,
   getLocsInCrawl,
   // STATUS
+  getCrawlStatusNum,
   getLocationOfCrawl,
-  postCrawlStatus,
+  changeCrawlStatus,
   flipVote,
   // JOIN
   locationCrawl,

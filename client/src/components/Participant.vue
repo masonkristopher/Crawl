@@ -2,7 +2,7 @@
   <div>
     <p>{{ participant.Name_First }}</p>
     <div v-if="participant.Phone_Number">
-      <button @click="{sendtext(participant.Phone_Number, 'hurry the fuck up!')}">
+      <button @click="{sendtext(participant.Phone_Number, `hurry the fuck up! We are going to ${crawlStatus} now` )}">
         Text 'em hurry the fuck up!
       </button>
     </div>
@@ -15,7 +15,7 @@ import axios from 'axios';
 
 export default {
   name: 'Participant',
-  props: ['participant'],
+  props: ['participant', 'crawlStatus'],
   methods: {
     sendtext(to, body) {
       axios.post('api/twilio', { to, body })

@@ -16,15 +16,18 @@ CREATE TABLE `User` (
   `Email` VARCHAR(50) NOT NULL UNIQUE,
   `Image_Url` VARCHAR(160),
   `Lat`  DECIMAL(10, 8),
-  `Lng` DECIMAL(10,8)
+  `Lng` DECIMAL(10,8),
+  `Has_Voted` BOOLEAN DEFAULT 0
 );
+-- INSERT IGNORE INTO User VALUES(null, 'testUser', 'w', 'p', 1, 'wp@gmail.com', null, null, null, 0);
 
 CREATE TABLE `Crawl` (
   `Id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `Id_Creator` INT,
   `Title` VARCHAR(80),
   `Crawl_Date` DATE,
-  `Crawl_Time` TIME
+  `Crawl_Time` TIME,
+  `Crawl_Status` VARCHAR(80)
 );
 
 CREATE TABLE `User_Crawl` (
@@ -51,7 +54,8 @@ CREATE TABLE `Location_Crawl` (
   `Id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `Id_Location` INT,
   `Id_Crawl` INT,
-  `Order_Postition` INT
+  `Order_Position` INT
+  -- former name Order_Postition
 );
 
 ALTER TABLE `User_Crawl` ADD FOREIGN KEY (`Id_User`) REFERENCES `User` (`Id`);

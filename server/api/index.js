@@ -7,6 +7,7 @@ const { locationRouter } = require('./location');
 const { joinRouter } = require('./join');
 const { mapRouter } = require('./map');
 const { twilioRouter } = require('./twilio');
+const { statusRouter } = require('./status');
 
 const apiRouter = Router();
 
@@ -18,5 +19,8 @@ apiRouter.use('/location', locationRouter);
 apiRouter.use('/join', joinRouter);
 apiRouter.use('/map', mapRouter);
 apiRouter.use('/twilio', twilioRouter);
+
+// status route
+apiRouter.use('/status', statusRouter);
 
 module.exports.apiRouter = apiRouter;

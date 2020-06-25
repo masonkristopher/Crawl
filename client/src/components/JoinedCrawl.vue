@@ -1,8 +1,10 @@
 <template>
   <div>
-    <h1>
-      Viewing bars for {{ crawl.Title }} on {{ new Date(Date.parse(crawl.Crawl_Date)).toDateString() }} at {{ crawl.Crawl_Time }}
-    </h1>
+    <h3>Name: {{ crawl.Title }}</h3>
+    <h3>
+      When: {{ new Date(Date.parse(crawl.Crawl_Date)).toDateString() }} at {{ crawl.Crawl_Time }}
+    </h3>
+    <CrawlStatus />
     <Participants />
     <div>
       <CrawlMap
@@ -17,12 +19,14 @@
 import axios from 'axios';
 import CrawlMap from './CrawlMap.vue';
 import Participants from './Participants.vue';
+import CrawlStatus from './CrawlStatus.vue';
 
 export default {
   name: 'JoinedCrawl',
   components: {
     CrawlMap,
     Participants,
+    CrawlStatus,
   },
   data() {
     return {

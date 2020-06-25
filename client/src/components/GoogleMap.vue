@@ -78,6 +78,7 @@
         <td>{{ bar.name }}</td>
         <td>{{ bar.address }}</td>
         <td>
+          
           <button @click="removeBarFromCrawl(index)">
             Remove
           </button>

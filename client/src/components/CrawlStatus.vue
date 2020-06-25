@@ -15,14 +15,22 @@
     </button>
     <!-- <p>{{ }} votes so far!</p>
     <p>Need {{ }} votes to move on!</p> -->
+    <Participants
+      :crawlId="crawlId"
+      :crawlStatus="crawlStatus"
+    />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import Participants from './Participants.vue';
 
 export default {
   name: 'CrawlStatus',
+  components: {
+    Participants,
+  },
   props: {
     crawlId: {
       type: Number,

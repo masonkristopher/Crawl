@@ -166,7 +166,6 @@
         </vs-button> -->
       </div>
     </vs-sidebar>
-
     <vs-popup
       id="popup-title"
       background-color="rgba(47,165,198,.6)"

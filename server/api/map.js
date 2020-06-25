@@ -33,9 +33,10 @@ mapRouter.get('/:place', (req, res) => {
       res.status(500).end(err);
     });
 });
-mapRouter.get('/:places', (req, res) => {
+mapRouter.get('/', (req, res) => {
   console.log('places route is hit');
-  const { lat, lng } = req.params;
+  const { lat, lng } = req.query;
+  console.log(req.query);
   return axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
     params: {
       location: `${lat},${lng}`,

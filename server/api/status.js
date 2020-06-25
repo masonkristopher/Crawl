@@ -1,41 +1,66 @@
+/* eslint-disable camelcase */
 const { Router } = require('express');
-const { getLocationOfCrawl, postCrawlStatus, flipVote } = require('../db/index');
+const {
+  getLocationOfCrawl,
+  changeCrawlStatus,
+  getCrawlStatusNum,
+  // flipVote,
+} = require('../db/index');
 
 const statusRouter = Router();
 
-// statusRouter.get('/', (req, res) => {
-//   console.log('hit status get route', req, res);
-// });
+// get location of crawl without changing status
+statusRouter.get('/:idCrawl', (req, res) => {
+  const { idCrawl } = req.params;
+  return getCrawlStatusNum(idCrawl)
+    .then(([{ Crawl_Status }]) => {
+      if (Crawl_Status === '0') {
+        res.send('Not Started!');
+      } else {
+        getLocationOfCrawl(idCrawl)
+          .then((location) => {
+            if (location.length) {
+              const [{ Name }] = location;
+              res.send(Name);
+            } else {
+              res.send('');
+            }
+          });
+      }
+    })
+    .catch(err => console.error(err));
+});
 
 // advance crawl status and return the location of the next bar
 statusRouter.post('/change/:idCrawl', (req, res) => {
-  console.log('hit /status/change/:idCrawl', req);
   const { idCrawl } = req.params;
-  return postCrawlStatus(idCrawl)
-    .then(() => {
-      return getLocationOfCrawl(idCrawl);
-    })
+  return changeCrawlStatus(idCrawl)
+    .then(() => getLocationOfCrawl(idCrawl))
     .then((location) => {
-      console.log(location);
-      res.send(location);
+      if (location.length) {
+        const [{ Name }] = location;
+        res.send(Name);
+      } else {
+        res.send('');
+      }
     })
     .catch(err => console.error(err));
 });
 
 // post a vote, then count the votes
-statusRouter.post('/vote/:idCrawl/:idUser', (req, res) => {
-  console.log('hit /status/vote/:idCrawl/:idUser');
-  const { idCrawl, idUser } = req.params;
-  return flipVote(idUser)
-    .then(() => {
-      return countVotes(idCrawl);
-    })
-    .then((votes) => {
+// statusRouter.post('/vote/:idCrawl/:idUser', (req, res) => {
+//   console.log('hit /status/vote/:idCrawl/:idUser');
+//   const { idCrawl, idUser } = req.params;
+//   return flipVote(idUser)
+//     .then(() => {
+//       return countVotes(idCrawl);
+//     })
+//     .then((votes) => {
 
-      res.send();
-    })
-    .catch(err => console.error(err));
-});
+//       res.send();
+//     })
+//     .catch(err => console.error(err));
+// });
 
 module.exports = {
   statusRouter,

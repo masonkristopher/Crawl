@@ -59,7 +59,7 @@ const updateUserLoc = (location, idUser) => {
 };
 
 const getCrawlsUsers = (idCrawl) => {
-  const mysqlQuery = 'SELECT * FROM User_Crawl INNER JOIN User ON Id_Crawl = ?;';
+  const mysqlQuery = 'SELECT * FROM User INNER JOIN User_Crawl ON User_Crawl.Id_User = User.Id WHERE User_Crawl.Id_Crawl = ?;';
   return query(mysqlQuery, [idCrawl]);
 };
 

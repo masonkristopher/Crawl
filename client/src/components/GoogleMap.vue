@@ -318,14 +318,14 @@ export default {
     },
 
     handleDrag() {
-      console.log('im being dragged');
-      axios.get('/api/map', params:{ lat, lng})
-        .then(() => {
-          console.log('something hit');
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      // console.log('im being dragged');
+      // axios.get('/api/map', params:{ lat, lng})
+      //   .then(() => {
+      //     console.log('something hit');
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
       // this.center = {
       //   lat: this.map.getCenter().lat(),
       //   lng: this.map.getCenter().lng(),

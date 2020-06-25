@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
+import moment from 'moment';
 
 import * as VueGoogleMaps from 'vue2-google-maps';
 import App from './App.vue';
@@ -46,10 +47,10 @@ Vue.use(Vuesax, {
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
-
 // creating a reactive component and adding it to prototype to be globally accessible
 const store = Vue.observable({ createdCrawls: [], joinedCrawls: [], appUser: null });
 Vue.prototype.$store = store;
+Vue.prototype.moment = moment;
 
 new Vue({
   router,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>{{ participant.Email }}</p>
+    <p>{{ participant.Name_First }}</p>
     <div v-if="participant.Phone_Number">
       <button @click="{sendtext(participant.Phone_Number, 'hurry the fuck up!')}">
         Text 'em hurry the fuck up!

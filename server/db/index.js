@@ -40,8 +40,11 @@ const postUser = ({
   if (!lng) {
     lng = 0.0;
   }
-  const mysqlQuery = 'INSERT IGNORE INTO User VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?);';
-  return query(mysqlQuery, [username, nameFirst, nameLast, phoneNumber, email, imageUrl, lat, lng]);
+  const mysqlQuery = 'INSERT IGNORE INTO User VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
+  return query(
+    mysqlQuery,
+    [username, nameFirst, nameLast, phoneNumber, email, imageUrl, lat, lng, 0],
+  );
 };
 
 const updateContact = (number, userId) => {
@@ -91,12 +94,13 @@ const getJoinedCrawls = (idUser) => {
 const postCrawl = ({
   idCreator, title, crawlDate, crawlTime,
 }) => {
-  const mysqlQuery = 'INSERT INTO Crawl VALUES(null, ?, ?, ?, ?);';
+  const mysqlQuery = 'INSERT INTO Crawl VALUES(null, ?, ?, ?, ?, ?);';
   return query(mysqlQuery, [
     idCreator,
     title,
     crawlDate,
     crawlTime,
+    0,
   ]);
 };
 
@@ -107,6 +111,11 @@ const getLocation = (name) => {
     name,
   ]);
 };
+
+// const getLocationById = (idLocation) => {
+//   const mysqlQuery = 'SELECT * FROM Location WHERE Id = ?';
+//   return query(mysqlQuery, [idLocation]);
+// };
 
 const getLocsInCrawl = (idCrawl) => {
   const mysqlQuery = 'SELECT * FROM Location_Crawl INNER JOIN Location ON Location.Id = Location_Crawl.Id_Location && Location_Crawl.Id_Crawl = ?;';
@@ -126,6 +135,40 @@ const postLocations = ({
     name,
   ]);
 };
+
+// STATUS QUERIES
+// const getCrawlStatus = (idCrawl) => {
+//   const mysqlQuery = 'SELECT Crawl_Status from Crawl WHERE Id = ?';
+//   return query(mysqlQuery, []);
+// };
+
+const getLocationOfCrawl = (idCrawl) => {
+  const mysqlQuery = `
+    SELECT Name from Location INNER JOIN Location_Crawl INNER JOIN Crawl
+    ON Location_Crawl.Order_Position = Crawl_Status
+    && Crawl.Id = ?
+    && Location.Id = Location_Crawl.Id_Location;
+  `;
+  return query(mysqlQuery, [idCrawl]);
+};
+
+// advances crawl status by 1
+const postCrawlStatus = async (idCrawl) => {
+  const mysqlQuery = 'UPDATE Crawl SET Crawl_Status = Crawl_Status + 1 WHERE Id = ?';
+  return query(mysqlQuery, [idCrawl]);
+};
+
+// flip vote flag of user
+const flipVote = (idUser) => {
+  const mysqlQuery = 'UPDATE User SET Has_Voted = !Has_Voted WHERE Id = ?;';
+  return query(mysqlQuery, [idUser]);
+};
+
+// count votes of users attending a bar crawl
+// const countVotes = (idCrawl) => {
+//   const mysqlQuery = '';
+//   return query(mysqlQuery, [idCrawl]);
+// };
 
 // JOIN QUERIES
 const locationCrawl = (idLocation, idCrawl, order) => {
@@ -163,6 +206,10 @@ module.exports = {
   getLocation,
   postLocations,
   getLocsInCrawl,
+  // STATUS
+  getLocationOfCrawl,
+  postCrawlStatus,
+  flipVote,
   // JOIN
   locationCrawl,
   userCrawl,

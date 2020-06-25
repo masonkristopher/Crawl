@@ -16,10 +16,6 @@
         >
         <div class="border-map" />
         <span class="floating-label">Enter ZIP Code/City</span>
-        <div>
-          <h1>Map Coordinates</h1>
-          <p>{{ mapCoordinates.lat }}:latitude{{ mapCoordinates.lng }}:longitude</p>
-        </div>
         <button
           id="location-search-button"
           @click="findBar"
@@ -78,7 +74,6 @@
         <td>{{ bar.name }}</td>
         <td>{{ bar.address }}</td>
         <td>
-          
           <button @click="removeBarFromCrawl(index)">
             Remove
           </button>
@@ -318,24 +313,24 @@ export default {
     },
 
     handleDrag() {
-      // console.log('im being dragged');
-      // axios.get('/api/map', params:{ lat, lng})
-      //   .then(() => {
-      //     console.log('something hit');
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //   });
-      // this.center = {
-      //   lat: this.map.getCenter().lat(),
-      //   lng: this.map.getCenter().lng(),
-      // };
-      // this.zoom = this.map.getZoom();
-      // this.currentPlace = this.center.lat;
-      // this.userLocation.lat = this.map.getCenter().lat();
-      // this.userLocation.lng = this.map.getCenter().lng();
-      // this.findBar();
-      // this.geolocate()
+      // when we the drag has ended reassign the center value
+      this.center = {
+        lat: this.map.getCenter().lat(),
+        lng: this.map.getCenter().lng(),
+      };
+      this.zoom = this.map.getZoom();
+      // with the center value send a get request to the api with the current lat and lng values on the params object or body
+      axios.get('/api/map', { params: { lat: this.center.lat, lng: this.center.lng } })
+        .then(response => {
+          // empty the markers and places and update before each search
+          this.markers = [];
+          this.places = [];
+          response.data.forEach(bar => {
+            console.log(bar);
+            this.addMarker(bar);
+          });
+        })
+        .catch(error => console.log(error));
     },
   },
 };

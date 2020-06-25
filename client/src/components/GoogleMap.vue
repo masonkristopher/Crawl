@@ -40,6 +40,7 @@
       :zoom="12"
       :options="{styles: styles}"
       style="width:100%;  height: 400px; float:right;"
+      @dragend="handleDrag()"
     >
       <gmap-marker
         v-for="(m, index) in markers"
@@ -314,8 +315,27 @@ export default {
       this.selected.splice(index, 1);
       this.$emit('update:selected', this.selected);
     },
-    // add a computed object with a function that will go in ==>>
 
+    handleDrag() {
+      console.log('im being dragged');
+      // axios.get('/api/map', params:{ lat, lng})
+      //   .then(() => {
+      //     console.log('something hit');
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
+      // this.center = {
+      //   lat: this.map.getCenter().lat(),
+      //   lng: this.map.getCenter().lng(),
+      // };
+      // this.zoom = this.map.getZoom();
+      // this.currentPlace = this.center.lat;
+      // this.userLocation.lat = this.map.getCenter().lat();
+      // this.userLocation.lng = this.map.getCenter().lng();
+      // this.findBar();
+      // this.geolocate()
+    },
   },
 };
 </script>

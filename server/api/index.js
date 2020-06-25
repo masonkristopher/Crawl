@@ -6,6 +6,7 @@ const { authRouter } = require('./auth');
 const { locationRouter } = require('./location');
 const { joinRouter } = require('./join');
 const { mapRouter } = require('./map');
+const { statusRouter } = require('./status');
 
 const apiRouter = Router();
 
@@ -16,5 +17,8 @@ apiRouter.use('/auth', authRouter);
 apiRouter.use('/location', locationRouter);
 apiRouter.use('/join', joinRouter);
 apiRouter.use('/map', mapRouter);
+
+// status route
+apiRouter.use('/status', statusRouter);
 
 module.exports.apiRouter = apiRouter;

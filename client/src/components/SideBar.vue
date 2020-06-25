@@ -157,44 +157,38 @@
         >
           log out
         </vs-button>
-        <vs-button
+        <!-- <vs-button
           icon="settings"
           color="primary"
           type="border"
         >
           settings
-        </vs-button>
+        </vs-button> -->
       </div>
     </vs-sidebar>
 
     <vs-popup
       id="popup-title"
-      style="color:rgb(255,255,275)"
       background-color="rgba(47,165,198,.6)"
-      title="YOU ARE LOGGED OUT"
+      style="color:gray; font-family:Helvetica,Arial,sans-serif;"
+      title="You are now logged out"
       :active.sync="popupActivo"
       button-close-hidden="true"
     >
       <div id="text">
-        <p style="color:black; font-size:24px; padding:6px; text-align:center;">
-          Log In With Your Account<br>
-          or<br>
-          Sign Up
-          <br><br>
-          To Start Crawling
+        <p style="color:black; font-family:Helvetica,Arial,sans-serif; font-size:24px; padding:6px; text-align:center;">
+          Log back in to keep crawling!
+          <vs-button
+            size="xl"
+            icon="arrow_right_alt"
+            class="log-button login"
+            color="success"
+            type="flat"
+            @click="login"
+          >
+          SIGN IN
+          </vs-button>
         </p>
-        <br>
-        <br>
-        <vs-button
-          icon="arrow_right_alt"
-          class="log-button login"
-          color="success"
-          type="flat"
-          style="float:right;"
-          @click="login"
-        >
-          Log In
-        </vs-button>
       </div>
     </vs-popup>
   </div>
@@ -236,7 +230,10 @@ export default {
       axios.get('/api/auth/google/logout')
         .then(() => {
           console.log('Successful logout');
+          // trigger login popup
           this.popupActivo = true;
+          // close sidebar
+          this.active = false;
           this.user = null;
           this.createdCrawls = null;
           this.joinedCrawls = null;
@@ -246,7 +243,11 @@ export default {
         });
     },
     login() {
-      axios.get('/api/auth/google');
+      // login will just route back to home to trigger login from App
+      this.$router.push('/');
+      // fyi linter is mad that 'location' appears to be undefined
+      // but it is necessary to redirect
+      location.reload();
     },
     showInput() {
       this.showNumberInput = true;
@@ -288,7 +289,8 @@ export default {
       // send important user id and crawl data for grabing location for next comp
       // this keeps adding things on to the endpoint. so will it just get longer and longer?
       this.$router.push(`/crawl/joined/${this.user.id}/${crawl.Title}/${crawl.Id}`);
-      // this.$router = (`/crawl/joined/${this.user.id}/${crawl.Title}/${crawl.Id}`);
+      // fyi linter is mad that 'location' appears to be undefined
+      // but it is necessary to redirect
       location.reload();
     },
   },

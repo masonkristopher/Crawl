@@ -90,6 +90,16 @@ crawlRouter.post('/join/:crawlId/:userId', (req, res) => {
     .catch((err) => console.error(err));
 });
 
+crawlRouter.get('/joined/by/:crawlId', (req, res) => {
+  getCrawlsUsers(req.params.crawlId)
+    .then(data => {
+      res.send(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
 crawlRouter.get('/joined/:userId', (req, res) => {
   getJoinedCrawls(req.params.userId)
     .then((data) => {
@@ -100,15 +110,6 @@ crawlRouter.get('/joined/:userId', (req, res) => {
     });
 });
 
-crawlRouter.get('/joined/by/:crawlId', (req, res) => {
-  getCrawlsUsers(req.params.crawlId)
-    .then(data => {
-      res.send(data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-});
 
 module.exports = {
   crawlRouter,

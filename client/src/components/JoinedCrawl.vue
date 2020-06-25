@@ -5,7 +5,7 @@
       When: {{ new Date(Date.parse(crawl.Crawl_Date)).toDateString() }} at {{ crawl.Crawl_Time }}
     </h3>
     <CrawlStatus />
-    <Participants />
+    <Participants :crawlId="crawlId" />
     <div>
       <CrawlMap
         :userId="userId"

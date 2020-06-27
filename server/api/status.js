@@ -5,6 +5,8 @@ const {
   changeCrawlStatus,
   getCrawlStatusNum,
   // flipVote,
+  // countVotes,
+  // getVote,
 } = require('../db/index');
 
 const statusRouter = Router();
@@ -47,17 +49,40 @@ statusRouter.post('/change/:idCrawl', (req, res) => {
     .catch(err => console.error(err));
 });
 
-// post a vote, then count the votes
-// statusRouter.post('/vote/:idCrawl/:idUser', (req, res) => {
-//   console.log('hit /status/vote/:idCrawl/:idUser');
-//   const { idCrawl, idUser } = req.params;
+// get all move on votes for a crawl
+// statusRouter.get('/votes/:idCrawl', (req, res) => {
+//   console.log('GET /status/votes/:idCrawl');
+//   const { idCrawl } = req.params;
+//   return countVotes(idCrawl)
+//     .then((votes) => {
+//       console.log('votes', votes);
+//       res.send(votes);
+//     });
+// });
+
+// get the vote of a user
+// statusRouter.get('/vote/:idUser', (req, res) => {
+//   console.log('GET /status/vote/:idUser');
+//   const { idUser } = req.params;
+//   return getVote(idUser)
+//     .then(vote => {
+//       console.log('vote', vote);
+//       res.send(vote);
+//     })
+//     .catch(err => console.error(err));
+// });
+
+// post a vote for a crawl, then count the votes for a crawl
+// statusRouter.post('/vote/:idUser/:idCrawl', (req, res) => {
+//   console.log('POST /status/vote/:idUser/:idCrawl');
+//   const { idUser, idCrawl } = req.params;
 //   return flipVote(idUser)
 //     .then(() => {
 //       return countVotes(idCrawl);
 //     })
 //     .then((votes) => {
-
-//       res.send();
+//       console.log('votes', votes);
+//       res.send(votes);
 //     })
 //     .catch(err => console.error(err));
 // });

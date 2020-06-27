@@ -7,7 +7,6 @@
     <CrawlStatus
       :crawlId="crawlId"
     />
-    <Participants :crawlId="crawlId" />
     <div>
       <CrawlMap
         :userId="userId"
@@ -20,14 +19,12 @@
 <script>
 import axios from 'axios';
 import CrawlMap from './CrawlMap.vue';
-import Participants from './Participants.vue';
 import CrawlStatus from './CrawlStatus.vue';
 
 export default {
   name: 'JoinedCrawl',
   components: {
     CrawlMap,
-    Participants,
     CrawlStatus,
   },
   data() {

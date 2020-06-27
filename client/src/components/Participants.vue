@@ -5,7 +5,10 @@
       v-for="participant in crawlUsers"
       :key="participant.id"
     >
-      <Participant :participant="participant" />
+      <Participant
+        :participant="participant"
+        :crawlStatus="crawlStatus"
+      />
     </div>
   </div>
 </template>
@@ -19,7 +22,7 @@ export default {
   components: {
     Participant,
   },
-  props: ['crawlId'],
+  props: ['crawlId', 'crawlStatus'],
   data() {
     return {
       crawlUsers: [],

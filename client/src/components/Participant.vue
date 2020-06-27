@@ -3,7 +3,7 @@
     <p>{{ participant.Name_First }}</p>
     <div v-if="participant.Phone_Number">
       <button @click="{sendtext(participant.Phone_Number, `hurry up! We are going to ${crawlStatus} now` )}">
-        Text 'em to hurry up!
+        Text 'em hurry up!
       </button>
     </div>
   </div>

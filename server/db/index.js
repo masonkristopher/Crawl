@@ -159,15 +159,31 @@ const changeCrawlStatus = async (idCrawl) => {
   return query(mysqlQuery, [idCrawl]);
 };
 
+// get vote flag for a current user
+// const getVote = (idUser) => {
+//   const mysqlQuery = 'SELECT Has_Voted FROM User WHERE Id = ?';
+//   return query(mysqlQuery, [idUser]);
+// };
+
 // flip vote flag of user
-const flipVote = (idUser) => {
-  const mysqlQuery = 'UPDATE User SET Has_Voted = !Has_Voted WHERE Id = ?;';
-  return query(mysqlQuery, [idUser]);
-};
+// const flipVote = (idUser) => {
+//   const mysqlQuery = 'UPDATE User SET Has_Voted = !Has_Voted WHERE Id = ?;';
+//   return query(mysqlQuery, [idUser]);
+// };
 
 // count votes of users attending a bar crawl
 // const countVotes = (idCrawl) => {
-//   const mysqlQuery = '';
+//   const mysqlQuery = `
+//     SELECT COUNT(*) FROM User INNER JOIN User_Crawl
+//     ON User_Crawl.Id_Crawl = 1
+//     && User.Has_Voted = 1;
+//   `;
+//   return query(mysqlQuery, [idCrawl]);
+// };
+
+// reset all votes (when the crawl status changes)
+// const resetVotes = (idCrawl) => {
+//   const mysqlQuery = ``;
 //   return query(mysqlQuery, [idCrawl]);
 // };
 
@@ -211,7 +227,11 @@ module.exports = {
   getCrawlStatusNum,
   getLocationOfCrawl,
   changeCrawlStatus,
-  flipVote,
+  // VOTING
+  // getVote,
+  // flipVote,
+  // countVotes,
+  // resetVotes,
   // JOIN
   locationCrawl,
   userCrawl,

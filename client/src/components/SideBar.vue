@@ -234,6 +234,7 @@ export default {
           // close sidebar
           this.active = false;
           this.user = null;
+          this.$store.appUser = null;
           this.createdCrawls = null;
           this.joinedCrawls = null;
         })

@@ -51,7 +51,6 @@ export default {
       crawlStatus: 'Loading',
       // hasVoted: false,
       // allVotes: 0,
-      userId: this.$store.appUser.Id,
       user: this.$store.appUser,
     };
   },
